@@ -1,0 +1,1184 @@
+{
+  "group": "215cd55d0f2e449089a656f5a8b39897",
+  "proposedMaximumIntervalMs": 130,
+  "adoptedAsDefault": false,
+  "intervalClock": "Stopwatch at hook reception",
+  "reanalysisThresholdsPhysicalPx": [
+    8,
+    16,
+    32,
+    48,
+    64
+  ],
+  "warning": "Exploratory calibration of one user; 32px is an analysis sensitivity check, not an approved recognition default. No time-based interval exclusions.",
+  "stages": [
+    {
+      "stage": "medium-1",
+      "session": "20261025-171944-487",
+      "sourceSha256": "6666dd8ce0a8de8f721e6cb3825388f9345f2ec8c12481c4a741404782b5e9e3",
+      "analysisBySpatialThresholdPx": {
+        "8": {
+          "count": 59,
+          "quantilesMs": {
+            "min": 76.98599999999999,
+            "q25": 92.53949999999992,
+            "median": 98.02300000000014,
+            "q75": 105.37700000000018,
+            "p90": 110.97660000000023,
+            "p95": 113.88640000000028,
+            "max": 126.09000000000015
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 37,
+              "totalIntervals": 59,
+              "percent": 62.71186440677966,
+              "acceptedThreeTurnWindows": 25
+            },
+            "120": {
+              "acceptedIntervals": 57,
+              "totalIntervals": 59,
+              "percent": 96.61016949152543,
+              "acceptedThreeTurnWindows": 54
+            },
+            "125": {
+              "acceptedIntervals": 58,
+              "totalIntervals": 59,
+              "percent": 98.30508474576271,
+              "acceptedThreeTurnWindows": 56
+            },
+            "130": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "135": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "140": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "150": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            }
+          }
+        },
+        "16": {
+          "count": 59,
+          "quantilesMs": {
+            "min": 76.98599999999999,
+            "q25": 92.53949999999992,
+            "median": 98.02300000000014,
+            "q75": 105.37700000000018,
+            "p90": 110.97660000000023,
+            "p95": 113.88640000000028,
+            "max": 126.09000000000015
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 37,
+              "totalIntervals": 59,
+              "percent": 62.71186440677966,
+              "acceptedThreeTurnWindows": 25
+            },
+            "120": {
+              "acceptedIntervals": 57,
+              "totalIntervals": 59,
+              "percent": 96.61016949152543,
+              "acceptedThreeTurnWindows": 54
+            },
+            "125": {
+              "acceptedIntervals": 58,
+              "totalIntervals": 59,
+              "percent": 98.30508474576271,
+              "acceptedThreeTurnWindows": 56
+            },
+            "130": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "135": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "140": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "150": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            }
+          }
+        },
+        "32": {
+          "count": 59,
+          "quantilesMs": {
+            "min": 76.98599999999999,
+            "q25": 92.53949999999992,
+            "median": 98.02300000000014,
+            "q75": 105.37700000000018,
+            "p90": 110.97660000000023,
+            "p95": 113.88640000000028,
+            "max": 126.09000000000015
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 37,
+              "totalIntervals": 59,
+              "percent": 62.71186440677966,
+              "acceptedThreeTurnWindows": 25
+            },
+            "120": {
+              "acceptedIntervals": 57,
+              "totalIntervals": 59,
+              "percent": 96.61016949152543,
+              "acceptedThreeTurnWindows": 54
+            },
+            "125": {
+              "acceptedIntervals": 58,
+              "totalIntervals": 59,
+              "percent": 98.30508474576271,
+              "acceptedThreeTurnWindows": 56
+            },
+            "130": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "135": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "140": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "150": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            }
+          }
+        },
+        "48": {
+          "count": 59,
+          "quantilesMs": {
+            "min": 76.98599999999999,
+            "q25": 92.53949999999992,
+            "median": 98.02300000000014,
+            "q75": 105.37700000000018,
+            "p90": 110.97660000000023,
+            "p95": 113.88640000000028,
+            "max": 126.09000000000015
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 37,
+              "totalIntervals": 59,
+              "percent": 62.71186440677966,
+              "acceptedThreeTurnWindows": 25
+            },
+            "120": {
+              "acceptedIntervals": 57,
+              "totalIntervals": 59,
+              "percent": 96.61016949152543,
+              "acceptedThreeTurnWindows": 54
+            },
+            "125": {
+              "acceptedIntervals": 58,
+              "totalIntervals": 59,
+              "percent": 98.30508474576271,
+              "acceptedThreeTurnWindows": 56
+            },
+            "130": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "135": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "140": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            },
+            "150": {
+              "acceptedIntervals": 59,
+              "totalIntervals": 59,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 58
+            }
+          }
+        },
+        "64": {
+          "count": 57,
+          "quantilesMs": {
+            "min": 83.95899999999983,
+            "q25": 93.13499999999999,
+            "median": 98.3119999999999,
+            "q75": 105.9640000000004,
+            "p90": 111.23720000000012,
+            "p95": 113.90080000000026,
+            "max": 277.059
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 35,
+              "totalIntervals": 57,
+              "percent": 61.40350877192983,
+              "acceptedThreeTurnWindows": 23
+            },
+            "120": {
+              "acceptedIntervals": 55,
+              "totalIntervals": 57,
+              "percent": 96.49122807017544,
+              "acceptedThreeTurnWindows": 52
+            },
+            "125": {
+              "acceptedIntervals": 55,
+              "totalIntervals": 57,
+              "percent": 96.49122807017544,
+              "acceptedThreeTurnWindows": 52
+            },
+            "130": {
+              "acceptedIntervals": 56,
+              "totalIntervals": 57,
+              "percent": 98.24561403508771,
+              "acceptedThreeTurnWindows": 54
+            },
+            "135": {
+              "acceptedIntervals": 56,
+              "totalIntervals": 57,
+              "percent": 98.24561403508771,
+              "acceptedThreeTurnWindows": 54
+            },
+            "140": {
+              "acceptedIntervals": 56,
+              "totalIntervals": 57,
+              "percent": 98.24561403508771,
+              "acceptedThreeTurnWindows": 54
+            },
+            "150": {
+              "acceptedIntervals": 56,
+              "totalIntervals": 57,
+              "percent": 98.24561403508771,
+              "acceptedThreeTurnWindows": 54
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "slow",
+      "session": "20261025-171953-766",
+      "sourceSha256": "e14af8e28911c2b38c7bd4e4a4f9312d94fdf0026317d2f85911c529e0c064f5",
+      "analysisBySpatialThresholdPx": {
+        "8": {
+          "count": 26,
+          "quantilesMs": {
+            "min": 142.97699999999986,
+            "q25": 190.66350000000023,
+            "median": 215.9300000000003,
+            "q75": 237.66049999999998,
+            "p90": 282.41400000000004,
+            "p95": 313.52125,
+            "max": 337.21000000000004
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "120": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "125": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "130": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "135": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "140": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "150": {
+              "acceptedIntervals": 1,
+              "totalIntervals": 26,
+              "percent": 3.8461538461538463,
+              "acceptedThreeTurnWindows": 0
+            }
+          }
+        },
+        "16": {
+          "count": 26,
+          "quantilesMs": {
+            "min": 142.97699999999986,
+            "q25": 190.66350000000023,
+            "median": 215.9300000000003,
+            "q75": 237.66049999999998,
+            "p90": 282.41400000000004,
+            "p95": 313.52125,
+            "max": 337.21000000000004
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "120": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "125": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "130": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "135": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "140": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "150": {
+              "acceptedIntervals": 1,
+              "totalIntervals": 26,
+              "percent": 3.8461538461538463,
+              "acceptedThreeTurnWindows": 0
+            }
+          }
+        },
+        "32": {
+          "count": 26,
+          "quantilesMs": {
+            "min": 142.97699999999986,
+            "q25": 190.66350000000023,
+            "median": 215.9300000000003,
+            "q75": 237.66049999999998,
+            "p90": 282.41400000000004,
+            "p95": 313.52125,
+            "max": 337.21000000000004
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "120": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "125": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "130": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "135": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "140": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "150": {
+              "acceptedIntervals": 1,
+              "totalIntervals": 26,
+              "percent": 3.8461538461538463,
+              "acceptedThreeTurnWindows": 0
+            }
+          }
+        },
+        "48": {
+          "count": 26,
+          "quantilesMs": {
+            "min": 142.97699999999986,
+            "q25": 190.66350000000023,
+            "median": 215.9300000000003,
+            "q75": 237.66049999999998,
+            "p90": 282.41400000000004,
+            "p95": 313.52125,
+            "max": 337.21000000000004
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "120": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "125": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "130": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "135": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "140": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 26,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "150": {
+              "acceptedIntervals": 1,
+              "totalIntervals": 26,
+              "percent": 3.8461538461538463,
+              "acceptedThreeTurnWindows": 0
+            }
+          }
+        },
+        "64": {
+          "count": 25,
+          "quantilesMs": {
+            "min": 142.97699999999986,
+            "q25": 189.94100000000026,
+            "median": 215.97100000000046,
+            "q75": 240.93399999999997,
+            "p90": 285.9320000000001,
+            "p95": 314.4224,
+            "max": 337.21000000000004
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 25,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "120": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 25,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "125": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 25,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "130": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 25,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "135": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 25,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "140": {
+              "acceptedIntervals": 0,
+              "totalIntervals": 25,
+              "percent": 0.0,
+              "acceptedThreeTurnWindows": 0
+            },
+            "150": {
+              "acceptedIntervals": 1,
+              "totalIntervals": 25,
+              "percent": 4.0,
+              "acceptedThreeTurnWindows": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "fast",
+      "session": "20261025-172002-850",
+      "sourceSha256": "f85699888624b8c0b7dd6a74fc2488818f2b8e16d606e4958f7123b53516733e",
+      "analysisBySpatialThresholdPx": {
+        "8": {
+          "count": 125,
+          "quantilesMs": {
+            "min": 0.24099999999998545,
+            "q25": 2.0289999999999964,
+            "median": 57.86299999999983,
+            "q75": 70.99400000000014,
+            "p90": 82.62479999999975,
+            "p95": 87.10559999999995,
+            "max": 107.11000000000058
+          },
+          "sub10msCount": 38,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 123,
+              "totalIntervals": 125,
+              "percent": 98.4,
+              "acceptedThreeTurnWindows": 120
+            },
+            "120": {
+              "acceptedIntervals": 125,
+              "totalIntervals": 125,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 124
+            },
+            "125": {
+              "acceptedIntervals": 125,
+              "totalIntervals": 125,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 124
+            },
+            "130": {
+              "acceptedIntervals": 125,
+              "totalIntervals": 125,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 124
+            },
+            "135": {
+              "acceptedIntervals": 125,
+              "totalIntervals": 125,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 124
+            },
+            "140": {
+              "acceptedIntervals": 125,
+              "totalIntervals": 125,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 124
+            },
+            "150": {
+              "acceptedIntervals": 125,
+              "totalIntervals": 125,
+              "percent": 100.0,
+              "acceptedThreeTurnWindows": 124
+            }
+          }
+        },
+        "16": {
+          "count": 96,
+          "quantilesMs": {
+            "min": 0.7849999999998545,
+            "q25": 52.697250000000054,
+            "median": 63.99249999999961,
+            "q75": 74.56225000000013,
+            "p90": 87.06200000000001,
+            "p95": 97.52999999999986,
+            "max": 176.93799999999987
+          },
+          "sub10msCount": 14,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 92,
+              "totalIntervals": 96,
+              "percent": 95.83333333333334,
+              "acceptedThreeTurnWindows": 87
+            },
+            "120": {
+              "acceptedIntervals": 94,
+              "totalIntervals": 96,
+              "percent": 97.91666666666666,
+              "acceptedThreeTurnWindows": 91
+            },
+            "125": {
+              "acceptedIntervals": 94,
+              "totalIntervals": 96,
+              "percent": 97.91666666666666,
+              "acceptedThreeTurnWindows": 91
+            },
+            "130": {
+              "acceptedIntervals": 94,
+              "totalIntervals": 96,
+              "percent": 97.91666666666666,
+              "acceptedThreeTurnWindows": 91
+            },
+            "135": {
+              "acceptedIntervals": 94,
+              "totalIntervals": 96,
+              "percent": 97.91666666666666,
+              "acceptedThreeTurnWindows": 91
+            },
+            "140": {
+              "acceptedIntervals": 94,
+              "totalIntervals": 96,
+              "percent": 97.91666666666666,
+              "acceptedThreeTurnWindows": 91
+            },
+            "150": {
+              "acceptedIntervals": 95,
+              "totalIntervals": 96,
+              "percent": 98.95833333333334,
+              "acceptedThreeTurnWindows": 93
+            }
+          }
+        },
+        "32": {
+          "count": 82,
+          "quantilesMs": {
+            "min": 41.86799999999994,
+            "q25": 59.20999999999995,
+            "median": 66.96299999999997,
+            "q75": 76.02900000000022,
+            "p90": 89.01319999999997,
+            "p95": 103.82049999999998,
+            "max": 176.93799999999987
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 77,
+              "totalIntervals": 82,
+              "percent": 93.90243902439023,
+              "acceptedThreeTurnWindows": 72
+            },
+            "120": {
+              "acceptedIntervals": 80,
+              "totalIntervals": 82,
+              "percent": 97.5609756097561,
+              "acceptedThreeTurnWindows": 77
+            },
+            "125": {
+              "acceptedIntervals": 80,
+              "totalIntervals": 82,
+              "percent": 97.5609756097561,
+              "acceptedThreeTurnWindows": 77
+            },
+            "130": {
+              "acceptedIntervals": 80,
+              "totalIntervals": 82,
+              "percent": 97.5609756097561,
+              "acceptedThreeTurnWindows": 77
+            },
+            "135": {
+              "acceptedIntervals": 80,
+              "totalIntervals": 82,
+              "percent": 97.5609756097561,
+              "acceptedThreeTurnWindows": 77
+            },
+            "140": {
+              "acceptedIntervals": 80,
+              "totalIntervals": 82,
+              "percent": 97.5609756097561,
+              "acceptedThreeTurnWindows": 77
+            },
+            "150": {
+              "acceptedIntervals": 81,
+              "totalIntervals": 82,
+              "percent": 98.78048780487805,
+              "acceptedThreeTurnWindows": 79
+            }
+          }
+        },
+        "48": {
+          "count": 81,
+          "quantilesMs": {
+            "min": 41.86799999999994,
+            "q25": 58.96499999999992,
+            "median": 66.96100000000024,
+            "q75": 76.01699999999983,
+            "p90": 89.22299999999996,
+            "p95": 104.07799999999997,
+            "max": 176.93799999999987
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 76,
+              "totalIntervals": 81,
+              "percent": 93.82716049382715,
+              "acceptedThreeTurnWindows": 71
+            },
+            "120": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "125": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "130": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "135": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "140": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "150": {
+              "acceptedIntervals": 80,
+              "totalIntervals": 81,
+              "percent": 98.76543209876543,
+              "acceptedThreeTurnWindows": 78
+            }
+          }
+        },
+        "64": {
+          "count": 81,
+          "quantilesMs": {
+            "min": 41.86799999999994,
+            "q25": 58.96499999999992,
+            "median": 66.96100000000024,
+            "q75": 76.01699999999983,
+            "p90": 89.22299999999996,
+            "p95": 104.07799999999997,
+            "max": 176.93799999999987
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 76,
+              "totalIntervals": 81,
+              "percent": 93.82716049382715,
+              "acceptedThreeTurnWindows": 71
+            },
+            "120": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "125": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "130": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "135": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "140": {
+              "acceptedIntervals": 79,
+              "totalIntervals": 81,
+              "percent": 97.53086419753086,
+              "acceptedThreeTurnWindows": 76
+            },
+            "150": {
+              "acceptedIntervals": 80,
+              "totalIntervals": 81,
+              "percent": 98.76543209876543,
+              "acceptedThreeTurnWindows": 78
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "medium-2",
+      "session": "20261025-172011-920",
+      "sourceSha256": "632e74a2be319b234385853e32ecfdf3674eaae9c906d5d1e36d2952f638b8df",
+      "analysisBySpatialThresholdPx": {
+        "8": {
+          "count": 64,
+          "quantilesMs": {
+            "min": 50.87400000000025,
+            "q25": 82.3499999999999,
+            "median": 88.55749999999983,
+            "q75": 96.29950000000008,
+            "p90": 105.8568000000002,
+            "p95": 114.46479999999981,
+            "max": 242.2560000000003
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 54,
+              "totalIntervals": 64,
+              "percent": 84.375,
+              "acceptedThreeTurnWindows": 47
+            },
+            "120": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "125": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "130": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "135": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "140": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            },
+            "150": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            }
+          }
+        },
+        "16": {
+          "count": 64,
+          "quantilesMs": {
+            "min": 50.87400000000025,
+            "q25": 82.3499999999999,
+            "median": 88.55749999999983,
+            "q75": 96.29950000000008,
+            "p90": 105.8568000000002,
+            "p95": 114.46479999999981,
+            "max": 242.2560000000003
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 54,
+              "totalIntervals": 64,
+              "percent": 84.375,
+              "acceptedThreeTurnWindows": 47
+            },
+            "120": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "125": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "130": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "135": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "140": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            },
+            "150": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            }
+          }
+        },
+        "32": {
+          "count": 64,
+          "quantilesMs": {
+            "min": 50.87400000000025,
+            "q25": 82.3499999999999,
+            "median": 88.55749999999983,
+            "q75": 96.29950000000008,
+            "p90": 105.8568000000002,
+            "p95": 114.46479999999981,
+            "max": 242.2560000000003
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 54,
+              "totalIntervals": 64,
+              "percent": 84.375,
+              "acceptedThreeTurnWindows": 47
+            },
+            "120": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "125": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "130": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "135": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "140": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            },
+            "150": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            }
+          }
+        },
+        "48": {
+          "count": 64,
+          "quantilesMs": {
+            "min": 50.87400000000025,
+            "q25": 82.3499999999999,
+            "median": 88.55749999999983,
+            "q75": 96.29950000000008,
+            "p90": 105.8568000000002,
+            "p95": 114.46479999999981,
+            "max": 242.2560000000003
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 54,
+              "totalIntervals": 64,
+              "percent": 84.375,
+              "acceptedThreeTurnWindows": 47
+            },
+            "120": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "125": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "130": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "135": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "140": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            },
+            "150": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            }
+          }
+        },
+        "64": {
+          "count": 64,
+          "quantilesMs": {
+            "min": 50.87400000000025,
+            "q25": 82.3499999999999,
+            "median": 88.55749999999983,
+            "q75": 96.29950000000008,
+            "p90": 105.8568000000002,
+            "p95": 114.46479999999981,
+            "max": 242.2560000000003
+          },
+          "sub10msCount": 0,
+          "thresholds": {
+            "100": {
+              "acceptedIntervals": 54,
+              "totalIntervals": 64,
+              "percent": 84.375,
+              "acceptedThreeTurnWindows": 47
+            },
+            "120": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "125": {
+              "acceptedIntervals": 61,
+              "totalIntervals": 64,
+              "percent": 95.3125,
+              "acceptedThreeTurnWindows": 58
+            },
+            "130": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "135": {
+              "acceptedIntervals": 62,
+              "totalIntervals": 64,
+              "percent": 96.875,
+              "acceptedThreeTurnWindows": 59
+            },
+            "140": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            },
+            "150": {
+              "acceptedIntervals": 63,
+              "totalIntervals": 64,
+              "percent": 98.4375,
+              "acceptedThreeTurnWindows": 61
+            }
+          }
+        }
+      }
+    }
+  ]
+}

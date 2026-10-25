@@ -1,0 +1,1658 @@
+{
+  "Experiment": "Cross-process native static frame publication; not product implementation",
+  "Date": "2026-10-25T12:50:58.1431836+01:00",
+  "OS": "Microsoft Windows NT 10.0.26200.0",
+  "QpcFrequency": 10000000,
+  "PublisherPid": 25476,
+  "PublisherCallsSetCursor": false,
+  "Failure": null,
+  "ExitCode": 0,
+  "OriginalUtilityPids": [
+    34288
+  ],
+  "OriginalUtilityStillRunning": true,
+  "Backups": [
+    {
+      "Role": 32516,
+      "Hash": "04BDB03692E2B30A043BC87815D2DD6630557A0ED72666DB59F21FB6ED7B045E",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 4,
+      "HotY": 0
+    },
+    {
+      "Role": 32651,
+      "Hash": "07840852ED5FEB50EF38FD35613257E3A62CF093F7A8FF283F790814CC699D90",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 0,
+      "HotY": 0
+    },
+    {
+      "Role": 32631,
+      "Hash": "DB499D8A25C85C5EF787DD7FD0D8CF8BB63BE6DC417E9CD934683F3B0C322D04",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 0,
+      "HotY": 0
+    },
+    {
+      "Role": 32671,
+      "Hash": "590823AFAC7A9F5B7AD195F1C477C5F850160541878505D5E2E450AB8E2206CA",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 6,
+      "HotY": 0
+    },
+    {
+      "Role": 32672,
+      "Hash": "973BB8594C4A0E718FF8B80ED56E6AECE07E15ADC1A96AA5B5BE08867561450D",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 6,
+      "HotY": 0
+    },
+    {
+      "Role": 32512,
+      "Hash": "D206A50C2AFA70DDDBA641DCB15E512CB321EF5B2764939E1E0B9B53CE47FDB4",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 0,
+      "HotY": 0
+    }
+  ],
+  "Restores": [
+    {
+      "Role": 32516,
+      "Ok": true,
+      "Match": true
+    },
+    {
+      "Role": 32651,
+      "Ok": true,
+      "Match": true
+    },
+    {
+      "Role": 32631,
+      "Ok": true,
+      "Match": true
+    },
+    {
+      "Role": 32671,
+      "Ok": true,
+      "Match": true
+    },
+    {
+      "Role": 32672,
+      "Ok": true,
+      "Match": true
+    },
+    {
+      "Role": 32516,
+      "Ok": true,
+      "Match": true
+    },
+    {
+      "Role": 32516,
+      "Ok": true,
+      "Match": true
+    },
+    {
+      "Role": 32512,
+      "Ok": true,
+      "Match": true
+    }
+  ],
+  "RemainingRestoreFlags": [],
+  "Cases": [
+    {
+      "Name": "external-host-static",
+      "Role": 32516,
+      "HostPid": 42916,
+      "PublisherPid": 25476,
+      "SelectionsDuringMeasurement": 0,
+      "Observations": [
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 0,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 0.6057,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 1,
+          "Size": 64,
+          "Observed": true,
+          "LatencyMs": 0.4181,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 2,
+          "Size": 96,
+          "Observed": true,
+          "LatencyMs": 0.2699,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 3,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 1.5235,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        }
+      ],
+      "Status": "Observed"
+    },
+    {
+      "Name": "external-host-static",
+      "Role": 32651,
+      "HostPid": 42916,
+      "PublisherPid": 25476,
+      "SelectionsDuringMeasurement": 0,
+      "Observations": [
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 0,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 0.4071,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 1,
+          "Size": 64,
+          "Observed": true,
+          "LatencyMs": 0.5815,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 2,
+          "Size": 96,
+          "Observed": true,
+          "LatencyMs": 0.537,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 3,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 1.8502,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        }
+      ],
+      "Status": "Observed"
+    },
+    {
+      "Name": "external-host-static",
+      "Role": 32631,
+      "HostPid": 42916,
+      "PublisherPid": 25476,
+      "SelectionsDuringMeasurement": 0,
+      "Observations": [
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 0,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 0.4892,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 1,
+          "Size": 64,
+          "Observed": true,
+          "LatencyMs": 1.7319,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 2,
+          "Size": 96,
+          "Observed": true,
+          "LatencyMs": 0.5335,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 3,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 2.5137,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        }
+      ],
+      "Status": "Observed"
+    },
+    {
+      "Name": "external-host-static",
+      "Role": 32671,
+      "HostPid": 42916,
+      "PublisherPid": 25476,
+      "SelectionsDuringMeasurement": 0,
+      "Observations": [
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 0,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 0.354,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 1,
+          "Size": 64,
+          "Observed": true,
+          "LatencyMs": 0.2888,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 2,
+          "Size": 96,
+          "Observed": true,
+          "LatencyMs": 2.7309,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 3,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 0.6784,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        }
+      ],
+      "Status": "Observed"
+    },
+    {
+      "Name": "external-host-static",
+      "Role": 32672,
+      "HostPid": 42916,
+      "PublisherPid": 25476,
+      "SelectionsDuringMeasurement": 0,
+      "Observations": [
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 0,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 1.6129,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 1,
+          "Size": 64,
+          "Observed": true,
+          "LatencyMs": 0.4081,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 2,
+          "Size": 96,
+          "Observed": true,
+          "LatencyMs": 2.9014,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 3,
+          "Size": 32,
+          "Observed": true,
+          "LatencyMs": 0.8387,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        }
+      ],
+      "Status": "Observed"
+    },
+    {
+      "Name": "private-copy-negative-control",
+      "Role": 32516,
+      "HostPid": 42916,
+      "PublisherPid": 25476,
+      "SelectionsDuringMeasurement": 0,
+      "Observations": [
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 0,
+          "Size": 32,
+          "Observed": false,
+          "LatencyMs": null,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 1,
+          "Size": 64,
+          "Observed": false,
+          "LatencyMs": null,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 2,
+          "Size": 96,
+          "Observed": false,
+          "LatencyMs": null,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        },
+        {
+          "Ok": true,
+          "Error": 0,
+          "Frame": 3,
+          "Size": 32,
+          "Observed": false,
+          "LatencyMs": null,
+          "SelectedHandleStable": true,
+          "OwnerPid": 42916
+        }
+      ],
+      "Status": "Observed"
+    },
+    {
+      "Name": "own-timeline-two-cycles",
+      "Role": 32516,
+      "OriginQpc": 3611524361966,
+      "EndQpc": 3611568542644,
+      "HostHandle": 65547,
+      "Actions": [
+        {
+          "DueMs": 0,
+          "Frame": 0,
+          "Size": 32,
+          "ActualMs": 2.2465,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 300,
+          "Frame": 1,
+          "Size": 32,
+          "ActualMs": 316.1532,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 500,
+          "Frame": 1,
+          "Size": 64,
+          "ActualMs": 502.2553,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 800,
+          "Frame": 2,
+          "Size": 64,
+          "ActualMs": 814.0312,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 1000,
+          "Frame": 2,
+          "Size": 96,
+          "ActualMs": 1017.8713,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 1200,
+          "Frame": 2,
+          "Size": 64,
+          "ActualMs": 1204.0271,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 1500,
+          "Frame": 3,
+          "Size": 64,
+          "ActualMs": 1515.5671,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 2000,
+          "Frame": 3,
+          "Size": 32,
+          "ActualMs": 2001.8382,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 2400,
+          "Frame": 0,
+          "Size": 32,
+          "ActualMs": 2406.4845,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 2700,
+          "Frame": 1,
+          "Size": 32,
+          "ActualMs": 2705.9533,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 2900,
+          "Frame": 1,
+          "Size": 64,
+          "ActualMs": 2910.9099,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 3200,
+          "Frame": 2,
+          "Size": 64,
+          "ActualMs": 3206.9057,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 3400,
+          "Frame": 2,
+          "Size": 96,
+          "ActualMs": 3409.0132,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 3600,
+          "Frame": 2,
+          "Size": 32,
+          "ActualMs": 3611.0262,
+          "Ok": true,
+          "Error": 0
+        },
+        {
+          "DueMs": 3900,
+          "Frame": 3,
+          "Size": 32,
+          "ActualMs": 3906.0701,
+          "Ok": true,
+          "Error": 0
+        }
+      ],
+      "Status": "Observed"
+    },
+    {
+      "Name": "explorer",
+      "Status": "Observed",
+      "OwnerPid": 25124,
+      "PublisherPid": 25476,
+      "Observations": [
+        {
+          "Frame": 0,
+          "Size": 32,
+          "Ok": true,
+          "Error": 0,
+          "Observed": true,
+          "LatencyMs": 0.4795,
+          "OwnerPid": 25124,
+          "PositionUnchanged": true,
+          "HandleStable": true
+        },
+        {
+          "Frame": 1,
+          "Size": 64,
+          "Ok": true,
+          "Error": 0,
+          "Observed": true,
+          "LatencyMs": 0.3249,
+          "OwnerPid": 25124,
+          "PositionUnchanged": true,
+          "HandleStable": true
+        },
+        {
+          "Frame": 2,
+          "Size": 96,
+          "Ok": true,
+          "Error": 0,
+          "Observed": true,
+          "LatencyMs": 1.116,
+          "OwnerPid": 25124,
+          "PositionUnchanged": true,
+          "HandleStable": true
+        },
+        {
+          "Frame": 3,
+          "Size": 32,
+          "Ok": true,
+          "Error": 0,
+          "Observed": true,
+          "LatencyMs": 2.3026,
+          "OwnerPid": 25124,
+          "PositionUnchanged": true,
+          "HandleStable": true
+        }
+      ]
+    }
+  ],
+  "Operations": [
+    {
+      "Before": 3611461711814,
+      "After": 3611461714411,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611463606108,
+      "After": 3611463607237,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611465472166,
+      "After": 3611465473866,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611467329746,
+      "After": 3611467330987,
+      "Role": 32516,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611472188555,
+      "After": 3611472189575,
+      "Role": 32651,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65563,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611474053250,
+      "After": 3611474054301,
+      "Role": 32651,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65563,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611475911265,
+      "After": 3611475913656,
+      "Role": 32651,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65563,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611477793597,
+      "After": 3611477795098,
+      "Role": 32651,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65563,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611482603037,
+      "After": 3611482604210,
+      "Role": 32631,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65565,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611484488688,
+      "After": 3611484496540,
+      "Role": 32631,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65565,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611486322517,
+      "After": 3611486325323,
+      "Role": 32631,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65565,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611488197962,
+      "After": 3611488201533,
+      "Role": 32631,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65565,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611493035517,
+      "After": 3611493036526,
+      "Role": 32671,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65573,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611494926823,
+      "After": 3611494929081,
+      "Role": 32671,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65573,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611496802754,
+      "After": 3611496804863,
+      "Role": 32671,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65573,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611498691522,
+      "After": 3611498694424,
+      "Role": 32671,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65573,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611503524685,
+      "After": 3611503527984,
+      "Role": 32672,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65575,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611505385356,
+      "After": 3611505387529,
+      "Role": 32672,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65575,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611507262733,
+      "After": 3611507264791,
+      "Role": 32672,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65575,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611509113998,
+      "After": 3611509116784,
+      "Role": 32672,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65575,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611513970350,
+      "After": 3611513970771,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 694356345,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611515814151,
+      "After": 3611515814520,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 694356345,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611517704079,
+      "After": 3611517707354,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 694356345,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611519549805,
+      "After": 3611519550266,
+      "Role": 32516,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 694356345,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611524384431,
+      "After": 3611524386344,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611527523498,
+      "After": 3611527526442,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611529384519,
+      "After": 3611529386834,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611532502278,
+      "After": 3611532504124,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611534540679,
+      "After": 3611534546852,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611536402237,
+      "After": 3611536405980,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611539517637,
+      "After": 3611539521835,
+      "Role": 32516,
+      "Frame": 3,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611544380348,
+      "After": 3611544381916,
+      "Role": 32516,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611548426811,
+      "After": 3611548427769,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611551421499,
+      "After": 3611551424000,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611553471065,
+      "After": 3611553475166,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611556431023,
+      "After": 3611556433908,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611558452098,
+      "After": 3611558454836,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611560472228,
+      "After": 3611560476089,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611563422667,
+      "After": 3611563424971,
+      "Role": 32516,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65547,
+      "X": 400,
+      "Y": 320,
+      "OwnerPid": 42916
+    },
+    {
+      "Before": 3611593843513,
+      "After": 3611593846076,
+      "Role": 32512,
+      "Frame": 0,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65539,
+      "X": 1071,
+      "Y": 647,
+      "OwnerPid": 25124
+    },
+    {
+      "Before": 3611595709838,
+      "After": 3611595711229,
+      "Role": 32512,
+      "Frame": 1,
+      "Size": 64,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65539,
+      "X": 1071,
+      "Y": 647,
+      "OwnerPid": 25124
+    },
+    {
+      "Before": 3611597571974,
+      "After": 3611597575989,
+      "Role": 32512,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65539,
+      "X": 1071,
+      "Y": 647,
+      "OwnerPid": 25124
+    },
+    {
+      "Before": 3611599433099,
+      "After": 3611599435532,
+      "Role": 32512,
+      "Frame": 3,
+      "Size": 32,
+      "Ok": true,
+      "Error": 0,
+      "HandleAfter": 65539,
+      "X": 1071,
+      "Y": 647,
+      "OwnerPid": 25124
+    }
+  ],
+  "Samples": [
+    {
+      "Qpc": 3611459019716,
+      "MouseQpc": 3611458968561,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611461717871,
+      "MouseQpc": 3611461714029,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611463610289,
+      "MouseQpc": 3611463606857,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611465474865,
+      "MouseQpc": 3611465473355,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611467344981,
+      "MouseQpc": 3611467330658,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611469246322,
+      "MouseQpc": 3611469242022,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611469372291,
+      "MouseQpc": 3611469368620,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611472192626,
+      "MouseQpc": 3611472189249,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611474059065,
+      "MouseQpc": 3611474053953,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611475916635,
+      "MouseQpc": 3611475912907,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611477812099,
+      "MouseQpc": 3611477794682,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611479688225,
+      "MouseQpc": 3611479683267,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611479817894,
+      "MouseQpc": 3611479813949,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611482607929,
+      "MouseQpc": 3611482603789,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611484506007,
+      "MouseQpc": 3611484493104,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611486327852,
+      "MouseQpc": 3611486324441,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611488223099,
+      "MouseQpc": 3611488200153,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611490068873,
+      "MouseQpc": 3611490065769,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611490234722,
+      "MouseQpc": 3611490227731,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611493039057,
+      "MouseQpc": 3611493036175,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611494929711,
+      "MouseQpc": 3611494928474,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611496830063,
+      "MouseQpc": 3611496804289,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611498698306,
+      "MouseQpc": 3611498693451,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611500574295,
+      "MouseQpc": 3611500568616,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611500707496,
+      "MouseQpc": 3611500702688,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611503540814,
+      "MouseQpc": 3611503526634,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611505389437,
+      "MouseQpc": 3611505386786,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611507291747,
+      "MouseQpc": 3611507264171,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611509122385,
+      "MouseQpc": 3611509115645,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611511012418,
+      "MouseQpc": 3611511006202,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611511162539,
+      "MouseQpc": 3611511157349,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611521571735,
+      "MouseQpc": 3611521571260,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611524423341,
+      "MouseQpc": 3611524385678,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611527528659,
+      "MouseQpc": 3611527525721,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611529422069,
+      "MouseQpc": 3611529385997,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611532507301,
+      "MouseQpc": 3611532503483,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611534556459,
+      "MouseQpc": 3611534544941,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611536407287,
+      "MouseQpc": 3611536405068,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611539570803,
+      "MouseQpc": 3611539520630,
+      "Frame": 3,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611544385902,
+      "MouseQpc": 3611544381371,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611548428471,
+      "MouseQpc": 3611548427463,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611551466095,
+      "MouseQpc": 3611551423089,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611553481176,
+      "MouseQpc": 3611553474091,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611556435511,
+      "MouseQpc": 3611556432896,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611558489568,
+      "MouseQpc": 3611558454003,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611560480722,
+      "MouseQpc": 3611560474207,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611563430150,
+      "MouseQpc": 3611563424103,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611568560508,
+      "MouseQpc": 3611568559491,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611569414805,
+      "MouseQpc": 3611569411798,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611590756544,
+      "MouseQpc": 3611590752072,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611590757642,
+      "MouseQpc": 3611590756798,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3611593848308,
+      "MouseQpc": 3611593845199,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611595713087,
+      "MouseQpc": 3611595710790,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611597583134,
+      "MouseQpc": 3611597574639,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611599456125,
+      "MouseQpc": 3611599434650,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3611601332996,
+      "MouseQpc": 3611601329302,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "File": "bibata-pointer.svg",
+    "Url": "https://raw.githubusercontent.com/ful1e5/Bibata_Cursor/ddb09273cde49faeb6a32282660ff4293f52d6e0/svg/groups/modern/left_ptr.svg",
+    "Sha256": "DCAEC7B594B577C7B396A4E327F6B30B2EF40BF200C4FD54CE029AB2FA519669"
+  },
+  {
+    "File": "bibata-wait01.svg",
+    "Url": "https://raw.githubusercontent.com/ful1e5/Bibata_Cursor/ddb09273cde49faeb6a32282660ff4293f52d6e0/svg/groups/shared/wait/wait-01.svg",
+    "Sha256": "F25C4EE201D478E91B809C6CE5F9B3D79264BB0E9B93E483987DEBCCAFBA178B"
+  },
+  {
+    "File": "bibata-wait14.svg",
+    "Url": "https://raw.githubusercontent.com/ful1e5/Bibata_Cursor/ddb09273cde49faeb6a32282660ff4293f52d6e0/svg/groups/shared/wait/wait-14.svg",
+    "Sha256": "10EE24DAB19F1AF30FCA510C6E3F6B3EF7356415DE2B1CA5277A80AAF393C420"
+  },
+  {
+    "File": "bibata-wait27.svg",
+    "Url": "https://raw.githubusercontent.com/ful1e5/Bibata_Cursor/ddb09273cde49faeb6a32282660ff4293f52d6e0/svg/groups/shared/wait/wait-27.svg",
+    "Sha256": "163298DA7D1A6DCFCC536CD983A1426F3D65F696251B1DDBC59406944B1DEA4C"
+  },
+  {
+    "File": "bibata-wait40.svg",
+    "Url": "https://raw.githubusercontent.com/ful1e5/Bibata_Cursor/ddb09273cde49faeb6a32282660ff4293f52d6e0/svg/groups/shared/wait/wait-40.svg",
+    "Sha256": "01F90B90D669C949BCCC6BC082615C61C615C77CEBF7720BEC3D839256636C56"
+  },
+  {
+    "File": "nordzy-static.svg",
+    "Url": "https://raw.githubusercontent.com/guillaumeboehm/Nordzy-cursors/c7fc485e9e4fd974c4f4ff9f5f14610fa7835e7b/tools/svgs/themes/Nordzy-cursors-white.svg",
+    "Sha256": "9CC3DE491A8F1754A7A8F8B1595D01B056EA655AA6C073A994722C3283189074"
+  },
+  {
+    "File": "nordzy-spinner.svg",
+    "Url": "https://raw.githubusercontent.com/guillaumeboehm/Nordzy-cursors/c7fc485e9e4fd974c4f4ff9f5f14610fa7835e7b/tools/svgs/themes/Nordzy-cursors-white-spinner.svg",
+    "Sha256": "6FB13CB3E1E83A819F3C5CF5CE1E58AC208E18B369361EF13FE268345916B67E"
+  }
+]

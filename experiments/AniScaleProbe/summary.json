@@ -1,0 +1,140 @@
+{
+  "Experiment": "Native ANI phase during size replacement",
+  "Date": "2026-10-25T01:37:06.6591334+02:00",
+  "WindowsDisplayVersion": "25H2",
+  "Build": "26200",
+  "UBR": 9711,
+  "ObservedOs": "Microsoft Windows NT 10.0.26200.0",
+  "QpcFrequency": 10000000,
+  "Output": "0,0,1920,1080",
+  "Measurement": "DXGI Desktop Duplication pointer-shape pixels, independent of DrawIconEx frame selection",
+  "RatesMs": [
+    300,
+    500,
+    700,
+    900
+  ],
+  "Cases": [
+    {
+      "Name": "same-handle-control",
+      "InputFrame": 2,
+      "FirstFrameAfter": 3,
+      "SourceWidth": 32,
+      "ActualWidthAfter": 32,
+      "NominalRemainingMs": 499.303,
+      "FirstChangeAfterMs": 514.176,
+      "Frame3AfterMs": 514.1755,
+      "FramesIn1200Ms": [
+        3
+      ],
+      "Interpretation": "Natural continuation; no scaling"
+    },
+    {
+      "Name": "LoadImage-same-ANI-request64",
+      "InputFrame": 2,
+      "FirstFrameAfter": 0,
+      "SourceWidth": 32,
+      "ActualWidthAfter": 64,
+      "NominalRemainingMs": 513.169,
+      "FirstChangeAfterMs": 3.948,
+      "Frame3AfterMs": null,
+      "FramesIn1200Ms": [
+        0,
+        1,
+        2
+      ],
+      "Interpretation": "Observed phase discontinuity while scaling"
+    },
+    {
+      "Name": "LoadImage-prescaled-ANI64",
+      "InputFrame": 2,
+      "FirstFrameAfter": 0,
+      "SourceWidth": 32,
+      "ActualWidthAfter": 64,
+      "NominalRemainingMs": 499.209,
+      "FirstChangeAfterMs": 0.983,
+      "Frame3AfterMs": null,
+      "FramesIn1200Ms": [
+        0,
+        1,
+        2
+      ],
+      "Interpretation": "Observed phase discontinuity while scaling"
+    },
+    {
+      "Name": "LoadImage-prescaled-ANI64-offset50",
+      "InputFrame": 2,
+      "FirstFrameAfter": 0,
+      "SourceWidth": 32,
+      "ActualWidthAfter": 64,
+      "NominalRemainingMs": 636.176,
+      "FirstChangeAfterMs": 3.196,
+      "Frame3AfterMs": null,
+      "FramesIn1200Ms": [
+        0,
+        1,
+        2
+      ],
+      "Interpretation": "Observed phase discontinuity while scaling"
+    },
+    {
+      "Name": "LoadImage-prescaled-ANI64-offset350",
+      "InputFrame": 2,
+      "FirstFrameAfter": 0,
+      "SourceWidth": 32,
+      "ActualWidthAfter": 64,
+      "NominalRemainingMs": 342.764,
+      "FirstChangeAfterMs": 3.671,
+      "Frame3AfterMs": 1137.1057,
+      "FramesIn1200Ms": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "Interpretation": "Observed phase discontinuity while scaling"
+    },
+    {
+      "Name": "CopyImage-request64",
+      "InputFrame": 2,
+      "FirstFrameAfter": 0,
+      "SourceWidth": 32,
+      "ActualWidthAfter": 64,
+      "NominalRemainingMs": 498.395,
+      "FirstChangeAfterMs": 0.409,
+      "Frame3AfterMs": null,
+      "FramesIn1200Ms": [
+        0
+      ],
+      "Interpretation": "Observed phase discontinuity while scaling"
+    },
+    {
+      "Name": "SetSystemCursor-prescaled-ANI64",
+      "InputFrame": 2,
+      "FirstFrameAfter": 0,
+      "SourceWidth": 32,
+      "ActualWidthAfter": 64,
+      "NominalRemainingMs": 499.394,
+      "FirstChangeAfterMs": 1.396,
+      "Frame3AfterMs": null,
+      "FramesIn1200Ms": [
+        0,
+        1,
+        2
+      ],
+      "Interpretation": "Observed phase discontinuity while scaling"
+    }
+  ],
+  "Restored": true,
+  "BaselineUpPixelHash": "04BDB03692E2B30A043BC87815D2DD6630557A0ED72666DB59F21FB6ED7B045E",
+  "RestoreFlagAbsent": true,
+  "ProbeProcessesRemaining": 0,
+  "OriginalUtilityStillRunning": true,
+  "Limitations": [
+    "One local Windows build; synthetic four-frame ANI; 32 to 64 pixels.",
+    "Same-handle control timing differed from nominal remaining time by about 15 ms.",
+    "Capture and scheduling timing are not exact timer-state introspection.",
+    "CopyImage showed frame zero only within the 1200 ms observation; no general API guarantee inferred.",
+    "No product implementation, no installed tools, no registry setting change."
+  ]
+}

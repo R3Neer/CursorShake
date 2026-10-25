@@ -1,143 +1,105 @@
-# CursorShake — experiencia de usuario, rutas y distribución
+# CursorShake — experiencia de usuario y distribución
 
-Estado: especificación de experiencia acordada; sin implementar. Actualización: 21-oct-2026.
-
-Este documento sustituye las propuestas anteriores de CLI y selección de rutas mediante argumentos. La aplicación no ofrece CLI de usuario. El lenguaje elegido es C#. La versión de .NET, el framework de interfaz y la modalidad de publicación se decidirán después del modelo.
+Comportamiento acordado, sin implementar. [Arquitectura](Arquitectura.md) contiene los protocolos técnicos; [ConfiguracionInicial](ConfiguracionInicial.md), los defaults; [FormatosCursores](FormatosCursores.md), los recursos admitidos.
 
 ## 1. Instalación y primera ejecución
 
-1. El usuario descarga CursorShake-Setup.exe de GitHub Releases.
-2. El instalador permite elegir el destino de los binarios, registra desinstalación y crea un acceso en el menú Inicio.
-3. Ofrece «Iniciar con Windows» y «Ejecutar al terminar», inicialmente marcados y desmarcables.
-4. La primera ejecución se realiza en la sesión y perfil del usuario correcto. Si falta config.toml, la aplicación genera uno comentado con valores predeterminados.
-5. La aplicación aplica el tema, activa el reconocimiento del gesto y aparece en la bandeja. Solo la primera vez muestra una explicación breve de cómo acceder a su configuración.
-6. Abrir de nuevo la aplicación no crea una segunda instancia.
+El usuario descargará CursorShake-Setup.exe de GitHub Releases. El instalador permite elegir carpeta de binarios, registra desinstalación y acceso en Inicio. Ofrece «Iniciar con Windows» y «Ejecutar al terminar» marcados y desmarcables. Ejecutar con identidad/sesión del usuario correcto, incluso si el destino requiere elevación. La aplicación trabaja normalmente sin administrador; no exige SDK ni instalación manual de .NET.
 
-El objetivo es uso normal sin elevación. Las APIs elegidas deben probarse antes de dar ese requisito por validado. El usuario final no instala GHC, Cabal ni un SDK de .NET.
+La primera ejecución asegura config.toml, prepara el tema, habilita el gesto y aparece en bandeja. Explicación breve de acceso a configuración y posible presencia del icono en el desplegable de Windows. Una segunda apertura no duplica instancia en la misma sesión. Plataforma inicial objetivo: consola local Windows11x64, pendiente de certificación con producto real.
 
-## 2. Bandeja y configuración
+Inicio automático mediante tarea por usuario, sin retraso configurado. Objetivo: activa en menos de un minuto desde logon, no exactamente al entrar. StartupProbe comprueba lanzamiento manual con permisos normales, no ese plazo tras logon real. Al desactivar el inicio se retira solo nuestro registro; no mantener tarea y Run duplicados.
 
-La configuración se edita en TOML. No se requiere una ventana propia con todos los parámetros en la primera versión. Sí hay interacción gráfica mínima mediante menús y diálogos nativos.
+## 2. Bandeja y ventanas
 
-El menú contextual del icono ofrece:
+WinForms NotifyIcon/ContextMenuStrip y diálogos nativos, sin ventana principal permanente, CLI de usuario ni editor completo de preferencias inicial. Comprobar DPI, modo oscuro, alto contraste, teclado y recreación del icono tras reinicio de Explorer; el menú Fluent de Windows11 no se presupone automático.
 
-| Acción | Comportamiento |
+| Acción | Resultado |
 | --- | --- |
-| Abrir configuración | Abre el TOML actual en un editor de texto; Bloc de notas como alternativa si no hay asociación adecuada. |
-| Ubicación de configuración… | Muestra la carpeta actual y abre un selector nativo de carpetas para elegir otra. No exige escribir comandos ni rutas a mano. |
-| Abrir carpeta de configuración | Abre en el Explorador la carpeta actualmente utilizada. |
-| Tema | Permite alternar Windows, Bibata Ice y Nordzy blanco; se conserva la selección. |
-| Probar crecimiento | Ejecuta una demostración del aumento y reducción. |
-| Pausar/reanudar crecimiento | Suspende el gesto manteniendo el tema seleccionado. |
-| Iniciar con Windows | Activa o desactiva el inicio de sesión y muestra su estado. |
-| Salir | Termina y restaura los cursores sustituidos. |
+| Abrir configuración | Abre TOML en editor; Bloc de notas si no hay asociación adecuada. |
+| Ubicación de configuración… | Selector de carpeta y traslado de TOML/themes, sin mover binarios. |
+| Abrir carpeta de configuración | Explorador en la raíz activa. |
+| Tema | Elegir Windows, Bibata Ice, Nordzy blanco o tema personal disponible; persiste en TOML. |
+| Probar crecimiento | Demostración visual, con condiciones/cancelación de ConfiguracionInicial. |
+| Pausar/reanudar crecimiento | Mantiene tema, suspende/rearma el efecto. |
+| Iniciar con Windows | Cambia y muestra estado real del inicio automático. |
+| Ver errores | Diagnósticos vigentes y acciones de recuperación, también tras cerrar popup. |
+| Salir | Detiene trabajo y restaura recursos propios cuando pueda verificarse procedencia. |
 
-La presentación exacta y agrupación del menú se diseñarán después. El icono y su texto distinguen activo, pausado y configuración con errores. Windows puede situarlo en el desplegable de iconos ocultos; la explicación inicial debe contemplarlo.
+Icono/texto distinguen activo, pausado y errores. Configuración preparada pero no efectiva se muestra como pendiente: tema y perfil cambian juntos al volver a tamaño normal, sin botón Aplicar ni reinicio.
 
-Se elimina el requisito anterior de comandos de terminal. Los cambios rápidos de tema se resuelven desde la bandeja.
+### Errores
 
-## 3. Ubicación y traslado del TOML
+Forma estándar: popup, más estado de bandeja y Ver errores. Distribución inspirada en AutoHotkey, no colores ni tema: resumen; operación fallida; ubicación; explicación y detalles seleccionables/copiables. Incluir ruta, línea/columna TOML y tema/rol cuando existan. Acciones según problema: abrir configuración/carpeta/versiones conservadas, reintentar, copiar detalles, cerrar. Explicar qué configuración sigue efectiva y qué datos se han conservado.
 
-### Criterio de rutas
+Agrupar repeticiones del mismo fallo. Debounce/reintento trata guardados transitorios antes de diagnosticar; no popup por cada evento de FileSystemWatcher. Cursor oculto/privado es un estado previsto de compatibilidad, no un error repetitivo.
 
-La política vigente del equipo admite AppData para preferencias pequeñas y permite destinos configurables en D. En este equipo se prevén binarios bajo D:\Program Files\CursorShake y el proyecto bajo D:\Desarrollo\Proyectos\CursorShake. Estas rutas no se codifican como valores obligatorios para otros usuarios.
+## 3. Carpetas y traslado
 
-La ubicación inicial propuesta del TOML es la carpeta conocida LocalAppData/ CursorShake. El usuario puede cambiarla desde la bandeja. No se modifican globalmente HOME, USERPROFILE, TEMP ni AppData, ni se requieren enlaces de compatibilidad.
+Separar instalación, proyecto y datos. En este equipo: proyecto D:\Desarrollo\Proyectos\Herramientas\CursorShake y destino previsto de binarios D:\Program Files\CursorShake. No son rutas obligatorias para otros usuarios. Usar mecanismos soportados y verificar destino efectivo; no mover aplicaciones registradas a mano ni cambiar HOME, USERPROFILE, TEMP o AppData global.
 
-### Cambio de carpeta
+Workspace contiene config.toml y themes/<identidad> personales. Ubicación inicial prevista: carpeta conocida LocalAppData/CursorShake; reubicable desde bandeja. Los temas incorporados pertenecen a la instalación y no se trasladan con el workspace. Localizador Root+OperationId/fase en un valor HKCU\Software\CursorShake; pequeño estado interno de journals/recuperación por usuario, sin segunda copia de preferencias. Recursos/metadatos admitidos en FormatosCursores.
 
-Al elegir otra carpeta se traslada la configuración, no se crea una segunda configuración activa ni se abandona una copia antigua permanentemente.
+Condiciones del traslado:
 
-Condiciones de seguridad del traslado:
+1. Cancelar o seleccionar raíz actual no cambia datos. Rechazar origen/destino anidados o incompatibles.
+2. Si existe otro config.toml en destino, popup de error y no trasladar. Conflictos en themes tampoco se sobrescriben ni fusionan: cancelar o escoger otra carpeta vacía. No copiar archivos ajenos de la raíz.
+3. Preparar/verificar copia y referencias antes de cambiar localizador o retirar originales. Cambios concurrentes se conservan; no elegir versión por fecha.
+4. Antes de confirmar el cambio de raíz, un fallo conserva origen como autoridad. Después de confirmar, destino es autoridad: informar recuperación/limpieza pendiente y conservar originales necesarios, sin volver al origen silenciosamente. Protocolo en Arquitectura, apartado6.
+5. Solo retirar identidades/contenidos verificados y ya no usados; nunca borrar recursivamente por un inventario antiguo ni forzar ACL. Un archivo cambiado o bloqueo deja limpieza pendiente y diagnóstico. Éxito completo implica una sola ubicación activa y retirada verificada de originales administrados; interrupción puede dejar copias conservadas.
 
-1. Cancelar el selector no cambia nada. Elegir la carpeta actual tampoco provoca una copia ni un traslado.
-2. Si el destino no contiene config.toml, se prepara allí el contenido actual y se verifica antes de activar la nueva ubicación y retirar el original.
-3. El original no se retira antes de comprobar la nueva copia. El cambio debe poder recuperarse si se interrumpe a mitad; el mecanismo técnico queda pendiente.
-4. Si ya existe un TOML en el destino, no se sobrescribe automáticamente. Se propone ofrecer «Usar el existente» o «Cancelar»; el uso de uno existente exige comprobarlo antes de retirar el anterior. Este caso excepcional queda pendiente de ratificación de sus textos.
-5. Las referencias a temas personales deben conservar su significado al cambiar de carpeta. No se trasladan recursos de usuario ajenos automáticamente ni se rompen rutas relativas sin advertirlo. Falta elegir la representación de esas rutas.
-6. Un fallo conserva la ubicación/configuración anterior utilizable e informa de las rutas afectadas. No se cambia silenciosamente a otra carpeta.
-7. No se retiran directorios completos que puedan contener archivos ajenos. Solo se limpia lo creado por la aplicación y lo verificablemente innecesario; el procedimiento concreto se diseñará antes de implementarlo.
+## 4. TOML y recursos durante el uso
 
-### Recordar la ubicación
+| Situación | Comportamiento |
+| --- | --- |
+| TOML realmente ausente, carpeta accesible | Crear exclusivamente desde plantilla comentada empaquetada; misma fuente de defaults en memoria. Comprobar al iniciar y durante uso. No sobrescribir archivo aparecido concurrentemente. |
+| TOML presente inválido | Conservarlo y mantener última configuración válida; sin una previa, defaults en memoria y error. |
+| Ubicación inaccesible/unidad desconectada | No confundir con ausencia; conservar ubicación elegida, informar y mantener último estado válido cuando sea posible. Sin dispersar copias. |
+| Guardado válido | Preparar automáticamente y aplicar candidato completo en reposo, sin reiniciar ni Aplicar. |
+| Recurso personal borrado/inválido | No regenerar ni tratar como asociación ausente; diagnóstico con ruta/tema/rol y conservar configuración aplicada cuando sea posible. |
+| Editor bloquea escritura de bandeja | Conservar estado y ofrecer reintentar; no forzar cierre ni sobrescribir cambios. |
+| Escritura/traslado parcial o conflicto | Popup con versiones/rutas conservadas; resolución explícita sin sustitución por fecha. |
 
-La aplicación necesita recordar dónde está el TOML para el siguiente arranque. Esa referencia no puede depender exclusivamente del TOML trasladado. Se propone guardar únicamente el localizador de carpeta en una clave de registro por usuario de CursorShake; los parámetros funcionales siguen en un solo TOML. Es una decisión técnica pendiente, no una modificación aplicada al registro.
+FileSystemWatcher observa TOML y recursos personales. No respaldos acumulativos por cada edición; journals y temporales solo para recuperación, limpiados tras resolución verificable.
 
-Accesos, inicio de sesión y actualizaciones usan la misma ubicación recordada. No se requieren argumentos de CLI ni un segundo archivo completo de configuración en AppData.
+## 5. Detener, recuperar, actualizar y desinstalar
 
-## 4. Archivo ausente, inválido o inaccesible
+Pausa conserva tema y devuelve tamaño normal. Salir impide publicaciones tardías antes de restaurar. Ante cambio externo del esquema, ceder control: no sobrescribirlo para restaurar a ciegas. RecoveryGuard auxiliar conservador cubre muerte del proceso solo si reconoce roles propios y baseline verificado; si no puede, deja diagnóstico y recuperación explícita. No promete restauración infalible.
 
-- Si se detecta que falta config.toml en la ubicación activa, se genera automáticamente con valores predeterminados y se aplica esa configuración. Esto se comprueba al arrancar y durante el uso; no se obliga a reiniciar.
-- La creación no sobrescribe un archivo que aparezca mientras se estaba comprobando la ausencia.
-- Un TOML presente pero inválido no es un archivo ausente: no se destruye ni se sustituye por valores predeterminados. Se conserva la última configuración válida y se explica el error. Si todavía no existe una configuración válida, se usan valores predeterminados en memoria y se informa del problema.
-- Una carpeta sin permisos o una unidad desconectada no se tratan como un archivo simplemente ausente. La aplicación informa del problema y conserva su ubicación elegida; no dispersa copias en otras carpetas. Mientras sea posible conserva la última configuración válida en memoria.
-- Los cambios válidos guardados por el usuario se aplican sin reiniciar. Lecturas parciales durante el guardado no deben causar avisos continuos ni restablecimientos.
-- No se crean respaldos acumulativos de cada edición. Los temporales de una escritura o traslado se gestionarán con recuperación y limpieza verificables.
+Actualización inicial mediante nuevo instalador, sin actualizador propio. Conservar TOML, ubicación y temas personales; política técnica de compatibilidad/migración por definir antes de distribuir versiones con cambios de esquema. Desinstalar detiene utilidad y auxiliar, retira accesos/inicio propios, restaura lo verificablemente propio antes de quitar recursos y ofrece conservar o retirar datos del usuario. No borrar datos ajenos ni recursos de recuperación aún necesarios.
 
-## 5. Actualizar, detener y desinstalar
+## 6. Ejecutable, GUI e instalador
 
-- Actualizar conserva el TOML, su ubicación seleccionada y los temas personales. No reemplaza preferencias por una plantilla nueva.
-- Cambios del esquema TOML requieren una política de compatibilidad/migración, pendiente de diseñar.
-- La desinstalación elimina accesos e inicio automático, restaura los cursores modificados y ofrece conservar o retirar los datos propios del usuario.
-- El tratamiento exacto de fallos del proceso y la restauración tras un cierre inesperado se diseñarán con la integración gráfica.
-- El mecanismo inicial de actualización aún no se ha elegido; no se presupone un actualizador automático.
+Stack aceptado: C# estable/.NET10LTS, WinForms, JIT self-contained win-x64 en carpeta con DLL/runtime/recursos. Inno Setup para instalador. No exigir single-file con extracción de nativos a TEMP. SDK11preview instalado no es dependencia del producto. Svg.Skia5.2.3 es punto de partida probado; Tomlyn elegido para TOML. Fijar versiones/licencias y comprobar preservación de comentarios antes de integrar.
 
-## 6. Temas y licencias
+CursorShake.exe es la aplicación, generado durante desarrollo y publicable con dependencias. CursorShake-Setup.exe empaqueta e instala ese conjunto. La GUI mínima pertenece al ejecutable; no depende de tener instalador.
 
-Preferencia del usuario: MIT para todo lo propio que pueda publicarse bajo esa licencia.
+Ruta de trabajo recomendada: primera función de extremo a extremo → publicación autónoma y prueba fuera del entorno de desarrollo → instalador básico para verificar rutas/identidad/inicio → producto y paquete final con pruebas de actualización/desinstalación. El ejecutable distribuible es un hito anterior al instalador final, pero conviene comprobar pronto supuestos de distribución. No autoriza implementación ahora.
 
-Propuesta de distribución:
+Detalles por cerrar técnicamente: identidad estable de instalación, política de versión/migración y fijación de dependencias. El aviso MIT del trabajo original se publica a nombre de R3Neer en LICENSE. Firma de código por resolver antes de distribuir ejecutables según medios disponibles; generar EXE no lo firma. La cobertura de pruebas y QA visual se define en Arquitectura9.
+
+## 7. Temas, licencias e icono
+
+Temas iniciales Windows, Bibata Ice y Nordzy blanco, usados permanentemente. Catálogo y fuentes en [EquivalenciasCursores](EquivalenciasCursores.md); fallback/restauración en Arquitectura4.1. No se presupone compatibilidad de cualquier paquete por copiarlo. Temas personales permanecen junto al TOML y viajan con él; formatos en FormatosCursores.
 
 | Componente | Tratamiento previsto |
 | --- | --- |
-| Código original de CursorShake, instalador y documentación propia | MIT, con los avisos correspondientes. No se ha generado aún el archivo legal final ni elegido su titular. |
-| Icono aceptado de CursorShake | Recurso propio, incluido en la política MIT en la medida de los derechos disponibles. Se conserva su procedencia generativa. |
-| Bibata Ice | Mantiene su GPL y avisos originales; no se relicencia como MIT. |
-| Nordzy blanco | Mantiene su GPL y avisos originales; no se relicencia como MIT. |
-| Recursos de Windows | Se obtienen del sistema. No se incluyen copias de sus imágenes o binarios propietarios. |
-| Bibliotecas de terceros | Sus licencias respectivas, comprobadas antes de elegirlas y distribuirlas. |
+| Código, instalador y documentación originales | [MIT](../LICENSE), copyright2026 R3Neer para el trabajo original; no cubre material ajeno con otra licencia. |
+| Icono propio aceptado | Política MIT en la medida de derechos disponibles; conservar procedencia. |
+| Bibata Ice y Nordzy blanco | Conservar GPL original, avisos, créditos y fuentes correspondientes; no relicenciar como MIT. |
+| Windows | Fuentes locales verificadas y recreación propia aceptada de Wait/Working. No distribuir copias de imágenes/binarios propietarios. |
+| Dependencias | Sus licencias, incluidos componentes transitivos/nativos, con avisos antes de distribución. |
 
-La GPLv3 distingue una obra combinada de una colección de obras separadas e independientes. La intención de diseño es distribuir los temas como recursos externos, identificados y sustituibles, manteniendo su GPL; ello permite plantear código propio MIT sin declarar que todo el repositorio es MIT. No basta con separar carpetas si se incorporase código GPL al programa: debe revisarse la relación y distribución reales.
+Plan: temas como recursos externos identificados y sustituibles, conservando licencia, procedencia, versión/commit, modificaciones y fuentes editables/reproducción. No declarar todo el repositorio MIT. Separar carpetas no basta si se incorpora código GPL a la aplicación; comprobar la distribución real antes de publicarla. Aún no se han incorporado paquetes de temas al producto.
 
-Para los temas se conservarán texto de licencia, créditos, procedencia, versión/commit, modificaciones y fuentes editables correspondientes. El plan es proporcionar SVG y los elementos necesarios para reproducir recursos derivados, no solo CUR/ANI. No se importan temas en este paso.
+Créditos: Bibata, Abdulkaiz Khatri (ful1e5), [licencia original](https://github.com/ful1e5/Bibata_Cursor/blob/main/LICENSE); Nordzy, Guillaume Boehm y créditos del proyecto, [COPYING](https://github.com/guillaumeboehm/Nordzy-cursors/blob/main/COPYING). Preservar declaraciones originales; [consulta Bibata sobre only/or-later](https://github.com/ful1e5/Bibata_Cursor/issues/181) no se resuelve inventando licencia.
 
-- Bibata: Abdulkaiz Khatri (ful1e5). https://github.com/ful1e5/Bibata_Cursor/blob/main/LICENSE
-- Nordzy: Guillaume Boehm; conservar los créditos adicionales del proyecto. https://github.com/guillaumeboehm/Nordzy-cursors/blob/main/COPYING
-- Bibata tiene una consulta abierta sobre only/or-later: https://github.com/ful1e5/Bibata_Cursor/issues/181 . Se preservan las declaraciones originales sin reinterpretarlas.
+Icono azul con líneas de agitación aceptado, PNG/ICO multirresolución y [procedencia](../assets/branding/GENERACION.md). No generar otro diseño como parte de esta limpieza.
 
-## 7. Icono aceptado
+## Fuentes técnicas
 
-El usuario acepta el diseño azul de cursor con líneas de agitación generado en la propuesta 01. Se conservan PNG e ICO multirresolución bajo assets/branding, con el prompt y las comprobaciones en GENERACION.md. El nombre de archivo conserva «propuesta-01» para mantener su procedencia; su estado ahora es aceptado.
-
-No se ha integrado en un ejecutable ni registrado en Windows durante este paso.
-
-## 8. Ejecutable e instalador
-
-Compilar/publicar produce CursorShake.exe y las dependencias de ejecución. Empaquetar reúne ejecutable, bibliotecas necesarias, temas y licencias. Otro ejecutable, CursorShake-Setup.exe, instala ese paquete, registra desinstalación, crea accesos y prepara el inicio automático.
-
-La aplicación se implementará en C#. El instalador concreto todavía no se ha elegido; Inno Setup es una opción estudiada. C# permite distribuir el runtime con la aplicación, pero no se ha elegido aún la modalidad de publicación. El usuario final no debe instalar herramientas de desarrollo.
-
-Firma de código, arquitectura de CPU, identidad estable de instalación y pruebas de actualización/desinstalación son aspectos de distribución pendientes. Crear un EXE no lo firma automáticamente.
-
-## 9. Estado de la definición
-
-El recorrido principal de usuario queda definido suficientemente para continuar el diseño de la aplicación C#. No se afirma que todos los detalles estén cerrados. Quedan:
-
-- Textos de resolución de conflictos al elegir una carpeta con un TOML existente y política exacta de rutas de recursos.
-- Persistencia técnica del localizador, traslado recuperable y avisos/diagnóstico ante errores.
-- Definición de Windows como tema: esquema incorporado de Microsoft o esquema previo del usuario.
-- Recursos gráficos, compatibilidad de configuración y distribución/actualización.
-
-## Fuentes
-
-- MIT: https://opensource.org/license/mit
-- GPLv3, sección 5 sobre agregados y sección 6 sobre distribución: textos de licencia originales enlazados en la sección 6.
-- Publicación .NET: https://learn.microsoft.com/en-us/dotnet/core/deploying/
-- Inicio de sesión: https://learn.microsoft.com/en-us/windows/win32/setupapi/run-and-runonce-registry-keys
-- Inno Setup: https://jrsoftware.org/ishelp/topic_runsection.htm
-- Selector de carpetas .NET: https://learn.microsoft.com/en-us/dotnet/desktop/winforms/controls/folderbrowserdialog-component-windows-forms
-
-Se ha actualizado únicamente documentación. No se ha implementado el traslado, escrito ninguna clave de registro, compilado la app, creado un instalador ni modificado la instalación actual de ShakeToFindCursor.
-
-## Registro de acuerdos
-
-[Decisiones.md](Decisiones.md) resume los acuerdos aceptados. [PendientesDiseno.md](PendientesDiseno.md) reúne las propuestas y detalles pendientes. Esta consolidación documental y el icono aceptado se incluyen en el commit autorizado por el usuario; no se ha autorizado push ni implementación.
+- [Publicación .NET](https://learn.microsoft.com/en-us/dotnet/core/deploying/).
+- [Tarea de inicio de sesión](https://learn.microsoft.com/en-us/windows/win32/taskschd/logontrigger) y [prueba local](../experiments/StartupProbe/README.md).
+- [Ejecución final en Inno Setup](https://jrsoftware.org/ishelp/topic_runsection.htm).
+- [Selector de carpeta WinForms](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/controls/folderbrowserdialog-component-windows-forms).
+- [Texto MIT](https://opensource.org/license/mit); distribución de temas sujeta a sus textos originales.

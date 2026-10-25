@@ -1,0 +1,49 @@
+# CursorShake — configuración inicial y reglas
+
+Valores y reglas aceptados. Fuente única de defaults del gesto y crecimiento; sin implementar. Límites gráficos en [Arquitectura](Arquitectura.md).
+
+## 1. Valores iniciales
+
+| Parámetro | Valor | Estado |
+| --- | --- | --- |
+| Sacudidas para activar | 3 inversiones válidas | Aceptado; configurable. |
+| Intervalo máximo entre inversiones | **130 ms** | Aceptado; configurable y límite inclusivo. |
+| Recorrido mínimo de un tramo | 16 píxeles lógicos, referencia 96 DPI | Aceptado; configurable. |
+| Velocidad mínima de un tramo | 200 píxeles lógicos/s de media en el tramo | Aceptado; configurable. |
+| Inversión de dirección | Ángulo de al menos 120 grados respecto al tramo anterior | Aceptado; sin otro ajuste de usuario. |
+| Tamaño máximo | ×16 del tamaño normal | Aceptado; configurable. Ejemplo: 32→512 px; no promete el mismo coste a otros tamaños base/DPI. |
+| Tiempo base hasta máximo | 1200 ms de avance de crecimiento desde ×1 | Aceptado; configurable. |
+| Aceleración máxima por cadencia | ×1,5 | Aceptado; fórmula debajo. |
+| Inactividad antes de reducir | 500 ms | Aceptado; configurable; semántica debajo. |
+| Duración de retorno | 250 ms desde el tamaño alcanzado | Aceptado; configurable. |
+| Curva de transición | smoothstep cúbico: 3u²−2u³, u entre 0 y 1 | Aceptado. |
+
+Se mide desplazamiento del cursor normalizado, no cuentas físicas del sensor. Píxeles lógicos significa espacio de referencia a 96 DPI; la normalización entre monitores debe concretarse en el adaptador para que una mezcla de escalas no invente un gesto. No se convierte a milímetros ni se presume conocer el DPI físico del ratón. La velocidad usa duración y longitud del mismo tramo; no la velocidad instantánea de una muestra ni la frecuencia de polling del dispositivo.
+
+Reconocimiento acordado: un recorrido inicial prepara el primer tramo; por sí solo no cuenta. Una inversión clara se valida tras completar un tramo opuesto con longitud/velocidad suficientes. Contar cada inversión una vez, incluidas diagonales; no contar cada muestra ni el simple cruce de velocidad por cero. Giros pequeños o trayectorias en círculo no deben convertirse en sacudidas por sumar ángulos sin un tramo de referencia estable. La regla geométrica exacta debe quedar comprobable con trazas antes de congelar el contrato.
+
+Con 130 ms se exige una cadencia de al menos unas 7,7 inversiones por segundo durante la secuencia (aproximadamente 3,85 idas y vueltas). Este parámetro mide cadencia; velocidad mínima y recorrido mínimo son restricciones distintas.
+
+## 2. Reconocimiento y transiciones
+
+1. La inversión válida que completa la cuenta configurada (tres inicialmente) inicia crecimiento desde la escala actual. La cuenta previa se pierde si el intervalo supera el máximo configurado (130 ms inicialmente); una inversión al límite exacto pertenece a la secuencia.
+2. Cada inversión válida mantiene actividad hasta el intervalo máximo configurado después de su instante (130 ms inicialmente). Al caducar esa ventana se congela el crecimiento. La reducción comienza al vencer la pausa de inactividad configurada desde la última inversión. La gracia de crecimiento está incluida en esa pausa, no se suma después. Con defaults: retorno a los 500 ms, incluidos 130 ms de gracia y 370 ms de mantenimiento. La relación válida entre ambos parámetros se concretará al definir rangos de configuración, sin convertir estas cifras en constantes.
+3. Durante crecimiento o mantenimiento, una nueva inversión válida mantiene o retoma el crecimiento sin repetir la cuenta completa. Durante reducción también basta una inversión válida mientras la escala aún supere ×1. Alcanzar ×1 rearma la cuenta configurada completa. Un clic siempre fuerza rearme completo y bloqueo hasta soltar todos los botones.
+4. El avance de la curva continúa entre sacudidas; no se reinicia cada vez. Para cadencia, usar la media de los dos últimos intervalos válidos, si existen. Multiplicador: clamp(intervalo máximo configurado / intervalo medio, 1, 1,5); si no hay estimación se usa ×1. Cambia la velocidad de avance, no el límite ni el reloj de los fotogramas del dibujo. La curva se evalúa desde la escala actual al cambiar fase, sin saltos. Al retomar crecimiento, tiempo base proporcional a la distancia restante; retorno con duración configurada (250 ms inicialmente) desde el tamaño alcanzado. No se promete continuidad de velocidad al interrumpir fase.
+5. Button-down prevalece sobre sacudida y plazos de crecimiento admitidos en el mismo instante: resetea y reduce. Salida/pausa o pérdida de sesión prevalecen sobre preview y gesto. Si coinciden una inversión y vencimiento de inactividad, se resuelve la inversión válida antes del plazo para evitar un retorno espurio. Admisión temporal según Arquitectura 3.1.
+6. Validar/preparar inmediatamente y conservar un pendiente latest. Aplicar TODO el candidato (tema y perfil) al llegar a ×1 en un turno serial, reiniciando tramo/cuenta. Hasta entonces conservar configuración efectiva completa, sin mezclar revisiones. UI informa de pendiente; no botón Aplicar. Trasladar ubicación conserva su propia transacción de almacenamiento.
+7. Preview solo en reposo y botones libres: un ciclo visual de crecimiento/retorno sin movimiento sintético. Durante gesto/retorno informar de indisponibilidad y no encolar. Durante preview ignorar activación por sacudidas; clic/pausa/salida cancelan. Al terminar resetear tramo/cuenta y exigir la cuenta configurada completa de inversiones nuevas.
+
+Presupuesto aceptado en Arquitectura 4.3. ×16 sujeto a presupuesto, sin memoria ilimitada ni garantía de 60 Hz a cualquier DPI.
+
+## 3. Evidencia de calibración
+
+El 25-oct-2026 se completa una prueba guiada medio/lento/rápido/medio, seis segundos por tramo. [Análisis y metodología](../experiments/ShakeTimingProbe/README.md), [resultados y sensibilidad](../experiments/ShakeTimingProbe/guided-analysis.json). Valor aceptado: **130 ms**. El medidor fecha extremos retrospectivos y el reconocedor del producto usa confirmaciones; contrastarlos con trazas sin cambiar automáticamente el default.
+
+Con un reanálisis espacial uniforme de 32 px, se admiten 121/123 intervalos medios (98,4 %), 80/82 rápidos (97,6 %) y 0/26 lentos. Medianas 98/216/67/89 ms. Se conserva todo intervalo temporal; se compara también el filtro original de 8 px y 16/48/64 px. El rápido contiene microinversiones que el auxiliar de 8 px cuenta; la comprobación a 32 px las elimina y no cambia los tramos medio/lento. No se adopta ese filtro como requisito de reconocimiento ni se atribuye una causa no comprobada.
+
+El menor intervalo lento observado es 143 ms: 130 ms deja más margen que 140 ms, que también separa esta muestra. A 150 ms entra un intervalo lento aislado, insuficiente por sí solo para activar tres inversiones. El valor elegido procede de una calibración para este usuario; no es un óptimo universal ni una medición de falsos positivos en uso cotidiano. Las fórmulas y ventanas de las reglas anteriores usan el parámetro configurado, con 130 ms iniciales; no una constante antigua de 100 ms.
+
+## 4. Detalles técnicos por concretar
+
+Defaults y reglas anteriores aceptados. Quedan comprobar reconocimiento con trazas y definir límites válidos/nombres/versión del esquema TOML en contratos. El filtro diagnóstico de 32 px no sustituye el recorrido inicial de 16 píxeles lógicos. No se genera TOML del producto todavía.

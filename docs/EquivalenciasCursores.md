@@ -1,6 +1,6 @@
 # Equivalencias de cursores de Windows, Bibata Ice y Nordzy blanco
 
-Comprobación: 21-oct-2026. Documento de especificación; no instala temas ni implementa código.
+Tabla comprobada inicialmente el21-oct-2026; estado y evidencias actualizados el25-oct-2026. Documento de especificación, sin instalación ni implementación del producto.
 
 ## Alcance e interpretación
 
@@ -18,7 +18,7 @@ No se confunden tres catálogos:
 
 Los archivos de Bibata corresponden a la variante Regular; el ZIP incluye también Large y Extra-Large con los mismos nombres. Los nombres de Nordzy corresponden a la carpeta Windows_cursors/Nordzy-cursors-white.
 
-| Función visual | Recurso de Windows | Valor | Windows (tema del sistema) | Bibata Modern Ice | Nordzy blanco |
+| Función visual | Recurso de Windows | Valor | Windows (catálogo estándar) | Bibata Modern Ice | Nordzy blanco |
 | --- | --- | --- | --- | --- | --- |
 | Selección normal | IDC_ARROW | 32512 | Recurso del sistema de este rol | Pointer.cur | normal-select.cur |
 | Selección de texto | IDC_IBEAM | 32513 | Recurso del sistema de este rol | Text.cur | text-select.cur |
@@ -44,7 +44,7 @@ Microsoft documenta 16 símbolos IDC para estas funciones y, aparte, el recurso 
 
 ## Cursor predeterminado y tema Windows
 
-Windows aparece explícitamente como tercer tema en la tabla. Para cada función se utiliza el recurso de sistema correspondiente, no una ruta de imagen que tengamos que inventar ni una copia PNG incluida en el proyecto. No se han inspeccionado aquí archivos gráficos internos de una versión concreta de Windows.
+Windows aparece como tercer tema funcional. La tabla identifica recursos de referencia, no obliga a copiar imágenes del sistema al paquete. La inspección posterior del25-oct incluye SVG locales y los ANI Aero por hash, secuencia, tiempos y hotspots. Para Wait/Working el usuario acepta la recreación geométrica propia; no se extrapola esa aceptación a otros roles y el tema Windows estándar se distingue del esquema previo de restauración.
 
 El cursor predeterminado del tema es una asociación distinta del catálogo de funciones:
 
@@ -56,21 +56,14 @@ El cursor predeterminado del tema es una asociación distinta del catálogo de f
 
 Estos son los candidatos naturales para el campo predeterminado; el usuario podrá configurar ese campo según los requisitos. No hace falta un nuevo código de estado «Default»: el campo indica qué recurso usar al faltar una asociación de función.
 
-Se conservan dos decisiones diferentes:
-
-- Seleccionar el tema Windows: cada función usa su representación de Windows.
-- Resolver una ausencia en otro tema: asociación explícita del estado → campo predeterminado del tema → recurso de Windows de ese estado si tampoco existe el campo predeterminado.
-
-Por tanto, el último fallback no es siempre la flecha: para texto sería IDC_IBEAM, para espera IDC_WAIT, etc. Si sí hay un predeterminado configurado en el tema, se utiliza ese recurso antes de recurrir a Windows.
-
-Queda pendiente definir, al tratar los recursos gráficos, si «Windows» significa exactamente el esquema incorporado de Microsoft o el esquema de sistema que el usuario tenía seleccionado antes de activar nuestra utilidad. La referencia de fallback no debe acabar apuntando al tema que nosotros mismos hayamos aplicado; el mecanismo para evitarlo no se decide todavía.
+La resolución normativa de ausencias y la separación entre catálogo Windows estándar y baseline de restauración se definen en [Arquitectura, apartado4.1](Arquitectura.md#41-preparación-y-fallback). Un predeterminado del tema puede cubrir un rol ausente; un recurso asociado inválido no es una ausencia.
 
 ## Animaciones verificadas
 
 - Bibata Ice distribuye Busy.ani y Work.ani.
 - Nordzy blanco distribuye busy.ani y working-in-background.ani.
 - Esto confirma que el soporte de animaciones forma parte del alcance inicial acordado.
-- La inspección realizada comprueba los archivos y su asociación. Aún no se han analizado los fotogramas, tiempos y hotspots internos de los ANI.
+- La auditoría inicial solo comprobaba archivos/asociaciones. Posteriormente se inspeccionaron los pasos, tiempos y hotspots de Aero y las fuentes/metadatos de construcción de Bibata/Nordzy, enlazados abajo. Eso no equivale a una decodificación exhaustiva de cada ANI compilado de todos los paquetes.
 
 ## Dibujos y archivos adicionales
 
@@ -89,20 +82,11 @@ El INF de Bibata copia estos archivos y escribe nombres Pan, Grabbing, Zoom-in y
 
 La hoja SVG fuente contiene representaciones como openhand, closedhand, zoom-in, zoom-out, vertical-text, color-picker, copy y variantes dnd-*. Sin embargo, el paquete Windows blanco comprobado contiene los 15 archivos de la tabla principal y no instala todas esas representaciones adicionales.
 
-No deben presentarse como estados adicionales ya soportados por el paquete Windows. Incorporarlos desde las fuentes sería una ampliación explícita que el usuario deberá decidir al diseñar el modelo.
+No deben presentarse como estados adicionales ya soportados por el paquete Windows. Incorporarlos desde las fuentes sería una ampliación del alcance inicial.
 
 ### Recursos adicionales de Windows
 
 El catálogo de Microsoft también enumera recursos numéricos de desplazamiento/scroll y otros antiguos o sin símbolo público (por ejemplo, 32652–32663). No se añaden automáticamente al alcance inicial. El catálogo completo de recursos de Windows es más amplio que los 17 roles de esta tabla.
-
-## Aplicación al diseño en discusión
-
-- La tabla permite acordar una base de funciones visuales usando equivalencias existentes, sin inferir «archivo», «carpeta» o «botón».
-- La aplicación situada bajo el puntero normalmente decide qué cursor solicitar. Determinar cómo observaremos/reconoceremos esa solicitud sigue siendo una cuestión de integración pendiente.
-- El conjunto de funciones es independiente del crecimiento: pulsar un botón inicia la reducción, pero no obliga a cambiar de flecha a mano.
-- Para funciones sin asociación en el tema, sigue vigente la resolución acordada: recurso específico → predeterminado del tema → cursor de Windows para esa función si tampoco se define predeterminado.
-- En Nordzy, ubicación y persona están ausentes de su distribución Windows. No se rellenan ahora ni se cambia la regla anterior.
-- No se aprueba todavía una clase, enum, patrón Command, API de renderizado ni formato de imagen interno.
 
 ## Evidencia y fuentes
 
@@ -131,3 +115,24 @@ Los identificadores IDC para cargar recursos y las constantes OCR para reemplaza
 - SVG completo: https://github.com/guillaumeboehm/Nordzy-cursors/blob/c7fc485e9e4fd974c4f4ff9f5f14610fa7835e7b/tools/svgs/themes/Nordzy-cursors-white.svg
 
 No se ejecutó ningún INF ni se instaló o activó un tema durante esta comprobación.
+
+## Comprobación de presentación nativa de los cuatro roles omitidos por SetSystemCursor
+
+El 25-oct-2026, el experimento aislado [NativeRoleProbe](../experiments/NativeRoleProbe/README.md) verificó en Windows 11 25H2 26200.9711 que SetSystemCursor acepta y actualiza efectivamente Ayuda 32651, Escritura manual 32631, Ubicación 32671 y Persona 32672. Otro proceso conservó el handle estándar seleccionado y mostró cuatro imágenes/tamaños sin reseleccionarlo. Los cuatro recursos se restauraron comprobando píxeles, dimensiones y hotspot.
+
+Son cuatro omisiones de la tabla de parámetros consultada, no cuatro roles nuevos que tengamos que inventar ni cuatro renderers distintos. Microsoft documenta los recursos en su [catálogo](https://learn.microsoft.com/en-us/windows/win32/menurc/about-cursors) y publica [OCR_HELP como SYSTEM_CURSOR_ID](https://microsoft.github.io/windows-docs-rs/doc/windows/Win32/UI/WindowsAndMessaging/constant.OCR_HELP.html). El comportamiento medido de los cuatro IDs no constituye una promesa para todas las versiones de Windows. No se cambia la correspondencia de archivos de temas por este resultado. La compatibilidad y sus errores pertenecen al backend; las copias privadas no se actualizan por modificar el rol global.
+## Fuentes vectoriales y animaciones
+
+Auditoría del 25-oct-2026. [Inventario con referencias fijadas](../experiments/EngineLimitsProbe/vector-sources.json). El escalado y su coste pertenecen a [Arquitectura](Arquitectura.md), apartados4 y8; esta sección relaciona los temas con sus fuentes.
+
+| Tema previsto | Fuentes vectoriales verificadas | Animación vectorial disponible como fuente | Límite actual |
+| --- | --- | --- | --- |
+| Bibata Modern Ice | svg/modern resuelve enlaces a los grupos SVG originales. | 54 SVG en groups/shared/wait y 54 en groups/modern/left_ptr_watch. | Hay filtros SVG; extraer fuentes con sus colores, hotspots, padding y tiempos de construcción. CUR/ANI distribuidos siguen siendo raster. |
+| Nordzy blanco | tools/svgs/themes/Nordzy-cursors-white.svg, atlas de cursores estáticos. | Nordzy-cursors-white-spinner.svg: 16 slices progress y 16 wait; CC_build.json declara tiempos/hotspots. | Extraer slices y conservar filtros GaussianBlur. El atlas estático no incluye por sí solo los fotogramas animados. |
+| Windows del equipo | 17 SVG locales en %WINDIR%/Cursors, inventariados por nombre/hash. | No hay animate ni secuencia de fotogramas en esos 17 SVG. busy/wait muestran relojes de arena estáticos. | No son una fuente verificada del anillo animado Aero activo. No prometer identidad visual/temporal ni redistribuir los recursos. |
+
+Por tanto: los tres conjuntos tienen algún recurso vectorial; los dos paquetes abiertos aportan también fuentes de sus animaciones. La prueba posterior [VectorRasterProbe](../experiments/VectorRasterProbe/README.md) valida la rasterización con filtros y alpha en muestras de Bibata y Nordzy; no es aún una importación exhaustiva de sus roles/fotogramas. Para Windows ya está aceptada la apariencia geométrica animada de Wait/Working de AeroVectorProbe. Los SVG estáticos de arena no son esa animación ni la sustituyen. Restantes roles Windows y distribución siguen abiertos; baseline definido en Arquitectura; no hay implementación exhaustiva de un tema preparado por encontrar sus fuentes.
+
+Referencias originales: [SVG Bibata](https://github.com/ful1e5/Bibata_Cursor/tree/ddb09273cde49faeb6a32282660ff4293f52d6e0/svg), [atlas estático Nordzy](https://github.com/guillaumeboehm/Nordzy-cursors/blob/c7fc485e9e4fd974c4f4ff9f5f14610fa7835e7b/tools/svgs/themes/Nordzy-cursors-white.svg), [atlas animado Nordzy](https://github.com/guillaumeboehm/Nordzy-cursors/blob/c7fc485e9e4fd974c4f4ff9f5f14610fa7835e7b/tools/svgs/themes/Nordzy-cursors-white-spinner.svg). [Inventario local Windows sin copiar imágenes](../experiments/EngineLimitsProbe/windows-svg-inventory.json).
+
+Se ha probado además una recreación geométrica animada de Aero para Wait y Working: [AeroVectorProbe](../experiments/AeroVectorProbe/README.md), [Arquitectura, apartado8](Arquitectura.md#8-evidencias-y-límites-de-lo-probado). Conserva los tiempos de las fuentes locales inspeccionadas; su apariencia aproximada de Wait/Working queda aceptada expresamente el 25-oct-2026. No cambia todavía la tabla de recursos ni convierte todos los roles Windows a recursos propios.

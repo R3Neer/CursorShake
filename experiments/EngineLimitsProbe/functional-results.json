@@ -1,0 +1,1952 @@
+{
+  "Experiment": "Role transitions, large native cursor sizes and publisher consumption; not product",
+  "Mode": "functional",
+  "Date": "2026-10-25T13:09:58.7192636+01:00",
+  "OS": "Microsoft Windows NT 10.0.26200.0",
+  "PublisherPid": 14572,
+  "HostPid": 24556,
+  "LogicalProcessors": 16,
+  "QpcFrequency": 10000000,
+  "Failure": null,
+  "ExitCode": 0,
+  "UtilityPids": [
+    34288
+  ],
+  "OriginalUtilityStillRunning": true,
+  "Backups": [
+    {
+      "Role": 32516,
+      "Hash": "04BDB03692E2B30A043BC87815D2DD6630557A0ED72666DB59F21FB6ED7B045E",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 4,
+      "HotY": 0
+    },
+    {
+      "Role": 32651,
+      "Hash": "07840852ED5FEB50EF38FD35613257E3A62CF093F7A8FF283F790814CC699D90",
+      "Width": 32,
+      "Height": 32,
+      "HotX": 0,
+      "HotY": 0
+    }
+  ],
+  "Restores": [
+    {
+      "Role": 32516,
+      "ok": true,
+      "match": true
+    },
+    {
+      "Role": 32651,
+      "ok": true,
+      "match": true
+    }
+  ],
+  "PendingRestoreFlags": [],
+  "Cases": [
+    {
+      "Name": "role-events-and-reentry",
+      "Selections": [
+        {
+          "Role": 32516,
+          "Qpc": 3622951506628,
+          "ObservedActive": 32516,
+          "Scale": 96,
+          "LastFrame": 1,
+          "Handle": 65547
+        },
+        {
+          "Role": 32651,
+          "Qpc": 3622955514467,
+          "ObservedActive": 32651,
+          "Scale": 96,
+          "LastFrame": 2,
+          "Handle": 65563
+        },
+        {
+          "Role": 32516,
+          "Qpc": 3622964412254,
+          "ObservedActive": 32516,
+          "Scale": 96,
+          "LastFrame": 1,
+          "Handle": 65547
+        },
+        {
+          "Role": 32516,
+          "Qpc": 3622968449496,
+          "ObservedActive": 32516,
+          "Scale": 96,
+          "LastFrame": 1,
+          "Handle": 65547
+        },
+        {
+          "Role": 32651,
+          "Qpc": 3622972532214,
+          "ObservedActive": 32651,
+          "Scale": 96,
+          "LastFrame": 2,
+          "Handle": 65563
+        },
+        {
+          "Role": 32516,
+          "Qpc": 3622981445074,
+          "ObservedActive": 32516,
+          "Scale": 96,
+          "LastFrame": 1,
+          "Handle": 65547
+        }
+      ],
+      "Transitions": [
+        {
+          "Qpc": 3622951430354,
+          "Role": 32516,
+          "PreviousRole": 0,
+          "Scale": 96,
+          "Source": "initial snapshot",
+          "Event": 0
+        },
+        {
+          "Qpc": 3622955509940,
+          "Role": 32651,
+          "PreviousRole": 32516,
+          "Scale": 96,
+          "Source": "WinEvent",
+          "Event": 32780
+        },
+        {
+          "Qpc": 3622964392435,
+          "Role": 32516,
+          "PreviousRole": 32651,
+          "Scale": 96,
+          "Source": "WinEvent",
+          "Event": 32780
+        },
+        {
+          "Qpc": 3622972522763,
+          "Role": 32651,
+          "PreviousRole": 32516,
+          "Scale": 96,
+          "Source": "WinEvent",
+          "Event": 32780
+        },
+        {
+          "Qpc": 3622981441181,
+          "Role": 32516,
+          "PreviousRole": 32651,
+          "Scale": 96,
+          "Source": "WinEvent",
+          "Event": 32780
+        }
+      ],
+      "ExpectedTransitions": 5,
+      "ObservedTransitions": 5,
+      "Scale": 96
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 128,
+      "CreatedWidth": 128,
+      "CreatedHeight": 128,
+      "HotX": 64,
+      "HotY": 64,
+      "PresentedPointerShape": true,
+      "ObservedWidth": 128,
+      "ObservedHeight": 128,
+      "LatencyMs": 4.1418,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622987820335,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 0,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 256,
+      "CreatedWidth": 256,
+      "CreatedHeight": 256,
+      "HotX": 128,
+      "HotY": 128,
+      "PresentedPointerShape": true,
+      "ObservedWidth": 256,
+      "ObservedHeight": 256,
+      "LatencyMs": 2.6811,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622990113498,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 0,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 257,
+      "CreatedWidth": 257,
+      "CreatedHeight": 257,
+      "HotX": 128,
+      "HotY": 128,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622992479263,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 64,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 384,
+      "CreatedWidth": 384,
+      "CreatedHeight": 384,
+      "HotX": 192,
+      "HotY": 192,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622994544037,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 144,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 512,
+      "CreatedWidth": 512,
+      "CreatedHeight": 512,
+      "HotX": 256,
+      "HotY": 256,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622996791324,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 256,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 1024,
+      "CreatedWidth": 1024,
+      "CreatedHeight": 1024,
+      "HotX": 512,
+      "HotY": 512,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622999141796,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 780,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 2048,
+      "CreatedWidth": 2048,
+      "CreatedHeight": 2048,
+      "HotX": 1024,
+      "HotY": 1024,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3623002132429,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 1564,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 4096,
+      "CreatedWidth": 4096,
+      "CreatedHeight": 4096,
+      "HotX": 2048,
+      "HotY": 2048,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3623007166841,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 2040,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    }
+  ],
+  "Publications": [
+    {
+      "Qpc": 3622951414181,
+      "End": 3622951416997,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622951423143,
+      "End": 3622951423399,
+      "Role": 32651,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622954579190,
+      "End": 3622954583179,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622955661082,
+      "End": 3622955662943,
+      "Role": 32651,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622955665879,
+      "End": 3622955666026,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622958628996,
+      "End": 3622958633414,
+      "Role": 32651,
+      "Frame": 1,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622963598047,
+      "End": 3622963600944,
+      "Role": 32651,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622964542147,
+      "End": 3622964544795,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622964548435,
+      "End": 3622964548603,
+      "Role": 32651,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622967513138,
+      "End": 3622967518354,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622972408428,
+      "End": 3622972410549,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622972674084,
+      "End": 3622972680828,
+      "Role": 32651,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622972701786,
+      "End": 3622972702526,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622975627038,
+      "End": 3622975629261,
+      "Role": 32651,
+      "Frame": 1,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622980652799,
+      "End": 3622980656265,
+      "Role": 32651,
+      "Frame": 2,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622981583780,
+      "End": 3622981585604,
+      "Role": 32516,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622981589089,
+      "End": 3622981589292,
+      "Role": 32651,
+      "Frame": 0,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622984564208,
+      "End": 3622984565925,
+      "Role": 32516,
+      "Frame": 1,
+      "Size": 96,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622985828358,
+      "End": 3622985830571,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 128,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622988094767,
+      "End": 3622988102692,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 256,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622990317892,
+      "End": 3622990322676,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 257,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622992502310,
+      "End": 3622992506443,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 384,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622994734761,
+      "End": 3622994745181,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 512,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622997147292,
+      "End": 3622997181009,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 1024,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3622999900428,
+      "End": 3623000081459,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 2048,
+      "Ok": true,
+      "Error": 0
+    },
+    {
+      "Qpc": 3623004375224,
+      "End": 3623005053217,
+      "Role": 32516,
+      "Frame": 2,
+      "Size": 4096,
+      "Ok": true,
+      "Error": 0
+    }
+  ],
+  "Events": [
+    {
+      "Qpc": 3622951422352,
+      "Event": 32780,
+      "EventTime": 362295109,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622954586511,
+      "Event": 32780,
+      "EventTime": 362295421,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622955509940,
+      "Event": 32780,
+      "EventTime": 362295515,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622955664266,
+      "Event": 32780,
+      "EventTime": 362295531,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622958634294,
+      "Event": 32780,
+      "EventTime": 362295828,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622963601580,
+      "Event": 32780,
+      "EventTime": 362296328,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622964392435,
+      "Event": 32780,
+      "EventTime": 362296406,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622964545285,
+      "Event": 32780,
+      "EventTime": 362296421,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622967520767,
+      "Event": 32780,
+      "EventTime": 362296718,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622972411041,
+      "Event": 32780,
+      "EventTime": 362297218,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622972522763,
+      "Event": 32780,
+      "EventTime": 362297218,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622972682546,
+      "Event": 32780,
+      "EventTime": 362297234,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622975629618,
+      "Event": 32780,
+      "EventTime": 362297531,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622980656909,
+      "Event": 32780,
+      "EventTime": 362298031,
+      "Handle": 65563,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622981441181,
+      "Event": 32780,
+      "EventTime": 362298109,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622981585990,
+      "Event": 32780,
+      "EventTime": 362298125,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622984566796,
+      "Event": 32780,
+      "EventTime": 362298421,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622985831017,
+      "Event": 32780,
+      "EventTime": 362298546,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622986964360,
+      "Event": 32779,
+      "EventTime": 362298671,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622988103738,
+      "Event": 32780,
+      "EventTime": 362298781,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622989255335,
+      "Event": 32779,
+      "EventTime": 362298890,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622990323410,
+      "Event": 32780,
+      "EventTime": 362299000,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622991409425,
+      "Event": 32779,
+      "EventTime": 362299109,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622992507211,
+      "Event": 32780,
+      "EventTime": 362299218,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622993632363,
+      "Event": 32779,
+      "EventTime": 362299328,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622994746187,
+      "Event": 32780,
+      "EventTime": 362299453,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622995782321,
+      "Event": 32779,
+      "EventTime": 362299546,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622997190357,
+      "Event": 32780,
+      "EventTime": 362299687,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3622998284968,
+      "Event": 32779,
+      "EventTime": 362299796,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3623000088335,
+      "Event": 32780,
+      "EventTime": 362299984,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3623001281099,
+      "Event": 32779,
+      "EventTime": 362300093,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3623005063461,
+      "Event": 32780,
+      "EventTime": 362300468,
+      "Handle": 65547,
+      "Flags": 1
+    },
+    {
+      "Qpc": 3623006258090,
+      "Event": 32779,
+      "EventTime": 362300593,
+      "Handle": 65547,
+      "Flags": 1
+    }
+  ],
+  "Samples": [
+    {
+      "Qpc": 3622951155082,
+      "MouseQpc": 3622951070009,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3622951421058,
+      "MouseQpc": 3622951416128,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622954585983,
+      "MouseQpc": 3622954581249,
+      "Frame": 1,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622955510473,
+      "MouseQpc": 3622955508385,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622955664099,
+      "MouseQpc": 3622955662015,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622958636554,
+      "MouseQpc": 3622958631459,
+      "Frame": 1,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622963602429,
+      "MouseQpc": 3622963599528,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622964394862,
+      "MouseQpc": 3622964390239,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622964545985,
+      "MouseQpc": 3622964543557,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622967520451,
+      "MouseQpc": 3622967516171,
+      "Frame": 1,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622972411562,
+      "MouseQpc": 3622972409526,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622972523685,
+      "MouseQpc": 3622972519751,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622972681895,
+      "MouseQpc": 3622972677929,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622975629633,
+      "MouseQpc": 3622975628159,
+      "Frame": 1,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622980666331,
+      "MouseQpc": 3622980654745,
+      "Frame": 2,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622981441913,
+      "MouseQpc": 3622981440029,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622981586386,
+      "MouseQpc": 3622981584730,
+      "Frame": 0,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622984567416,
+      "MouseQpc": 3622984565097,
+      "Frame": 1,
+      "Width": 96,
+      "Height": 96,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622985869776,
+      "MouseQpc": 3622985829502,
+      "Frame": 2,
+      "Width": 128,
+      "Height": 128,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3622988121578,
+      "MouseQpc": 3622988098202,
+      "Frame": 2,
+      "Width": 256,
+      "Height": 256,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3623007785927,
+      "MouseQpc": 3623007717001,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3623008442313,
+      "MouseQpc": 3623008270184,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    }
+  ],
+  "DesktopAudits": [
+    {
+      "Qpc": 3622985864601,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": true,
+      "ShapeBytes": 65536
+    },
+    {
+      "Qpc": 3622985938861,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622986168087,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622986494717,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622986569426,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622986771951,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622986822055,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622986910529,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622986920625,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": true,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622987201580,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622987417480,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622987531043,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622987733853,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622987820335,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622988117117,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": true,
+      "ShapeBytes": 262144
+    },
+    {
+      "Qpc": 3622988229181,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622988501789,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622988792770,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622989140403,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622989226758,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": true,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622989487246,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622989842115,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622990113498,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622990333395,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622990342042,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622990381067,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622990515756,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622990807146,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622991159932,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622991431333,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622991521495,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622991805889,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622992146793,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622992479263,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 64,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622992550797,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622992751594,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622992840896,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622993189102,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622993507983,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622993799349,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622993851754,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622994199645,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622994493703,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622994544037,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 144,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622994846990,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622994903447,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622995168262,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622995521249,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622995797118,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622995866690,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622996165988,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622996514554,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622996791324,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622997186016,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 256,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622997295665,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622997467178,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622997494554,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622997818630,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622998182370,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622998446874,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622998467973,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622998857368,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622999141796,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622999501010,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3622999911747,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 780,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623000214008,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623000395926,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623000465515,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623000849851,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623001322101,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623001363296,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623001640054,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623001794269,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623002132429,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623002620043,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623002960817,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623003319706,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623003449293,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623003794171,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 1564,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623005564135,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623005788095,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623005968674,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623006302189,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623006333445,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623006510182,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623006887564,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623007166841,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623007784830,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 2040,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": true,
+      "ShapeBytes": 4096
+    },
+    {
+      "Qpc": 3623007922652,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623008006094,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623008153296,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623008441310,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": true,
+      "ShapeBytes": 4096
+    },
+    {
+      "Qpc": 3623008501985,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": false,
+      "ShapeBytes": 0
+    },
+    {
+      "Qpc": 3623008510756,
+      "Width": 1920,
+      "Height": 1080,
+      "BluePoints": 0,
+      "RedPoints": 0,
+      "GreenPoints": 0,
+      "PointerVisible": true,
+      "ShapeBytes": 0
+    }
+  ],
+  "ObserverBefore": null,
+  "ObserverAfter": null
+}

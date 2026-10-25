@@ -1,0 +1,7 @@
+# Build outputs and local experimental data
+[Bb]in/
+[Oo]bj/
+artifacts/
+.vs/
+*.user
+*.suo

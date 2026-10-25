@@ -1,0 +1,1726 @@
+{
+  "Experiment": "SVG rasterization and native cursor creation, not application",
+  "Date": "2026-10-25T13:54:53.9533284+01:00",
+  "Renderer": "Svg.Skia 5.2.3",
+  "Cases": [
+    {
+      "Name": "vector-raster-and-native-roundtrip",
+      "Cases": [
+        {
+          "Name": "bibata-pointer",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 0.5481666666666666,
+              "MinRenderMs": 0.4093,
+              "MaxRenderMs": 0.7381,
+              "NonzeroAlphaSamplePoints": 1729,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 14,
+                "HotY": 4,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 173,
+                  "NativePartialAlpha": 173,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 0.4916666666666667,
+              "MinRenderMs": 0.4282,
+              "MaxRenderMs": 0.5446,
+              "NonzeroAlphaSamplePoints": 1683,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 55,
+                "HotY": 17,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 718,
+                  "NativePartialAlpha": 718,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 0.7267666666666668,
+              "MinRenderMs": 0.681,
+              "MaxRenderMs": 0.7789,
+              "NonzeroAlphaSamplePoints": 1644,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 110,
+                "HotY": 34,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 1461,
+                  "NativePartialAlpha": 1461,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 1.8636,
+              "MinRenderMs": 1.7421,
+              "MaxRenderMs": 2.0395,
+              "NonzeroAlphaSamplePoints": 1636,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 220,
+                "HotY": 68,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 2966,
+                  "NativePartialAlpha": 2966,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 4.926066666666667,
+              "MinRenderMs": 4.442,
+              "MaxRenderMs": 5.2954,
+              "NonzeroAlphaSamplePoints": 1637,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 440,
+                "HotY": 136,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 5985,
+                  "NativePartialAlpha": 5985,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "bibata-wait01",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 1.9451666666666665,
+              "MinRenderMs": 1.8443,
+              "MaxRenderMs": 2.1335,
+              "NonzeroAlphaSamplePoints": 2559,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 32,
+                "HotY": 32,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 567,
+                  "NativePartialAlpha": 567,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.01513671875,
+                  "RmsChannel": 0.12303137303143455,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 4.5502,
+              "MinRenderMs": 4.2561,
+              "MaxRenderMs": 5.0054,
+              "NonzeroAlphaSamplePoints": 2460,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 128,
+                "HotY": 128,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 4547,
+                  "NativePartialAlpha": 4547,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0038604736328125,
+                  "RmsChannel": 0.062132709846042446,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 11.459633333333334,
+              "MinRenderMs": 10.7318,
+              "MaxRenderMs": 11.846,
+              "NonzeroAlphaSamplePoints": 2451,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 256,
+                "HotY": 256,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 15286,
+                  "NativePartialAlpha": 15286,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.00199127197265625,
+                  "RmsChannel": 0.04462367054217134,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 43.24843333333333,
+              "MinRenderMs": 41.5078,
+              "MaxRenderMs": 46.2316,
+              "NonzeroAlphaSamplePoints": 2436,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 512,
+                "HotY": 512,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 51663,
+                  "NativePartialAlpha": 51663,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.001064300537109375,
+                  "RmsChannel": 0.03262361931345716,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 177.90986666666666,
+              "MinRenderMs": 174.8125,
+              "MaxRenderMs": 179.8574,
+              "NonzeroAlphaSamplePoints": 2434,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 1024,
+                "HotY": 1024,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 197508,
+                  "NativePartialAlpha": 197508,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0005228519439697266,
+                  "RmsChannel": 0.022865956003843935,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "bibata-wait14",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 1.0627666666666666,
+              "MinRenderMs": 1.0246,
+              "MaxRenderMs": 1.0822,
+              "NonzeroAlphaSamplePoints": 2545,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 32,
+                "HotY": 32,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 559,
+                  "NativePartialAlpha": 559,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.015869140625,
+                  "RmsChannel": 0.12597277731716483,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 6.102366666666666,
+              "MinRenderMs": 5.8301,
+              "MaxRenderMs": 6.5472,
+              "NonzeroAlphaSamplePoints": 2444,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 128,
+                "HotY": 128,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 4478,
+                  "NativePartialAlpha": 4478,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0042266845703125,
+                  "RmsChannel": 0.06501295694177046,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 11.324866666666665,
+              "MinRenderMs": 10.5492,
+              "MaxRenderMs": 11.7595,
+              "NonzeroAlphaSamplePoints": 2406,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 256,
+                "HotY": 256,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 13340,
+                  "NativePartialAlpha": 13340,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0020751953125,
+                  "RmsChannel": 0.04555431167847891,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 42.45883333333333,
+              "MinRenderMs": 41.3602,
+              "MaxRenderMs": 43.0184,
+              "NonzeroAlphaSamplePoints": 2415,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 512,
+                "HotY": 512,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 51494,
+                  "NativePartialAlpha": 51494,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0010204315185546875,
+                  "RmsChannel": 0.031944193816008055,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 177.80460000000002,
+              "MinRenderMs": 173.5076,
+              "MaxRenderMs": 180.4033,
+              "NonzeroAlphaSamplePoints": 2416,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 1024,
+                "HotY": 1024,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 196560,
+                  "NativePartialAlpha": 196560,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.000514984130859375,
+                  "RmsChannel": 0.022693261794184082,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "bibata-wait27",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 1.082566666666667,
+              "MinRenderMs": 0.8862,
+              "MaxRenderMs": 1.2954,
+              "NonzeroAlphaSamplePoints": 2542,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 32,
+                "HotY": 32,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 558,
+                  "NativePartialAlpha": 558,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.017822265625,
+                  "RmsChannel": 0.1335000585205864,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 5.475666666666666,
+              "MinRenderMs": 5.241,
+              "MaxRenderMs": 5.6251,
+              "NonzeroAlphaSamplePoints": 2442,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 128,
+                "HotY": 128,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 4493,
+                  "NativePartialAlpha": 4493,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.00421142578125,
+                  "RmsChannel": 0.06489549892904746,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 10.353299999999999,
+              "MinRenderMs": 10.1851,
+              "MaxRenderMs": 10.4623,
+              "NonzeroAlphaSamplePoints": 2405,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 256,
+                "HotY": 256,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 13290,
+                  "NativePartialAlpha": 13290,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.002056121826171875,
+                  "RmsChannel": 0.045344479555640235,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 41.66876666666666,
+              "MinRenderMs": 39.9139,
+              "MaxRenderMs": 42.6013,
+              "NonzeroAlphaSamplePoints": 2414,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 512,
+                "HotY": 512,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 51569,
+                  "NativePartialAlpha": 51569,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.00106048583984375,
+                  "RmsChannel": 0.03256510156354114,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 177.11503333333334,
+              "MinRenderMs": 172.8346,
+              "MaxRenderMs": 179.8562,
+              "NonzeroAlphaSamplePoints": 2414,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 1024,
+                "HotY": 1024,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 196577,
+                  "NativePartialAlpha": 196577,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0005035400390625,
+                  "RmsChannel": 0.022439697838039174,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "bibata-wait40",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 0.7446666666666667,
+              "MinRenderMs": 0.7047,
+              "MaxRenderMs": 0.7894,
+              "NonzeroAlphaSamplePoints": 2544,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 32,
+                "HotY": 32,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 561,
+                  "NativePartialAlpha": 561,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.01611328125,
+                  "RmsChannel": 0.1269381000724369,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 5.592933333333332,
+              "MinRenderMs": 5.4162,
+              "MaxRenderMs": 5.8271,
+              "NonzeroAlphaSamplePoints": 2438,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 128,
+                "HotY": 128,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 4499,
+                  "NativePartialAlpha": 4499,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.004486083984375,
+                  "RmsChannel": 0.06697823515422753,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 10.937666666666667,
+              "MinRenderMs": 10.5854,
+              "MaxRenderMs": 11.2679,
+              "NonzeroAlphaSamplePoints": 2408,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 256,
+                "HotY": 256,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 13291,
+                  "NativePartialAlpha": 13291,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.00205230712890625,
+                  "RmsChannel": 0.04530239650290313,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 45.93273333333334,
+              "MinRenderMs": 40.5291,
+              "MaxRenderMs": 52.5799,
+              "NonzeroAlphaSamplePoints": 2418,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 512,
+                "HotY": 512,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 51570,
+                  "NativePartialAlpha": 51570,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0010528564453125,
+                  "RmsChannel": 0.03244774946452373,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 183.48356666666666,
+              "MinRenderMs": 180.9795,
+              "MaxRenderMs": 184.8431,
+              "NonzeroAlphaSamplePoints": 2415,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 1024,
+                "HotY": 1024,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 196560,
+                  "NativePartialAlpha": 196560,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.000514984130859375,
+                  "RmsChannel": 0.022693261794184082,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "nordzy-pointer",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 34.2875,
+              "MinRenderMs": 28.4173,
+              "MaxRenderMs": 40.8829,
+              "NonzeroAlphaSamplePoints": 1000,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 6,
+                "HotY": 5,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 150,
+                  "NativePartialAlpha": 150,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.014322916666666666,
+                  "RmsChannel": 0.11967838846954226,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 27.994466666666668,
+              "MinRenderMs": 27.1568,
+              "MaxRenderMs": 29.1041,
+              "NonzeroAlphaSamplePoints": 934,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 24,
+                "HotY": 20,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 588,
+                  "NativePartialAlpha": 588,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.004145304361979167,
+                  "RmsChannel": 0.06438403809935478,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 40.37126666666666,
+              "MinRenderMs": 28.3317,
+              "MaxRenderMs": 59.786,
+              "NonzeroAlphaSamplePoints": 928,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 48,
+                "HotY": 40,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 1197,
+                  "NativePartialAlpha": 1197,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.00135040283203125,
+                  "RmsChannel": 0.03674782758247418,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 31.557266666666667,
+              "MinRenderMs": 26.1482,
+              "MaxRenderMs": 38.1638,
+              "NonzeroAlphaSamplePoints": 926,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 96,
+                "HotY": 80,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 2389,
+                  "NativePartialAlpha": 2389,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0006717046101888021,
+                  "RmsChannel": 0.025917264712712298,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 31.47853333333333,
+              "MinRenderMs": 30.8263,
+              "MaxRenderMs": 32.3304,
+              "NonzeroAlphaSamplePoints": 925,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 192,
+                "HotY": 160,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 4782,
+                  "NativePartialAlpha": 4782,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.00033394495646158856,
+                  "RmsChannel": 0.01827416089623785,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "nordzy-wait01",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 6.624,
+              "MinRenderMs": 6.1893,
+              "MaxRenderMs": 6.9846,
+              "NonzeroAlphaSamplePoints": 1684,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 30,
+                "HotY": 30,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 256,
+                  "NativePartialAlpha": 256,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.025634765625,
+                  "RmsChannel": 0.16010860571811872,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 9.007900000000001,
+              "MinRenderMs": 6.826,
+              "MaxRenderMs": 12.5685,
+              "NonzeroAlphaSamplePoints": 1581,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 120,
+                "HotY": 120,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 1047,
+                  "NativePartialAlpha": 1047,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.00677490234375,
+                  "RmsChannel": 0.08230979494416202,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 7.9813,
+              "MinRenderMs": 7.4561,
+              "MaxRenderMs": 8.3662,
+              "NonzeroAlphaSamplePoints": 1566,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 240,
+                "HotY": 240,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 2146,
+                  "NativePartialAlpha": 2146,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0034942626953125,
+                  "RmsChannel": 0.059112288868834205,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 9.526266666666666,
+              "MinRenderMs": 8.4105,
+              "MaxRenderMs": 11.6218,
+              "NonzeroAlphaSamplePoints": 1561,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 480,
+                "HotY": 480,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 4267,
+                  "NativePartialAlpha": 4267,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0017115275065104167,
+                  "RmsChannel": 0.04137061162843035,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 11.457500000000001,
+              "MinRenderMs": 10.6088,
+              "MaxRenderMs": 12.5936,
+              "NonzeroAlphaSamplePoints": 1561,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 960,
+                "HotY": 960,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 8600,
+                  "NativePartialAlpha": 8600,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0008655389149983724,
+                  "RmsChannel": 0.02942004274297324,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "nordzy-progress01",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 5.8049,
+              "MinRenderMs": 4.8128,
+              "MaxRenderMs": 6.6963,
+              "NonzeroAlphaSamplePoints": 1502,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 6,
+                "HotY": 5,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 271,
+                  "NativePartialAlpha": 271,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.021240234375,
+                  "RmsChannel": 0.14574029770451274,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 7.004733333333333,
+              "MinRenderMs": 6.1244,
+              "MaxRenderMs": 8.1725,
+              "NonzeroAlphaSamplePoints": 1393,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 24,
+                "HotY": 20,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 1056,
+                  "NativePartialAlpha": 1056,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.007288614908854167,
+                  "RmsChannel": 0.08537338524888284,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 6.419366666666666,
+              "MinRenderMs": 5.6577,
+              "MaxRenderMs": 7.2327,
+              "NonzeroAlphaSamplePoints": 1382,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 48,
+                "HotY": 40,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 2143,
+                  "NativePartialAlpha": 2143,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0032526652018229165,
+                  "RmsChannel": 0.0570321418309265,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 7.727633333333333,
+              "MinRenderMs": 6.6313,
+              "MaxRenderMs": 8.7725,
+              "NonzeroAlphaSamplePoints": 1376,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 96,
+                "HotY": 80,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 4319,
+                  "NativePartialAlpha": 4319,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0018440882364908855,
+                  "RmsChannel": 0.04294284849064959,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 14.242466666666667,
+              "MinRenderMs": 9.9046,
+              "MaxRenderMs": 21.2094,
+              "NonzeroAlphaSamplePoints": 1372,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 192,
+                "HotY": 160,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 8659,
+                  "NativePartialAlpha": 8659,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.0009207725524902344,
+                  "RmsChannel": 0.030344234254471383,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Name": "windows-static-arrow",
+          "Sizes": [
+            {
+              "Size": 64,
+              "MeanRenderMs": 0.17663333333333334,
+              "MinRenderMs": 0.0932,
+              "MaxRenderMs": 0.283,
+              "NonzeroAlphaSamplePoints": 540,
+              "NativeRoundtrip": {
+                "ResourceWidth": 64,
+                "ResourceHeight": 64,
+                "HotX": 2,
+                "HotY": 2,
+                "Alpha": {
+                  "Lines": 64,
+                  "SourcePartialAlpha": 127,
+                  "NativePartialAlpha": 127,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0.005208333333333333,
+                  "RmsChannel": 0.07216878364870322,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 256,
+              "MeanRenderMs": 0.13196666666666665,
+              "MinRenderMs": 0.1151,
+              "MaxRenderMs": 0.1634,
+              "NonzeroAlphaSamplePoints": 494,
+              "NativeRoundtrip": {
+                "ResourceWidth": 256,
+                "ResourceHeight": 256,
+                "HotX": 8,
+                "HotY": 8,
+                "Alpha": {
+                  "Lines": 256,
+                  "SourcePartialAlpha": 517,
+                  "NativePartialAlpha": 517,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 512,
+              "MeanRenderMs": 0.38009999999999994,
+              "MinRenderMs": 0.3216,
+              "MaxRenderMs": 0.4422,
+              "NonzeroAlphaSamplePoints": 500,
+              "NativeRoundtrip": {
+                "ResourceWidth": 512,
+                "ResourceHeight": 512,
+                "HotX": 16,
+                "HotY": 16,
+                "Alpha": {
+                  "Lines": 512,
+                  "SourcePartialAlpha": 1096,
+                  "NativePartialAlpha": 1096,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 1024,
+              "MeanRenderMs": 1.0722666666666667,
+              "MinRenderMs": 0.9416,
+              "MaxRenderMs": 1.187,
+              "NonzeroAlphaSamplePoints": 487,
+              "NativeRoundtrip": {
+                "ResourceWidth": 1024,
+                "ResourceHeight": 1024,
+                "HotX": 32,
+                "HotY": 32,
+                "Alpha": {
+                  "Lines": 1024,
+                  "SourcePartialAlpha": 2239,
+                  "NativePartialAlpha": 2239,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            },
+            {
+              "Size": 2048,
+              "MeanRenderMs": 4.514833333333333,
+              "MinRenderMs": 4.3094,
+              "MaxRenderMs": 4.6822,
+              "NonzeroAlphaSamplePoints": 486,
+              "NativeRoundtrip": {
+                "ResourceWidth": 2048,
+                "ResourceHeight": 2048,
+                "HotX": 64,
+                "HotY": 64,
+                "Alpha": {
+                  "Lines": 2048,
+                  "SourcePartialAlpha": 4436,
+                  "NativePartialAlpha": 4436,
+                  "MeanAlphaDifference": 0
+                },
+                "Difference": {
+                  "MeanAbsChannel": 0,
+                  "RmsChannel": 0,
+                  "PixelsOver12": 0,
+                  "PercentPixelsOver12": 0
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "independent-chromium-comparison",
+      "ReferenceWidth": 1280,
+      "ReferenceHeight": 1100,
+      "Cases": [
+        {
+          "Name": "bibata-pointer",
+          "WithFilters": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait01",
+          "WithFilters": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.9658660888671875,
+            "RmsChannel": 6.008314094389202,
+            "PixelsOver12": 1626,
+            "PercentPixelsOver12": 2.4810791015625
+          }
+        },
+        {
+          "Name": "bibata-wait14",
+          "WithFilters": {
+            "MeanAbsChannel": 0.0434722900390625,
+            "RmsChannel": 0.24378880900984257,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.9606475830078125,
+            "RmsChannel": 5.99631514249259,
+            "PixelsOver12": 1616,
+            "PercentPixelsOver12": 2.4658203125
+          }
+        },
+        {
+          "Name": "bibata-wait27",
+          "WithFilters": {
+            "MeanAbsChannel": 0.043731689453125,
+            "RmsChannel": 0.24655834121967968,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.9608306884765625,
+            "RmsChannel": 5.993500049777232,
+            "PixelsOver12": 1615,
+            "PercentPixelsOver12": 2.46429443359375
+          }
+        },
+        {
+          "Name": "bibata-wait40",
+          "WithFilters": {
+            "MeanAbsChannel": 0.0442962646484375,
+            "RmsChannel": 0.25070092171437564,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.9613494873046875,
+            "RmsChannel": 5.995887618606685,
+            "PixelsOver12": 1616,
+            "PercentPixelsOver12": 2.4658203125
+          }
+        },
+        {
+          "Name": "nordzy-pointer",
+          "WithFilters": {
+            "MeanAbsChannel": 0.015574137369791666,
+            "RmsChannel": 0.4673916952030616,
+            "PixelsOver12": 20,
+            "PercentPixelsOver12": 0.030517578125
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.015574137369791666,
+            "RmsChannel": 0.4673916952030616,
+            "PixelsOver12": 20,
+            "PercentPixelsOver12": 0.030517578125
+          }
+        },
+        {
+          "Name": "nordzy-wait01",
+          "WithFilters": {
+            "MeanAbsChannel": 0.0029500325520833335,
+            "RmsChannel": 0.054314202121391174,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.0029500325520833335,
+            "RmsChannel": 0.054314202121391174,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-progress01",
+          "WithFilters": {
+            "MeanAbsChannel": 0.0350494384765625,
+            "RmsChannel": 0.7625062702525659,
+            "PixelsOver12": 67,
+            "PercentPixelsOver12": 0.10223388671875
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.0350494384765625,
+            "RmsChannel": 0.7625062702525659,
+            "PixelsOver12": 67,
+            "PercentPixelsOver12": 0.10223388671875
+          }
+        },
+        {
+          "Name": "windows-static-arrow",
+          "WithFilters": {
+            "MeanAbsChannel": 0.018829345703125,
+            "RmsChannel": 0.4388117425989286,
+            "PixelsOver12": 29,
+            "PercentPixelsOver12": 0.04425048828125
+          },
+          "WithoutFilters": {
+            "MeanAbsChannel": 0.018829345703125,
+            "RmsChannel": 0.4388117425989286,
+            "PixelsOver12": 29,
+            "PercentPixelsOver12": 0.04425048828125
+          }
+        }
+      ]
+    },
+    {
+      "Name": "retained-vector-picture-at-final-size",
+      "Cases": [
+        {
+          "Name": "bibata-pointer",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.07296666666666667,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-pointer",
+          "Size": 512,
+          "MeanRasterOnlyMs": 0.291,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-pointer",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 1.5890000000000002,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-pointer",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 4.831766666666667,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait01",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.3792,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait01",
+          "Size": 512,
+          "MeanRasterOnlyMs": 1.7835,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait01",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 6.198733333333333,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait01",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 24.413766666666664,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait14",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.41496666666666665,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait14",
+          "Size": 512,
+          "MeanRasterOnlyMs": 1.6357,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait14",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 6.097433333333334,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait14",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 24.627866666666666,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait27",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.4129,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait27",
+          "Size": 512,
+          "MeanRasterOnlyMs": 1.7253999999999998,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait27",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 6.109400000000001,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait27",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 24.683566666666668,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait40",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.41333333333333333,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait40",
+          "Size": 512,
+          "MeanRasterOnlyMs": 1.7576333333333334,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait40",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 6.389766666666667,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "bibata-wait40",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 24.5445,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-pointer",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.040966666666666665,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-pointer",
+          "Size": 512,
+          "MeanRasterOnlyMs": 0.2957,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-pointer",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 1.003,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-pointer",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 3.331933333333333,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-wait01",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.13403333333333334,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-wait01",
+          "Size": 512,
+          "MeanRasterOnlyMs": 0.3975333333333333,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-wait01",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 1.9277,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-wait01",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 4.4038,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-progress01",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.11206666666666666,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-progress01",
+          "Size": 512,
+          "MeanRasterOnlyMs": 0.36746666666666666,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-progress01",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 1.2177666666666667,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "nordzy-progress01",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 3.8636,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "windows-static-arrow",
+          "Size": 256,
+          "MeanRasterOnlyMs": 0.03963333333333333,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "windows-static-arrow",
+          "Size": 512,
+          "MeanRasterOnlyMs": 0.2609666666666667,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "windows-static-arrow",
+          "Size": 1024,
+          "MeanRasterOnlyMs": 0.9650333333333334,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        },
+        {
+          "Name": "windows-static-arrow",
+          "Size": 2048,
+          "MeanRasterOnlyMs": 3.486433333333333,
+          "DifferenceFromFresh": {
+            "MeanAbsChannel": 0,
+            "RmsChannel": 0,
+            "PixelsOver12": 0,
+            "PercentPixelsOver12": 0
+          }
+        }
+      ]
+    }
+  ],
+  "NoSystemCursorMutation": true
+}

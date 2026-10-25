@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWindowsForms>true</UseWindowsForms><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><PlatformTarget>x64</PlatformTarget><RestorePackagesPath>$(MSBuildThisFileDirectory)artifacts/packages</RestorePackagesPath><RestorePackagesWithLockFile>true</RestorePackagesWithLockFile></PropertyGroup>
+<ItemGroup><PackageReference Include="Svg.Skia" Version="5.2.3"/><Compile Include="../AniScaleProbe/Native.cs" Link="Native.cs"/><Compile Include="../AniScaleProbe/Fixtures.cs" Link="Fixtures.cs"/></ItemGroup>
+</Project>

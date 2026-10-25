@@ -1,0 +1,138 @@
+[
+  {
+    "Name": "arrow.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "15D969D3D65D3697C11619FBD980467D7125409D6B250B599E05A6C4E192FF1E"
+  },
+  {
+    "Name": "busy.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "950FE23B9B8B81A00F39E836AA2F922621459039AA88F190D88EAABE736661DF"
+  },
+  {
+    "Name": "cross.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "3314906D1115F1754FAC262600A10F0B05E44169B8D813DB56037C390F24C0CC"
+  },
+  {
+    "Name": "ew.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "DFAF9ED5DB0B75A4F87C5E4C25B668ECEB1FDF108B9B83D2C50E00630BB15AF1"
+  },
+  {
+    "Name": "helpsel.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "62EF5ED1379FA1ED4B93E4F6EE3E029ABC6797E756755244A7377BE2DC482DAA"
+  },
+  {
+    "Name": "ibeam.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "E21DDCB73414A2136A12454A1EB0EC8128E71B0A8A5865D160804B755EA27782"
+  },
+  {
+    "Name": "link.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "B4F8D1E8B190F8E45C3BE356B3F8A442A69C538DBA688AD5149ACD29323D492D"
+  },
+  {
+    "Name": "move.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "854ADBDAD715C74DFEDB7AEE98A65986CB657B9956DB5B93975FF4CE9E53F699"
+  },
+  {
+    "Name": "nesw.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "C8D120C35A5557355C1510D6D5ED662846166BDCDD6B1972C5DBF80F4C3AB4BE"
+  },
+  {
+    "Name": "ns.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "CBD01044AC631BB5A130E229C211A014F13F71A66860A477656B2199CDED4827"
+  },
+  {
+    "Name": "nwse.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "2E23D33A895EE034E875F1AA95FC659582577B58B2CB427C311F09ADEBC43D71"
+  },
+  {
+    "Name": "pen.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "F671BE0E003CF63FC73E51E24E4C825D73F3D4CC2B75BC33A37A9F68F37268E1"
+  },
+  {
+    "Name": "person.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "39D2A3A32AD076F749F15015799B8A3B5D4EA376827F67F8AF4B8484E74281E0"
+  },
+  {
+    "Name": "pin.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "417EA51FE33A1370C6EC273897A13C01E429C27807C56D03BE610F45A0B69B6F"
+  },
+  {
+    "Name": "unavail.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "F1E0124E39A02E604AB11B11DF895F2A5FB202A7B22BFBFECD10B3F556066CE5"
+  },
+  {
+    "Name": "up.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "560B5A01D9389C8F99C0CC96671590E1A4DF71B737F1253C21207AEA6C9F4AD0"
+  },
+  {
+    "Name": "wait.svg",
+    "ViewBox": "0 0 32 32",
+    "Images": 0,
+    "Animations": 0,
+    "Filters": 0,
+    "Sha256": "287EFFC5028674F2EFFBF1A5F1A2ED8D6D84E228527E97B5E5AC9CCCBABA891D"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "Result": {
+    "RegisteredByAdministrator": false,
+    "LaunchDelayMs": 307.0129,
+    "MarkerAdministrator": false,
+    "SameUser": true,
+    "SameSession": true,
+    "LogonType": "InteractiveToken",
+    "RunLevel": "LeastPrivilege",
+    "LogonDelay": "PT0S",
+    "ExecutionTimeLimit": "PT0S",
+    "AllowsBattery": true,
+    "RequiresNetwork": false,
+    "RequiresIdle": false,
+    "ExecutableWithSpaces": true,
+    "ArgumentsWithSpaces": true
+  },
+  "Error": null,
+  "TemporaryTaskRemoved": true,
+  "ActualLogonLatencyTested": false
+}

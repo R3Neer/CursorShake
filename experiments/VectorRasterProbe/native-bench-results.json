@@ -1,0 +1,613 @@
+{
+  "Experiment": "Actual SVG-to-native cursor publication, isolated",
+  "Date": "2026-10-25T13:48:47.9629162+01:00",
+  "Failure": null,
+  "Restored": true,
+  "LogicalProcessors": 16,
+  "PublisherCallsSetCursor": false,
+  "Renderer": "Svg.Skia 5.2.3 retained vectors",
+  "Cases": [
+    {
+      "Name": "growth-bibata-pointer",
+      "MaxSize": 512,
+      "TargetHz": 60,
+      "CachedNativeFrames": false,
+      "PreparedVectorPictures": 1,
+      "DurationMs": 4000.8344,
+      "Publications": 240,
+      "ActualPublicationsPerSecond": 59.98748661029309,
+      "SkippedSchedulerSlots": 0,
+      "DistinctSizes": 79,
+      "CpuPercentOneCore": 10.544675380715582,
+      "CpuPercentMachine": 0.6590422112947238,
+      "MeanWorkMs": 2.132102916666667,
+      "P95WorkMs": 4.8838,
+      "MaxWorkMs": 9.5321,
+      "MeanSampleAgeAtPublicationMs": 2.1369945833333333,
+      "Before": {
+        "CpuMs": 390.625,
+        "PrivateBytes": 22650880,
+        "WorkingSet": 65421312,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 420
+      },
+      "After": {
+        "CpuMs": 828.125,
+        "PrivateBytes": 28934144,
+        "WorkingSet": 72146944,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 423
+      },
+      "Trace": [
+        {
+          "Slot": 0,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 0.1366,
+          "PresentedAtMs": 0.7611
+        },
+        {
+          "Slot": 30,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 500.2739,
+          "PresentedAtMs": 505.0445
+        },
+        {
+          "Slot": 60,
+          "Frame": 0,
+          "Size": 512,
+          "InputTimeMs": 1000.1568,
+          "PresentedAtMs": 1002.7793
+        },
+        {
+          "Slot": 90,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 1500.4139,
+          "PresentedAtMs": 1502.734
+        },
+        {
+          "Slot": 120,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 2000.2332,
+          "PresentedAtMs": 2000.604
+        },
+        {
+          "Slot": 150,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 2500.6905,
+          "PresentedAtMs": 2502.5193
+        },
+        {
+          "Slot": 180,
+          "Frame": 0,
+          "Size": 512,
+          "InputTimeMs": 3000.3732,
+          "PresentedAtMs": 3003.0602
+        },
+        {
+          "Slot": 210,
+          "Frame": 0,
+          "Size": 287,
+          "InputTimeMs": 3500.8067,
+          "PresentedAtMs": 3503.9003
+        }
+      ]
+    },
+    {
+      "Name": "growth-bibata-wait",
+      "MaxSize": 512,
+      "TargetHz": 60,
+      "CachedNativeFrames": false,
+      "PreparedVectorPictures": 4,
+      "DurationMs": 4000.2848,
+      "Publications": 240,
+      "ActualPublicationsPerSecond": 59.99572830414475,
+      "SkippedSchedulerSlots": 0,
+      "DistinctSizes": 82,
+      "CpuPercentOneCore": 43.74688522177221,
+      "CpuPercentMachine": 2.734180326360763,
+      "MeanWorkMs": 7.040184166666665,
+      "P95WorkMs": 13.5288,
+      "MaxWorkMs": 19.3878,
+      "MeanSampleAgeAtPublicationMs": 7.043989166666663,
+      "Before": {
+        "CpuMs": 906.25,
+        "PrivateBytes": 32796672,
+        "WorkingSet": 77479936,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 423
+      },
+      "After": {
+        "CpuMs": 2671.875,
+        "PrivateBytes": 75395072,
+        "WorkingSet": 121532416,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 423
+      },
+      "Trace": [
+        {
+          "Slot": 0,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 0.0103,
+          "PresentedAtMs": 0.6527
+        },
+        {
+          "Slot": 30,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 500.4601,
+          "PresentedAtMs": 505.3409
+        },
+        {
+          "Slot": 60,
+          "Frame": 0,
+          "Size": 512,
+          "InputTimeMs": 1002.994,
+          "PresentedAtMs": 1006.886
+        },
+        {
+          "Slot": 90,
+          "Frame": 1,
+          "Size": 288,
+          "InputTimeMs": 1500.3655,
+          "PresentedAtMs": 1507.2131
+        },
+        {
+          "Slot": 120,
+          "Frame": 1,
+          "Size": 64,
+          "InputTimeMs": 2000.7119,
+          "PresentedAtMs": 2001.5636
+        },
+        {
+          "Slot": 150,
+          "Frame": 1,
+          "Size": 288,
+          "InputTimeMs": 2500.6658,
+          "PresentedAtMs": 2502.4036
+        },
+        {
+          "Slot": 180,
+          "Frame": 2,
+          "Size": 512,
+          "InputTimeMs": 3000.2274,
+          "PresentedAtMs": 3013.5013
+        },
+        {
+          "Slot": 210,
+          "Frame": 2,
+          "Size": 288,
+          "InputTimeMs": 3500.5304,
+          "PresentedAtMs": 3505.2439
+        }
+      ]
+    },
+    {
+      "Name": "growth-nordzy-pointer",
+      "MaxSize": 512,
+      "TargetHz": 60,
+      "CachedNativeFrames": false,
+      "PreparedVectorPictures": 1,
+      "DurationMs": 4000.4445,
+      "Publications": 240,
+      "ActualPublicationsPerSecond": 59.99333324084361,
+      "SkippedSchedulerSlots": 0,
+      "DistinctSizes": 78,
+      "CpuPercentOneCore": 29.29361974650567,
+      "CpuPercentMachine": 1.8308512341566043,
+      "MeanWorkMs": 1.911870416666667,
+      "P95WorkMs": 4.171,
+      "MaxWorkMs": 7.9921,
+      "MeanSampleAgeAtPublicationMs": 1.9156766666666678,
+      "Before": {
+        "CpuMs": 2859.375,
+        "PrivateBytes": 38387712,
+        "WorkingSet": 84099072,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "After": {
+        "CpuMs": 4031.25,
+        "PrivateBytes": 40902656,
+        "WorkingSet": 90038272,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "Trace": [
+        {
+          "Slot": 0,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 0.0023,
+          "PresentedAtMs": 0.3873
+        },
+        {
+          "Slot": 30,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 500.6,
+          "PresentedAtMs": 501.9068
+        },
+        {
+          "Slot": 60,
+          "Frame": 0,
+          "Size": 512,
+          "InputTimeMs": 1000.6287,
+          "PresentedAtMs": 1003.0942
+        },
+        {
+          "Slot": 90,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 1500.5868,
+          "PresentedAtMs": 1502.6844
+        },
+        {
+          "Slot": 120,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 2000.2525,
+          "PresentedAtMs": 2001.2943
+        },
+        {
+          "Slot": 150,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 2500.2719,
+          "PresentedAtMs": 2501.8851
+        },
+        {
+          "Slot": 180,
+          "Frame": 0,
+          "Size": 512,
+          "InputTimeMs": 3000.4511,
+          "PresentedAtMs": 3002.7685
+        },
+        {
+          "Slot": 210,
+          "Frame": 0,
+          "Size": 288,
+          "InputTimeMs": 3500.4875,
+          "PresentedAtMs": 3503.472
+        }
+      ]
+    },
+    {
+      "Name": "growth-nordzy-wait",
+      "MaxSize": 1024,
+      "TargetHz": 60,
+      "CachedNativeFrames": false,
+      "PreparedVectorPictures": 1,
+      "DurationMs": 4000.2989,
+      "Publications": 240,
+      "ActualPublicationsPerSecond": 59.99551683500451,
+      "SkippedSchedulerSlots": 0,
+      "DistinctSizes": 116,
+      "CpuPercentOneCore": 41.40315614915676,
+      "CpuPercentMachine": 2.5876972593222973,
+      "MeanWorkMs": 4.886413749999999,
+      "P95WorkMs": 12.7614,
+      "MaxWorkMs": 18.389,
+      "MeanSampleAgeAtPublicationMs": 4.890260416666664,
+      "Before": {
+        "CpuMs": 4046.875,
+        "PrivateBytes": 34435072,
+        "WorkingSet": 82235392,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "After": {
+        "CpuMs": 5718.75,
+        "PrivateBytes": 29880320,
+        "WorkingSet": 79847424,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "Trace": [
+        {
+          "Slot": 0,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 0.0019,
+          "PresentedAtMs": 0.4415
+        },
+        {
+          "Slot": 30,
+          "Frame": 0,
+          "Size": 545,
+          "InputTimeMs": 500.428,
+          "PresentedAtMs": 503.8934
+        },
+        {
+          "Slot": 60,
+          "Frame": 0,
+          "Size": 1024,
+          "InputTimeMs": 1000.3813,
+          "PresentedAtMs": 1012.2033
+        },
+        {
+          "Slot": 90,
+          "Frame": 0,
+          "Size": 543,
+          "InputTimeMs": 1500.4474,
+          "PresentedAtMs": 1508.2849
+        },
+        {
+          "Slot": 120,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 2000.4913,
+          "PresentedAtMs": 2001.1642
+        },
+        {
+          "Slot": 150,
+          "Frame": 0,
+          "Size": 544,
+          "InputTimeMs": 2500.3305,
+          "PresentedAtMs": 2504.7907
+        },
+        {
+          "Slot": 180,
+          "Frame": 0,
+          "Size": 1024,
+          "InputTimeMs": 3000.0712,
+          "PresentedAtMs": 3009.215
+        },
+        {
+          "Slot": 210,
+          "Frame": 0,
+          "Size": 543,
+          "InputTimeMs": 3500.5796,
+          "PresentedAtMs": 3503.6353
+        }
+      ]
+    },
+    {
+      "Name": "growth-bibata-wait",
+      "MaxSize": 1024,
+      "TargetHz": 60,
+      "CachedNativeFrames": false,
+      "PreparedVectorPictures": 4,
+      "DurationMs": 4000.2284,
+      "Publications": 180,
+      "ActualPublicationsPerSecond": 44.99743064671007,
+      "SkippedSchedulerSlots": 60,
+      "DistinctSizes": 116,
+      "CpuPercentOneCore": 66.40245841962424,
+      "CpuPercentMachine": 4.150153651226515,
+      "MeanWorkMs": 14.886513888888883,
+      "P95WorkMs": 49.1746,
+      "MaxWorkMs": 57.873,
+      "MeanSampleAgeAtPublicationMs": 14.889797777777776,
+      "Before": {
+        "CpuMs": 5734.375,
+        "PrivateBytes": 38223872,
+        "WorkingSet": 84668416,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "After": {
+        "CpuMs": 8390.625,
+        "PrivateBytes": 85655552,
+        "WorkingSet": 135786496,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "Trace": [
+        {
+          "Slot": 0,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 0.0016,
+          "PresentedAtMs": 0.8355
+        },
+        {
+          "Slot": 30,
+          "Frame": 0,
+          "Size": 545,
+          "InputTimeMs": 500.4778,
+          "PresentedAtMs": 515.3688
+        },
+        {
+          "Slot": 89,
+          "Frame": 0,
+          "Size": 565,
+          "InputTimeMs": 1486.292,
+          "PresentedAtMs": 1501.9443
+        },
+        {
+          "Slot": 119,
+          "Frame": 1,
+          "Size": 65,
+          "InputTimeMs": 1983.7544,
+          "PresentedAtMs": 1985.8539
+        },
+        {
+          "Slot": 149,
+          "Frame": 1,
+          "Size": 519,
+          "InputTimeMs": 2483.6488,
+          "PresentedAtMs": 2497.0729
+        },
+        {
+          "Slot": 210,
+          "Frame": 2,
+          "Size": 530,
+          "InputTimeMs": 3509.5879,
+          "PresentedAtMs": 3526.1627
+        }
+      ]
+    },
+    {
+      "Name": "growth-bibata-wait",
+      "MaxSize": 2048,
+      "TargetHz": 60,
+      "CachedNativeFrames": false,
+      "PreparedVectorPictures": 4,
+      "DurationMs": 4000.3615,
+      "Publications": 117,
+      "ActualPublicationsPerSecond": 29.247356770131898,
+      "SkippedSchedulerSlots": 123,
+      "DistinctSizes": 88,
+      "CpuPercentOneCore": 76.9461709897968,
+      "CpuPercentMachine": 4.8091356868623,
+      "MeanWorkMs": 26.606414529914534,
+      "P95WorkMs": 153.7923,
+      "MaxWorkMs": 230.0111,
+      "MeanSampleAgeAtPublicationMs": 26.609599145299153,
+      "Before": {
+        "CpuMs": 8437.5,
+        "PrivateBytes": 34570240,
+        "WorkingSet": 83546112,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "After": {
+        "CpuMs": 11515.625,
+        "PrivateBytes": 111017984,
+        "WorkingSet": 161214464,
+        "User": 5,
+        "Gdi": 7,
+        "Handles": 424
+      },
+      "Trace": [
+        {
+          "Slot": 0,
+          "Frame": 0,
+          "Size": 64,
+          "InputTimeMs": 0.0015,
+          "PresentedAtMs": 0.7655
+        },
+        {
+          "Slot": 52,
+          "Frame": 2,
+          "Size": 1974,
+          "InputTimeMs": 875.9986,
+          "PresentedAtMs": 1081.0669
+        },
+        {
+          "Slot": 121,
+          "Frame": 1,
+          "Size": 65,
+          "InputTimeMs": 2017.1309,
+          "PresentedAtMs": 2018.4573
+        },
+        {
+          "Slot": 196,
+          "Frame": 2,
+          "Size": 1699,
+          "InputTimeMs": 3275.486,
+          "PresentedAtMs": 3432.8444
+        }
+      ]
+    },
+    {
+      "Name": "steady-cached-bibata-wait",
+      "MaxSize": 1024,
+      "TargetHz": 60,
+      "CachedNativeFrames": true,
+      "PreparedVectorPictures": 4,
+      "DurationMs": 4000.1573,
+      "Publications": 240,
+      "ActualPublicationsPerSecond": 59.99764059278369,
+      "SkippedSchedulerSlots": 0,
+      "DistinctSizes": 1,
+      "CpuPercentOneCore": 23.045968717280193,
+      "CpuPercentMachine": 1.440373044830012,
+      "MeanWorkMs": 4.320431250000002,
+      "P95WorkMs": 6.7358,
+      "MaxWorkMs": 11.4984,
+      "MeanSampleAgeAtPublicationMs": 4.321677499999999,
+      "Before": {
+        "CpuMs": 11906.25,
+        "PrivateBytes": 111927296,
+        "WorkingSet": 159014912,
+        "User": 9,
+        "Gdi": 19,
+        "Handles": 424
+      },
+      "After": {
+        "CpuMs": 12843.75,
+        "PrivateBytes": 111882240,
+        "WorkingSet": 159006720,
+        "User": 9,
+        "Gdi": 19,
+        "Handles": 425
+      },
+      "Trace": [
+        {
+          "Slot": 0,
+          "Frame": 0,
+          "Size": 1024,
+          "InputTimeMs": 0.0016,
+          "PresentedAtMs": 7.853
+        },
+        {
+          "Slot": 30,
+          "Frame": 0,
+          "Size": 1024,
+          "InputTimeMs": 500.4911,
+          "PresentedAtMs": 504.0426
+        },
+        {
+          "Slot": 60,
+          "Frame": 0,
+          "Size": 1024,
+          "InputTimeMs": 1000.3437,
+          "PresentedAtMs": 1006.3787
+        },
+        {
+          "Slot": 90,
+          "Frame": 1,
+          "Size": 1024,
+          "InputTimeMs": 1500.5759,
+          "PresentedAtMs": 1504.367
+        },
+        {
+          "Slot": 120,
+          "Frame": 1,
+          "Size": 1024,
+          "InputTimeMs": 2000.0316,
+          "PresentedAtMs": 2003.98
+        },
+        {
+          "Slot": 150,
+          "Frame": 1,
+          "Size": 1024,
+          "InputTimeMs": 2500.4084,
+          "PresentedAtMs": 2504.911
+        },
+        {
+          "Slot": 180,
+          "Frame": 2,
+          "Size": 1024,
+          "InputTimeMs": 3000.325,
+          "PresentedAtMs": 3004.4982
+        },
+        {
+          "Slot": 210,
+          "Frame": 2,
+          "Size": 1024,
+          "InputTimeMs": 3500.3157,
+          "PresentedAtMs": 3503.7525
+        }
+      ]
+    }
+  ]
+}

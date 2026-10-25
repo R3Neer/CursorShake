@@ -1,0 +1,976 @@
+{
+  "Date": "2026-10-25T13:12:02.2345878+01:00",
+  "Windows": "11 25H2 26200.9711",
+  "LogicalProcessors": 16,
+  "RoleChangeTest": {
+    "Name": "role-events-and-reentry",
+    "Selections": [
+      {
+        "Role": 32516,
+        "Qpc": 3622951506628,
+        "ObservedActive": 32516,
+        "Scale": 96,
+        "LastFrame": 1,
+        "Handle": 65547
+      },
+      {
+        "Role": 32651,
+        "Qpc": 3622955514467,
+        "ObservedActive": 32651,
+        "Scale": 96,
+        "LastFrame": 2,
+        "Handle": 65563
+      },
+      {
+        "Role": 32516,
+        "Qpc": 3622964412254,
+        "ObservedActive": 32516,
+        "Scale": 96,
+        "LastFrame": 1,
+        "Handle": 65547
+      },
+      {
+        "Role": 32516,
+        "Qpc": 3622968449496,
+        "ObservedActive": 32516,
+        "Scale": 96,
+        "LastFrame": 1,
+        "Handle": 65547
+      },
+      {
+        "Role": 32651,
+        "Qpc": 3622972532214,
+        "ObservedActive": 32651,
+        "Scale": 96,
+        "LastFrame": 2,
+        "Handle": 65563
+      },
+      {
+        "Role": 32516,
+        "Qpc": 3622981445074,
+        "ObservedActive": 32516,
+        "Scale": 96,
+        "LastFrame": 1,
+        "Handle": 65547
+      }
+    ],
+    "Transitions": [
+      {
+        "Qpc": 3622951430354,
+        "Role": 32516,
+        "PreviousRole": 0,
+        "Scale": 96,
+        "Source": "initial snapshot",
+        "Event": 0
+      },
+      {
+        "Qpc": 3622955509940,
+        "Role": 32651,
+        "PreviousRole": 32516,
+        "Scale": 96,
+        "Source": "WinEvent",
+        "Event": 32780
+      },
+      {
+        "Qpc": 3622964392435,
+        "Role": 32516,
+        "PreviousRole": 32651,
+        "Scale": 96,
+        "Source": "WinEvent",
+        "Event": 32780
+      },
+      {
+        "Qpc": 3622972522763,
+        "Role": 32651,
+        "PreviousRole": 32516,
+        "Scale": 96,
+        "Source": "WinEvent",
+        "Event": 32780
+      },
+      {
+        "Qpc": 3622981441181,
+        "Role": 32516,
+        "PreviousRole": 32651,
+        "Scale": 96,
+        "Source": "WinEvent",
+        "Event": 32780
+      }
+    ],
+    "ExpectedTransitions": 5,
+    "ObservedTransitions": 5,
+    "Scale": 96
+  },
+  "CursorEventCounts": [
+    {
+      "Name": "32779",
+      "Count": 8
+    },
+    {
+      "Name": "32780",
+      "Count": 25
+    }
+  ],
+  "Sizes": [
+    {
+      "Name": "huge-size",
+      "Requested": 128,
+      "CreatedWidth": 128,
+      "CreatedHeight": 128,
+      "HotX": 64,
+      "HotY": 64,
+      "PresentedPointerShape": true,
+      "ObservedWidth": 128,
+      "ObservedHeight": 128,
+      "LatencyMs": 4.1418,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622987820335,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 0,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 256,
+      "CreatedWidth": 256,
+      "CreatedHeight": 256,
+      "HotX": 128,
+      "HotY": 128,
+      "PresentedPointerShape": true,
+      "ObservedWidth": 256,
+      "ObservedHeight": 256,
+      "LatencyMs": 2.6811,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622990113498,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 0,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 257,
+      "CreatedWidth": 257,
+      "CreatedHeight": 257,
+      "HotX": 128,
+      "HotY": 128,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622992479263,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 64,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 384,
+      "CreatedWidth": 384,
+      "CreatedHeight": 384,
+      "HotX": 192,
+      "HotY": 192,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622994544037,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 144,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 512,
+      "CreatedWidth": 512,
+      "CreatedHeight": 512,
+      "HotX": 256,
+      "HotY": 256,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622996791324,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 256,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 1024,
+      "CreatedWidth": 1024,
+      "CreatedHeight": 1024,
+      "HotX": 512,
+      "HotY": 512,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3622999141796,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 780,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 2048,
+      "CreatedWidth": 2048,
+      "CreatedHeight": 2048,
+      "HotX": 1024,
+      "HotY": 1024,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3623002132429,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 1564,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    },
+    {
+      "Name": "huge-size",
+      "Requested": 4096,
+      "CreatedWidth": 4096,
+      "CreatedHeight": 4096,
+      "HotX": 2048,
+      "HotY": 2048,
+      "PresentedPointerShape": false,
+      "ObservedWidth": null,
+      "ObservedHeight": null,
+      "LatencyMs": null,
+      "PositionUnchanged": false,
+      "SoftwareCoverage": {
+        "Qpc": 3623007166841,
+        "Width": 1920,
+        "Height": 1080,
+        "BluePoints": 2040,
+        "RedPoints": 0,
+        "GreenPoints": 0,
+        "PointerVisible": false,
+        "ShapeBytes": 0
+      },
+      "Status": "Observed"
+    }
+  ],
+  "Performance": [
+    {
+      "Name": "consumption",
+      "Mode": "idle-static",
+      "Size": 128,
+      "Hz": 0,
+      "Cached": true,
+      "DurationMs": 4007.7751,
+      "Calls": 0,
+      "CpuMs": 15.625,
+      "CpuPercentOneCore": 0.38986718591070646,
+      "CpuPercentMachine": 0.024366699119419154,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 0,
+      "P95WorkMs": 0,
+      "MaxWorkMs": 0,
+      "P95ScheduleLatenessMs": 0,
+      "MaxScheduleLatenessMs": 0,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 281.25,
+        "WorkingSet": 43679744,
+        "PrivateBytes": 11894784,
+        "Handles": 398,
+        "User": 9,
+        "Gdi": 19
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 296.875,
+        "WorkingSet": 43786240,
+        "PrivateBytes": 11894784,
+        "Handles": 399,
+        "User": 9,
+        "Gdi": 19
+      },
+      "ResourceSamples": []
+    },
+    {
+      "Name": "consumption",
+      "Mode": "animated-cached",
+      "Size": 128,
+      "Hz": 8,
+      "Cached": true,
+      "DurationMs": 6000.5543,
+      "Calls": 49,
+      "CpuMs": 31.25,
+      "CpuPercentOneCore": 0.5207852214586243,
+      "CpuPercentMachine": 0.03254907634116402,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 0.6204448979591837,
+      "P95WorkMs": 1.0246,
+      "MaxWorkMs": 1.7073,
+      "P95ScheduleLatenessMs": 0.5094,
+      "MaxScheduleLatenessMs": 0.6942,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 312.5,
+        "WorkingSet": 44273664,
+        "PrivateBytes": 12509184,
+        "Handles": 398,
+        "User": 9,
+        "Gdi": 19
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 343.75,
+        "WorkingSet": 45002752,
+        "PrivateBytes": 12513280,
+        "Handles": 399,
+        "User": 9,
+        "Gdi": 19
+      },
+      "ResourceSamples": [
+        {
+          "Pid": 13544,
+          "CpuMs": 343.75,
+          "WorkingSet": 44720128,
+          "PrivateBytes": 12513280,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 343.75,
+          "WorkingSet": 44711936,
+          "PrivateBytes": 11907072,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 343.75,
+          "WorkingSet": 44675072,
+          "PrivateBytes": 11902976,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 343.75,
+          "WorkingSet": 44707840,
+          "PrivateBytes": 12513280,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 343.75,
+          "WorkingSet": 44703744,
+          "PrivateBytes": 11915264,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 343.75,
+          "WorkingSet": 44765184,
+          "PrivateBytes": 12509184,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        }
+      ]
+    },
+    {
+      "Name": "consumption",
+      "Mode": "60Hz-cached",
+      "Size": 128,
+      "Hz": 60,
+      "Cached": true,
+      "DurationMs": 6000.8955,
+      "Calls": 361,
+      "CpuMs": 406.25,
+      "CpuPercentOneCore": 6.769822937259947,
+      "CpuPercentMachine": 0.4231139335787467,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 0.6832091412742383,
+      "P95WorkMs": 1.2986,
+      "MaxWorkMs": 2.423,
+      "P95ScheduleLatenessMs": 0.5749,
+      "MaxScheduleLatenessMs": 0.6682,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 375,
+        "WorkingSet": 43954176,
+        "PrivateBytes": 11374592,
+        "Handles": 398,
+        "User": 9,
+        "Gdi": 19
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 781.25,
+        "WorkingSet": 43892736,
+        "PrivateBytes": 10723328,
+        "Handles": 399,
+        "User": 9,
+        "Gdi": 19
+      },
+      "ResourceSamples": [
+        {
+          "Pid": 13544,
+          "CpuMs": 453.125,
+          "WorkingSet": 43868160,
+          "PrivateBytes": 10727424,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 531.25,
+          "WorkingSet": 43859968,
+          "PrivateBytes": 10719232,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 578.125,
+          "WorkingSet": 43864064,
+          "PrivateBytes": 10719232,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 656.25,
+          "WorkingSet": 43868160,
+          "PrivateBytes": 10719232,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 703.125,
+          "WorkingSet": 43868160,
+          "PrivateBytes": 10719232,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 765.625,
+          "WorkingSet": 43872256,
+          "PrivateBytes": 10723328,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        }
+      ]
+    },
+    {
+      "Name": "consumption",
+      "Mode": "60Hz-cached",
+      "Size": 256,
+      "Hz": 60,
+      "Cached": true,
+      "DurationMs": 6001.0958,
+      "Calls": 361,
+      "CpuMs": 406.25,
+      "CpuPercentOneCore": 6.769596979271686,
+      "CpuPercentMachine": 0.42309981120448037,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 0.8894941828254844,
+      "P95WorkMs": 1.4316,
+      "MaxWorkMs": 2.6009,
+      "P95ScheduleLatenessMs": 0.5417,
+      "MaxScheduleLatenessMs": 0.6681,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 843.75,
+        "WorkingSet": 44457984,
+        "PrivateBytes": 11247616,
+        "Handles": 398,
+        "User": 9,
+        "Gdi": 19
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 1265.625,
+        "WorkingSet": 44503040,
+        "PrivateBytes": 11210752,
+        "Handles": 399,
+        "User": 9,
+        "Gdi": 19
+      },
+      "ResourceSamples": [
+        {
+          "Pid": 13544,
+          "CpuMs": 921.875,
+          "WorkingSet": 44466176,
+          "PrivateBytes": 11194368,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 984.375,
+          "WorkingSet": 44457984,
+          "PrivateBytes": 11186176,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1062.5,
+          "WorkingSet": 44457984,
+          "PrivateBytes": 11186176,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1125,
+          "WorkingSet": 44457984,
+          "PrivateBytes": 11186176,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1203.125,
+          "WorkingSet": 44425216,
+          "PrivateBytes": 11104256,
+          "Handles": 396,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1265.625,
+          "WorkingSet": 44470272,
+          "PrivateBytes": 11157504,
+          "Handles": 399,
+          "User": 9,
+          "Gdi": 19
+        }
+      ]
+    },
+    {
+      "Name": "consumption",
+      "Mode": "60Hz-cached",
+      "Size": 512,
+      "Hz": 60,
+      "Cached": true,
+      "DurationMs": 6002.5217,
+      "Calls": 361,
+      "CpuMs": 671.875,
+      "CpuPercentOneCore": 11.193212346071151,
+      "CpuPercentMachine": 0.699575771629447,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 2.3264529085872567,
+      "P95WorkMs": 3.9067,
+      "MaxWorkMs": 5.4118,
+      "P95ScheduleLatenessMs": 0.5629,
+      "MaxScheduleLatenessMs": 0.7774,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 1343.75,
+        "WorkingSet": 46022656,
+        "PrivateBytes": 11505664,
+        "Handles": 399,
+        "User": 9,
+        "Gdi": 19
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 2046.875,
+        "WorkingSet": 46456832,
+        "PrivateBytes": 11739136,
+        "Handles": 401,
+        "User": 9,
+        "Gdi": 19
+      },
+      "ResourceSamples": [
+        {
+          "Pid": 13544,
+          "CpuMs": 1437.5,
+          "WorkingSet": 46059520,
+          "PrivateBytes": 11554816,
+          "Handles": 400,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1515.625,
+          "WorkingSet": 46923776,
+          "PrivateBytes": 12365824,
+          "Handles": 400,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1656.25,
+          "WorkingSet": 46374912,
+          "PrivateBytes": 12451840,
+          "Handles": 400,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1781.25,
+          "WorkingSet": 46350336,
+          "PrivateBytes": 11653120,
+          "Handles": 400,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 1906.25,
+          "WorkingSet": 46424064,
+          "PrivateBytes": 11743232,
+          "Handles": 401,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 2046.875,
+          "WorkingSet": 46448640,
+          "PrivateBytes": 11739136,
+          "Handles": 401,
+          "User": 9,
+          "Gdi": 19
+        }
+      ]
+    },
+    {
+      "Name": "consumption",
+      "Mode": "60Hz-cached",
+      "Size": 1024,
+      "Hz": 60,
+      "Cached": true,
+      "DurationMs": 6007.0181,
+      "Calls": 361,
+      "CpuMs": 2437.5,
+      "CpuPercentOneCore": 40.57753713111003,
+      "CpuPercentMachine": 2.5360960706943767,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 7.017413296398893,
+      "P95WorkMs": 9.4645,
+      "MaxWorkMs": 12.1741,
+      "P95ScheduleLatenessMs": 0.586,
+      "MaxScheduleLatenessMs": 0.6992,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 2171.875,
+        "WorkingSet": 49201152,
+        "PrivateBytes": 12144640,
+        "Handles": 403,
+        "User": 9,
+        "Gdi": 19
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 4609.375,
+        "WorkingSet": 49012736,
+        "PrivateBytes": 11776000,
+        "Handles": 405,
+        "User": 9,
+        "Gdi": 19
+      },
+      "ResourceSamples": [
+        {
+          "Pid": 13544,
+          "CpuMs": 2593.75,
+          "WorkingSet": 49053696,
+          "PrivateBytes": 11808768,
+          "Handles": 405,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 3015.625,
+          "WorkingSet": 49053696,
+          "PrivateBytes": 11808768,
+          "Handles": 405,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 3390.625,
+          "WorkingSet": 49053696,
+          "PrivateBytes": 11808768,
+          "Handles": 405,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 3765.625,
+          "WorkingSet": 49053696,
+          "PrivateBytes": 11808768,
+          "Handles": 405,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 4203.125,
+          "WorkingSet": 48996352,
+          "PrivateBytes": 11730944,
+          "Handles": 402,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 4593.75,
+          "WorkingSet": 48996352,
+          "PrivateBytes": 11730944,
+          "Handles": 402,
+          "User": 9,
+          "Gdi": 19
+        }
+      ]
+    },
+    {
+      "Name": "consumption",
+      "Mode": "60Hz-cached",
+      "Size": 2048,
+      "Hz": 60,
+      "Cached": true,
+      "DurationMs": 6002.404,
+      "Calls": 151,
+      "CpuMs": 5593.75,
+      "CpuPercentOneCore": 93.19182780765838,
+      "CpuPercentMachine": 5.824489237978649,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 39.66423509933775,
+      "P95WorkMs": 43.2664,
+      "MaxWorkMs": 47.2963,
+      "P95ScheduleLatenessMs": 3288.8012,
+      "MaxScheduleLatenessMs": 3462.1123,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 5265.625,
+        "WorkingSet": 111722496,
+        "PrivateBytes": 63066112,
+        "Handles": 404,
+        "User": 9,
+        "Gdi": 19
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 10875,
+        "WorkingSet": 111640576,
+        "PrivateBytes": 62984192,
+        "Handles": 405,
+        "User": 9,
+        "Gdi": 19
+      },
+      "ResourceSamples": [
+        {
+          "Pid": 13544,
+          "CpuMs": 7515.625,
+          "WorkingSet": 111722496,
+          "PrivateBytes": 63066112,
+          "Handles": 405,
+          "User": 9,
+          "Gdi": 19
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 9781.25,
+          "WorkingSet": 111681536,
+          "PrivateBytes": 62992384,
+          "Handles": 402,
+          "User": 9,
+          "Gdi": 19
+        }
+      ]
+    },
+    {
+      "Name": "consumption",
+      "Mode": "60Hz-create-on-demand",
+      "Size": 512,
+      "Hz": 60,
+      "Cached": false,
+      "DurationMs": 5003.7226,
+      "Calls": 301,
+      "CpuMs": 1250,
+      "CpuPercentOneCore": 24.981400847441062,
+      "CpuPercentMachine": 1.5613375529650664,
+      "LogicalProcessors": 16,
+      "MeanWorkMs": 4.11981661129568,
+      "P95WorkMs": 6.5473,
+      "MaxWorkMs": 10.5988,
+      "P95ScheduleLatenessMs": 0.5564,
+      "MaxScheduleLatenessMs": 0.6573,
+      "Before": {
+        "Pid": 13544,
+        "CpuMs": 10953.125,
+        "WorkingSet": 96722944,
+        "PrivateBytes": 63913984,
+        "Handles": 404,
+        "User": 5,
+        "Gdi": 7
+      },
+      "After": {
+        "Pid": 13544,
+        "CpuMs": 12203.125,
+        "WorkingSet": 47333376,
+        "PrivateBytes": 13529088,
+        "Handles": 405,
+        "User": 5,
+        "Gdi": 7
+      },
+      "ResourceSamples": [
+        {
+          "Pid": 13544,
+          "CpuMs": 11109.375,
+          "WorkingSet": 49479680,
+          "PrivateBytes": 15568896,
+          "Handles": 405,
+          "User": 5,
+          "Gdi": 7
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 11359.375,
+          "WorkingSet": 49401856,
+          "PrivateBytes": 15532032,
+          "Handles": 405,
+          "User": 5,
+          "Gdi": 7
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 11687.5,
+          "WorkingSet": 49397760,
+          "PrivateBytes": 15695872,
+          "Handles": 405,
+          "User": 5,
+          "Gdi": 7
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 11937.5,
+          "WorkingSet": 49393664,
+          "PrivateBytes": 15630336,
+          "Handles": 405,
+          "User": 5,
+          "Gdi": 7
+        },
+        {
+          "Pid": 13544,
+          "CpuMs": 12187.5,
+          "WorkingSet": 49389568,
+          "PrivateBytes": 15630336,
+          "Handles": 405,
+          "User": 5,
+          "Gdi": 7
+        }
+      ]
+    }
+  ],
+  "CaptureObserverBefore": {
+    "Pid": 26448,
+    "CpuMs": 187.5,
+    "WorkingSet": 58388480,
+    "PrivateBytes": 48201728,
+    "Handles": 441,
+    "User": 4,
+    "Gdi": 0
+  },
+  "CaptureObserverAfter": {
+    "Pid": 26448,
+    "CpuMs": 1281.25,
+    "WorkingSet": 60624896,
+    "PrivateBytes": 49115136,
+    "Handles": 438,
+    "User": 4,
+    "Gdi": 0
+  },
+  "RestorationVerified": true,
+  "RemainingRestoreFlags": 0,
+  "RemainingProbeProcesses": 0,
+  "OriginalUtilityStillRunning": true,
+  "Limitations": [
+    "No CursorShake application implementation. Two shared static native roles with synthetic ANI-like steps.",
+    "Role transitions tested at scale 96 with one explicit initial snapshot and out-of-context WinEvents; not all input/session/DPI scenarios.",
+    "Above 256 px presentation was verified in the actual DXGI desktop texture; pixels outside the monitor cannot be inspected.",
+    "Consumption numbers are this isolated publisher on this 16-logical-processor computer, not GPU/system-wide power or future SVG rasterizer cost.",
+    "Four cached native cursor images per test size; benchmark changes color each publication. No continuous vector-size rasterization pipeline implemented.",
+    "Six-second active stages and per-second resource snapshots cannot prove long-term leak freedom.",
+    "Failed earlier bench observer execution retained under ignored artifacts; canonical bench-02 completed with its observer alive."
+  ]
+}

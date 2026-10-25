@@ -1,0 +1,231 @@
+{
+  "Experiment": "Native system role updates while another process owns cursor",
+  "Date": "2026-10-25T12:50:58.1431836+01:00",
+  "Windows": "11 25H2 26200.9711",
+  "ReferenceRun": "artifacts/run-03",
+  "PublisherPid": 25476,
+  "HostPid": 42916,
+  "ExplorerPid": 25124,
+  "PublisherUsesSetCursor": false,
+  "RoleResults": [
+    {
+      "Role": 32516,
+      "PresentedUpdates": 4,
+      "HostSetCursorDuring": 0,
+      "MinLatencyMs": 0.2699,
+      "MaxLatencyMs": 1.5235
+    },
+    {
+      "Role": 32651,
+      "PresentedUpdates": 4,
+      "HostSetCursorDuring": 0,
+      "MinLatencyMs": 0.4071,
+      "MaxLatencyMs": 1.8502
+    },
+    {
+      "Role": 32631,
+      "PresentedUpdates": 4,
+      "HostSetCursorDuring": 0,
+      "MinLatencyMs": 0.4892,
+      "MaxLatencyMs": 2.5137
+    },
+    {
+      "Role": 32671,
+      "PresentedUpdates": 4,
+      "HostSetCursorDuring": 0,
+      "MinLatencyMs": 0.2888,
+      "MaxLatencyMs": 2.7309
+    },
+    {
+      "Role": 32672,
+      "PresentedUpdates": 4,
+      "HostSetCursorDuring": 0,
+      "MinLatencyMs": 0.4081,
+      "MaxLatencyMs": 2.9014
+    }
+  ],
+  "Explorer": {
+    "Name": "explorer",
+    "Status": "Observed",
+    "OwnerPid": 25124,
+    "PublisherPid": 25476,
+    "Observations": [
+      {
+        "Frame": 0,
+        "Size": 32,
+        "Ok": true,
+        "Error": 0,
+        "Observed": true,
+        "LatencyMs": 0.4795,
+        "OwnerPid": 25124,
+        "PositionUnchanged": true,
+        "HandleStable": true
+      },
+      {
+        "Frame": 1,
+        "Size": 64,
+        "Ok": true,
+        "Error": 0,
+        "Observed": true,
+        "LatencyMs": 0.3249,
+        "OwnerPid": 25124,
+        "PositionUnchanged": true,
+        "HandleStable": true
+      },
+      {
+        "Frame": 2,
+        "Size": 96,
+        "Ok": true,
+        "Error": 0,
+        "Observed": true,
+        "LatencyMs": 1.116,
+        "OwnerPid": 25124,
+        "PositionUnchanged": true,
+        "HandleStable": true
+      },
+      {
+        "Frame": 3,
+        "Size": 32,
+        "Ok": true,
+        "Error": 0,
+        "Observed": true,
+        "LatencyMs": 2.3026,
+        "OwnerPid": 25124,
+        "PositionUnchanged": true,
+        "HandleStable": true
+      }
+    ]
+  },
+  "PrivateCopyReceivesSystemUpdates": false,
+  "TimelineSourceRatesMs": [
+    300,
+    500,
+    700,
+    900
+  ],
+  "TimelineHostSetCursorDuring": 0,
+  "Timeline": [
+    {
+      "DueMs": 0,
+      "ObservedMs": 6.1375,
+      "Frame": 0,
+      "Size": 32,
+      "LatenessMs": 6.1375
+    },
+    {
+      "DueMs": 300,
+      "ObservedMs": 316.6693,
+      "Frame": 1,
+      "Size": 32,
+      "LatenessMs": 16.6693
+    },
+    {
+      "DueMs": 500,
+      "ObservedMs": 506.0103,
+      "Frame": 1,
+      "Size": 64,
+      "LatenessMs": 6.0103
+    },
+    {
+      "DueMs": 800,
+      "ObservedMs": 814.5335,
+      "Frame": 2,
+      "Size": 64,
+      "LatenessMs": 14.5335
+    },
+    {
+      "DueMs": 1000,
+      "ObservedMs": 1019.4493,
+      "Frame": 2,
+      "Size": 96,
+      "LatenessMs": 19.4493
+    },
+    {
+      "DueMs": 1200,
+      "ObservedMs": 1204.5321,
+      "Frame": 2,
+      "Size": 64,
+      "LatenessMs": 4.5321
+    },
+    {
+      "DueMs": 1500,
+      "ObservedMs": 1520.8837,
+      "Frame": 3,
+      "Size": 64,
+      "LatenessMs": 20.8837
+    },
+    {
+      "DueMs": 2000,
+      "ObservedMs": 2002.3936,
+      "Frame": 3,
+      "Size": 32,
+      "LatenessMs": 2.3936
+    },
+    {
+      "DueMs": 2400,
+      "ObservedMs": 2406.6505,
+      "Frame": 0,
+      "Size": 32,
+      "LatenessMs": 6.6505
+    },
+    {
+      "DueMs": 2700,
+      "ObservedMs": 2710.4129,
+      "Frame": 1,
+      "Size": 32,
+      "LatenessMs": 10.4129
+    },
+    {
+      "DueMs": 2900,
+      "ObservedMs": 2911.921,
+      "Frame": 1,
+      "Size": 64,
+      "LatenessMs": 11.921
+    },
+    {
+      "DueMs": 3200,
+      "ObservedMs": 3207.3545,
+      "Frame": 2,
+      "Size": 64,
+      "LatenessMs": 7.3545
+    },
+    {
+      "DueMs": 3400,
+      "ObservedMs": 3412.7602,
+      "Frame": 2,
+      "Size": 96,
+      "LatenessMs": 12.7602
+    },
+    {
+      "DueMs": 3600,
+      "ObservedMs": 3611.8756,
+      "Frame": 2,
+      "Size": 32,
+      "LatenessMs": 11.8756
+    },
+    {
+      "DueMs": 3900,
+      "ObservedMs": 3906.8184,
+      "Frame": 3,
+      "Size": 32,
+      "LatenessMs": 6.8184
+    }
+  ],
+  "TimelineObservationDurationMs": 4418.068,
+  "MaxTimelineObservedLatenessMs": 20.8837,
+  "RestorationVerified": true,
+  "RemainingRestoreFlags": 0,
+  "RemainingProbeProcesses": 0,
+  "OriginalUtilityPid": [
+    34288
+  ],
+  "OriginalUtilityStillRunning": true,
+  "Limitations": [
+    "One Windows build, one monitor, synthetic opaque static frames at 32/64/96 px.",
+    "Own timeline; not preserved Windows ANI timer. No production ANI decoder was implemented.",
+    "The identifier own-timeline-two-cycles covers 4.4 seconds and two entries to each step, not two complete 2.4-second loops.",
+    "No performance benchmark, continuous 60 Hz scaling, huge sizes, vector fidelity, alpha/mask or cross-DPI guarantee.",
+    "No native role-change observer, R-27 role restart or arbitrary application cursor replacement was implemented.",
+    "Help has an official SYSTEM_CURSOR_ID binding; Pen/Pin/Person behavior measured despite omission from SetSystemCursor parameter table."
+  ]
+}

@@ -1,0 +1,1062 @@
+{
+  "Probe": "ANI phase scale experiment, not CursorShake implementation",
+  "Date": "2026-10-25T01:37:06.6591334+02:00",
+  "OS": "Microsoft Windows NT 10.0.26200.0",
+  "ProcessId": 39084,
+  "SessionId": 1,
+  "QpcFrequency": 10000000,
+  "ExpectedRatesMs": [
+    300,
+    500,
+    700,
+    900
+  ],
+  "Output": "0,0,1920,1080",
+  "Failure": null,
+  "SystemRestored": true,
+  "BaselineUpPixelHash": "04BDB03692E2B30A043BC87815D2DD6630557A0ED72666DB59F21FB6ED7B045E",
+  "Cases": [
+    {
+      "Name": "same-handle-control",
+      "OffsetMs": 180,
+      "RequestedSize": 32,
+      "ActualResourceWidth": 32,
+      "BaselineFrameQpc": 3170979900923,
+      "BeforeQpc": 3170981907889,
+      "AfterQpc": 3170981909114,
+      "FrameBefore": 2,
+      "FirstFrameAfter": 3,
+      "FirstWidthAfter": 32,
+      "TimeToFirstChangeMs": 514.1755,
+      "TimeToFrame3Ms": 514.1755,
+      "ExpectedRemainingMs": 499.3034,
+      "Status": "Observed",
+      "Error": null
+    },
+    {
+      "Name": "LoadImage-same-ANI-request64",
+      "OffsetMs": 180,
+      "RequestedSize": 64,
+      "ActualResourceWidth": 64,
+      "BaselineFrameQpc": 3171043013018,
+      "BeforeQpc": 3171044881332,
+      "AfterQpc": 3171044884823,
+      "FrameBefore": 2,
+      "FirstFrameAfter": 0,
+      "FirstWidthAfter": 64,
+      "TimeToFirstChangeMs": 3.9481,
+      "TimeToFrame3Ms": null,
+      "ExpectedRemainingMs": 513.1686,
+      "Status": "Observed",
+      "Error": null
+    },
+    {
+      "Name": "LoadImage-prescaled-ANI64",
+      "OffsetMs": 180,
+      "RequestedSize": 64,
+      "ActualResourceWidth": 64,
+      "BaselineFrameQpc": 3171090070865,
+      "BeforeQpc": 3171092078771,
+      "AfterQpc": 3171092082030,
+      "FrameBefore": 2,
+      "FirstFrameAfter": 0,
+      "FirstWidthAfter": 64,
+      "TimeToFirstChangeMs": 0.9833,
+      "TimeToFrame3Ms": null,
+      "ExpectedRemainingMs": 499.20939999999996,
+      "Status": "Observed",
+      "Error": null
+    },
+    {
+      "Name": "LoadImage-prescaled-ANI64-offset50",
+      "OffsetMs": 50,
+      "RequestedSize": 64,
+      "ActualResourceWidth": 64,
+      "BaselineFrameQpc": 3171136996928,
+      "BeforeQpc": 3171137635166,
+      "AfterQpc": 3171137639521,
+      "FrameBefore": 2,
+      "FirstFrameAfter": 0,
+      "FirstWidthAfter": 64,
+      "TimeToFirstChangeMs": 3.1955,
+      "TimeToFrame3Ms": null,
+      "ExpectedRemainingMs": 636.1762,
+      "Status": "Observed",
+      "Error": null
+    },
+    {
+      "Name": "LoadImage-prescaled-ANI64-offset350",
+      "OffsetMs": 350,
+      "RequestedSize": 64,
+      "ActualResourceWidth": 64,
+      "BaselineFrameQpc": 3171177004132,
+      "BeforeQpc": 3171180576491,
+      "AfterQpc": 3171180579370,
+      "FrameBefore": 2,
+      "FirstFrameAfter": 0,
+      "FirstWidthAfter": 64,
+      "TimeToFirstChangeMs": 3.6713,
+      "TimeToFrame3Ms": 1137.1057,
+      "ExpectedRemainingMs": 342.7641,
+      "Status": "Observed",
+      "Error": null
+    },
+    {
+      "Name": "CopyImage-request64",
+      "OffsetMs": 180,
+      "RequestedSize": 64,
+      "ActualResourceWidth": 64,
+      "BaselineFrameQpc": 3171224026580,
+      "BeforeQpc": 3171226042631,
+      "AfterQpc": 3171226044898,
+      "FrameBefore": 2,
+      "FirstFrameAfter": 0,
+      "FirstWidthAfter": 64,
+      "TimeToFirstChangeMs": 0.4089,
+      "TimeToFrame3Ms": null,
+      "ExpectedRemainingMs": 498.3949,
+      "Status": "Observed",
+      "Error": null
+    },
+    {
+      "Name": "SetSystemCursor-prescaled-ANI64",
+      "OffsetMs": 180,
+      "RequestedSize": 64,
+      "ActualResourceWidth": 64,
+      "BaselineFrameQpc": 3171272033581,
+      "BeforeQpc": 3171274039641,
+      "AfterQpc": 3171274050211,
+      "FrameBefore": 2,
+      "FirstFrameAfter": 0,
+      "FirstWidthAfter": 64,
+      "TimeToFirstChangeMs": 1.396,
+      "TimeToFrame3Ms": null,
+      "ExpectedRemainingMs": 499.394,
+      "Status": "Observed",
+      "Error": null
+    }
+  ],
+  "Actions": [
+    {
+      "Qpc": 3170920840683,
+      "Kind": "BeforeSetCursor",
+      "Detail": "initial"
+    },
+    {
+      "Qpc": 3170920841281,
+      "Kind": "AfterSetCursor",
+      "Detail": "initial"
+    },
+    {
+      "Qpc": 3170949106201,
+      "Kind": "BeforeSetCursor",
+      "Detail": "fresh-baseline-32:same-handle-control"
+    },
+    {
+      "Qpc": 3170949106244,
+      "Kind": "AfterSetCursor",
+      "Detail": "fresh-baseline-32:same-handle-control"
+    },
+    {
+      "Qpc": 3170981907889,
+      "Kind": "Replace",
+      "Detail": "same-handle-control"
+    },
+    {
+      "Qpc": 3170981909091,
+      "Kind": "BeforeSetCursor",
+      "Detail": "same-handle-control"
+    },
+    {
+      "Qpc": 3170981909111,
+      "Kind": "AfterSetCursor",
+      "Detail": "same-handle-control"
+    },
+    {
+      "Qpc": 3170995625522,
+      "Kind": "BeforeSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-same-ANI-request64"
+    },
+    {
+      "Qpc": 3170995625552,
+      "Kind": "AfterSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-same-ANI-request64"
+    },
+    {
+      "Qpc": 3171044881332,
+      "Kind": "Replace",
+      "Detail": "LoadImage-same-ANI-request64"
+    },
+    {
+      "Qpc": 3171044884767,
+      "Kind": "BeforeSetCursor",
+      "Detail": "LoadImage-same-ANI-request64"
+    },
+    {
+      "Qpc": 3171044884819,
+      "Kind": "AfterSetCursor",
+      "Detail": "LoadImage-same-ANI-request64"
+    },
+    {
+      "Qpc": 3171058655170,
+      "Kind": "BeforeSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171058655225,
+      "Kind": "AfterSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171092078771,
+      "Kind": "Replace",
+      "Detail": "LoadImage-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171092081919,
+      "Kind": "BeforeSetCursor",
+      "Detail": "LoadImage-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171092081958,
+      "Kind": "AfterSetCursor",
+      "Detail": "LoadImage-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171105806635,
+      "Kind": "BeforeSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-prescaled-ANI64-offset50"
+    },
+    {
+      "Qpc": 3171105806655,
+      "Kind": "AfterSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-prescaled-ANI64-offset50"
+    },
+    {
+      "Qpc": 3171137635166,
+      "Kind": "Replace",
+      "Detail": "LoadImage-prescaled-ANI64-offset50"
+    },
+    {
+      "Qpc": 3171137639480,
+      "Kind": "BeforeSetCursor",
+      "Detail": "LoadImage-prescaled-ANI64-offset50"
+    },
+    {
+      "Qpc": 3171137639517,
+      "Kind": "AfterSetCursor",
+      "Detail": "LoadImage-prescaled-ANI64-offset50"
+    },
+    {
+      "Qpc": 3171151358206,
+      "Kind": "BeforeSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-prescaled-ANI64-offset350"
+    },
+    {
+      "Qpc": 3171151358259,
+      "Kind": "AfterSetCursor",
+      "Detail": "fresh-baseline-32:LoadImage-prescaled-ANI64-offset350"
+    },
+    {
+      "Qpc": 3171180576491,
+      "Kind": "Replace",
+      "Detail": "LoadImage-prescaled-ANI64-offset350"
+    },
+    {
+      "Qpc": 3171180579312,
+      "Kind": "BeforeSetCursor",
+      "Detail": "LoadImage-prescaled-ANI64-offset350"
+    },
+    {
+      "Qpc": 3171180579366,
+      "Kind": "AfterSetCursor",
+      "Detail": "LoadImage-prescaled-ANI64-offset350"
+    },
+    {
+      "Qpc": 3171194322029,
+      "Kind": "BeforeSetCursor",
+      "Detail": "fresh-baseline-32:CopyImage-request64"
+    },
+    {
+      "Qpc": 3171194322071,
+      "Kind": "AfterSetCursor",
+      "Detail": "fresh-baseline-32:CopyImage-request64"
+    },
+    {
+      "Qpc": 3171226042631,
+      "Kind": "Replace",
+      "Detail": "CopyImage-request64"
+    },
+    {
+      "Qpc": 3171226044864,
+      "Kind": "BeforeSetCursor",
+      "Detail": "CopyImage-request64"
+    },
+    {
+      "Qpc": 3171226044894,
+      "Kind": "AfterSetCursor",
+      "Detail": "CopyImage-request64"
+    },
+    {
+      "Qpc": 3171239966978,
+      "Kind": "BeforeSetSystemCursor",
+      "Detail": "baseline-32"
+    },
+    {
+      "Qpc": 3171239969395,
+      "Kind": "AfterSetSystemCursor",
+      "Detail": "baseline-32"
+    },
+    {
+      "Qpc": 3171274039641,
+      "Kind": "Replace",
+      "Detail": "SetSystemCursor-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171274048166,
+      "Kind": "BeforeSetSystemCursor",
+      "Detail": "SetSystemCursor-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171274050200,
+      "Kind": "AfterSetSystemCursor",
+      "Detail": "SetSystemCursor-prescaled-ANI64"
+    },
+    {
+      "Qpc": 3171286191949,
+      "Kind": "RestoredSystem",
+      "Detail": "baseline pixel hash verified"
+    }
+  ],
+  "Samples": [
+    {
+      "Qpc": 3170920849450,
+      "MouseQpc": 3170920773767,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3170920869811,
+      "MouseQpc": 3170920850708,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170924024836,
+      "MouseQpc": 3170924020574,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170928999532,
+      "MouseQpc": 3170928997292,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170935916200,
+      "MouseQpc": 3170935875981,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170944902512,
+      "MouseQpc": 3170944900408,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170947924720,
+      "MouseQpc": 3170947876818,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170949107503,
+      "MouseQpc": 3170949105748,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170953040104,
+      "MouseQpc": 3170953000734,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170955937154,
+      "MouseQpc": 3170955931123,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170962952577,
+      "MouseQpc": 3170962950955,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170971971114,
+      "MouseQpc": 3170971968443,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170974961690,
+      "MouseQpc": 3170974925562,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170979900923,
+      "MouseQpc": 3170979897306,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170987049644,
+      "MouseQpc": 3170987047725,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170995626371,
+      "MouseQpc": 3170995625344,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170995934761,
+      "MouseQpc": 3170995912716,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3170995943214,
+      "MouseQpc": 3170995914178,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171002015239,
+      "MouseQpc": 3171002012165,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171010877151,
+      "MouseQpc": 3171010841211,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171014106921,
+      "MouseQpc": 3171014104339,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171019082930,
+      "MouseQpc": 3171019063088,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171025899526,
+      "MouseQpc": 3171025896493,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171034907767,
+      "MouseQpc": 3171034906441,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171037906499,
+      "MouseQpc": 3171037873698,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171043013018,
+      "MouseQpc": 3171043011295,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171044920813,
+      "MouseQpc": 3171044884460,
+      "Frame": 0,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171050033198,
+      "MouseQpc": 3171050026806,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171050967291,
+      "MouseQpc": 3171050958216,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171057977823,
+      "MouseQpc": 3171057972473,
+      "Frame": 3,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171058687260,
+      "MouseQpc": 3171058654803,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171067036414,
+      "MouseQpc": 3171067034327,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171072941828,
+      "MouseQpc": 3171072938886,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171081970675,
+      "MouseQpc": 3171081942163,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171084903885,
+      "MouseQpc": 3171084901441,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171090070865,
+      "MouseQpc": 3171090032747,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171092088604,
+      "MouseQpc": 3171092081573,
+      "Frame": 0,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171097064692,
+      "MouseQpc": 3171097060666,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171098047617,
+      "MouseQpc": 3171098014193,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171104996384,
+      "MouseQpc": 3171104994132,
+      "Frame": 3,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171105822723,
+      "MouseQpc": 3171105806458,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171114036837,
+      "MouseQpc": 3171114035389,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171115957236,
+      "MouseQpc": 3171115909012,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171119977589,
+      "MouseQpc": 3171119969370,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171129062624,
+      "MouseQpc": 3171129061809,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171132054599,
+      "MouseQpc": 3171132006899,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171136996928,
+      "MouseQpc": 3171136995825,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171137667121,
+      "MouseQpc": 3171137639152,
+      "Frame": 0,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171144013532,
+      "MouseQpc": 3171144009849,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171144956079,
+      "MouseQpc": 3171144922226,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171151365155,
+      "MouseQpc": 3171151357833,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171152077561,
+      "MouseQpc": 3171152063681,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171152989708,
+      "MouseQpc": 3171152979783,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171159979414,
+      "MouseQpc": 3171159977559,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171169051978,
+      "MouseQpc": 3171169048877,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171172036212,
+      "MouseQpc": 3171172001756,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171177004132,
+      "MouseQpc": 3171177002668,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171180613204,
+      "MouseQpc": 3171180579001,
+      "Frame": 0,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171184000018,
+      "MouseQpc": 3171183991908,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171184931241,
+      "MouseQpc": 3171184923716,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171191947548,
+      "MouseQpc": 3171191944279,
+      "Frame": 3,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171194355165,
+      "MouseQpc": 3171194321696,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171200941839,
+      "MouseQpc": 3171200939633,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171205969558,
+      "MouseQpc": 3171205968507,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171207131742,
+      "MouseQpc": 3171207073667,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171215942977,
+      "MouseQpc": 3171215941463,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171219074987,
+      "MouseQpc": 3171219050481,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171224026580,
+      "MouseQpc": 3171224019878,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171226046720,
+      "MouseQpc": 3171226044539,
+      "Frame": 0,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171239971582,
+      "MouseQpc": 3171239970354,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171243227658,
+      "MouseQpc": 3171243167574,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171248153389,
+      "MouseQpc": 3171248150426,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171255078096,
+      "MouseQpc": 3171255031458,
+      "Frame": 3,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171264041986,
+      "MouseQpc": 3171264038970,
+      "Frame": 0,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171267010069,
+      "MouseQpc": 3171267007992,
+      "Frame": 1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171272033581,
+      "MouseQpc": 3171272005477,
+      "Frame": 2,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171274053601,
+      "MouseQpc": 3171274049507,
+      "Frame": 0,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171278984351,
+      "MouseQpc": 3171278981050,
+      "Frame": 1,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171279957481,
+      "MouseQpc": 3171279919487,
+      "Frame": 2,
+      "Width": 64,
+      "Height": 64,
+      "Visible": true,
+      "Confidence": 1
+    },
+    {
+      "Qpc": 3171286187780,
+      "MouseQpc": 3171286173110,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    },
+    {
+      "Qpc": 3171287733925,
+      "MouseQpc": 3171287730168,
+      "Frame": -1,
+      "Width": 32,
+      "Height": 32,
+      "Visible": true,
+      "Confidence": 0
+    }
+  ]
+}

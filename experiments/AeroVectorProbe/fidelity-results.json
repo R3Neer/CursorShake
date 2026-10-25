@@ -1,0 +1,261 @@
+{
+  "description": "Chromium rasterization at 64 px compared with source ANI on white; approximate reconstruction, not identity proof",
+  "comparisons": [
+    {
+      "role": "wait",
+      "frame": 0,
+      "meanAbsChannel": 1.195068359375,
+      "rmseChannel": 4.564613166455072,
+      "supportMeanAbsChannel": 4.469426152398871
+    },
+    {
+      "role": "wait",
+      "frame": 1,
+      "meanAbsChannel": 1.201904296875,
+      "rmseChannel": 4.50328113886142,
+      "supportMeanAbsChannel": 4.495300751879699
+    },
+    {
+      "role": "wait",
+      "frame": 2,
+      "meanAbsChannel": 1.1866861979166667,
+      "rmseChannel": 4.4287986872853,
+      "supportMeanAbsChannel": 4.43295739348371
+    },
+    {
+      "role": "wait",
+      "frame": 3,
+      "meanAbsChannel": 1.2236328125,
+      "rmseChannel": 4.62401453465132,
+      "supportMeanAbsChannel": 4.573308270676692
+    },
+    {
+      "role": "wait",
+      "frame": 4,
+      "meanAbsChannel": 1.2232259114583333,
+      "rmseChannel": 4.648439688374835,
+      "supportMeanAbsChannel": 4.573621553884712
+    },
+    {
+      "role": "wait",
+      "frame": 5,
+      "meanAbsChannel": 1.2076009114583333,
+      "rmseChannel": 4.5772894573144125,
+      "supportMeanAbsChannel": 4.513471177944862
+    },
+    {
+      "role": "wait",
+      "frame": 6,
+      "meanAbsChannel": 1.1949869791666667,
+      "rmseChannel": 4.420669373334013,
+      "supportMeanAbsChannel": 4.464912280701754
+    },
+    {
+      "role": "wait",
+      "frame": 7,
+      "meanAbsChannel": 1.1969401041666667,
+      "rmseChannel": 4.511198450338151,
+      "supportMeanAbsChannel": 4.472926447574335
+    },
+    {
+      "role": "wait",
+      "frame": 8,
+      "meanAbsChannel": 1.2198079427083333,
+      "rmseChannel": 4.650802532112961,
+      "supportMeanAbsChannel": 4.56234335839599
+    },
+    {
+      "role": "wait",
+      "frame": 9,
+      "meanAbsChannel": 1.203125,
+      "rmseChannel": 4.5919072267595595,
+      "supportMeanAbsChannel": 4.496240601503759
+    },
+    {
+      "role": "wait",
+      "frame": 10,
+      "meanAbsChannel": 1.206298828125,
+      "rmseChannel": 4.555886688189798,
+      "supportMeanAbsChannel": 4.512218045112782
+    },
+    {
+      "role": "wait",
+      "frame": 11,
+      "meanAbsChannel": 1.1902669270833333,
+      "rmseChannel": 4.469478378867792,
+      "supportMeanAbsChannel": 4.446741854636591
+    },
+    {
+      "role": "wait",
+      "frame": 12,
+      "meanAbsChannel": 1.2259114583333333,
+      "rmseChannel": 4.65544595966201,
+      "supportMeanAbsChannel": 4.582080200501253
+    },
+    {
+      "role": "wait",
+      "frame": 13,
+      "meanAbsChannel": 1.2176920572916667,
+      "rmseChannel": 4.613751453422511,
+      "supportMeanAbsChannel": 4.552318295739348
+    },
+    {
+      "role": "wait",
+      "frame": 14,
+      "meanAbsChannel": 1.2176106770833333,
+      "rmseChannel": 4.613566244195843,
+      "supportMeanAbsChannel": 4.552005012531328
+    },
+    {
+      "role": "wait",
+      "frame": 15,
+      "meanAbsChannel": 1.2138671875,
+      "rmseChannel": 4.515111346218386,
+      "supportMeanAbsChannel": 4.537593984962406
+    },
+    {
+      "role": "wait",
+      "frame": 16,
+      "meanAbsChannel": 1.2228190104166667,
+      "rmseChannel": 4.616740231438556,
+      "supportMeanAbsChannel": 4.57245696400626
+    },
+    {
+      "role": "wait",
+      "frame": 17,
+      "meanAbsChannel": 1.2366536458333333,
+      "rmseChannel": 4.708736616209632,
+      "supportMeanAbsChannel": 4.62719298245614
+    },
+    {
+      "role": "working",
+      "frame": 0,
+      "meanAbsChannel": 2.2119954427083335,
+      "rmseChannel": 11.172399463214024,
+      "supportMeanAbsChannel": 10.347206165703275
+    },
+    {
+      "role": "working",
+      "frame": 1,
+      "meanAbsChannel": 2.19873046875,
+      "rmseChannel": 11.159174745006162,
+      "supportMeanAbsChannel": 10.284393063583815
+    },
+    {
+      "role": "working",
+      "frame": 2,
+      "meanAbsChannel": 2.1932779947916665,
+      "rmseChannel": 11.144393647284046,
+      "supportMeanAbsChannel": 10.258574181117533
+    },
+    {
+      "role": "working",
+      "frame": 3,
+      "meanAbsChannel": 2.1942545572916665,
+      "rmseChannel": 11.14194709312702,
+      "supportMeanAbsChannel": 10.26319845857418
+    },
+    {
+      "role": "working",
+      "frame": 4,
+      "meanAbsChannel": 2.1905110677083335,
+      "rmseChannel": 11.133252001558589,
+      "supportMeanAbsChannel": 10.245472061657033
+    },
+    {
+      "role": "working",
+      "frame": 5,
+      "meanAbsChannel": 2.1935221354166665,
+      "rmseChannel": 11.146551281394169,
+      "supportMeanAbsChannel": 10.259730250481695
+    },
+    {
+      "role": "working",
+      "frame": 6,
+      "meanAbsChannel": 2.1873372395833335,
+      "rmseChannel": 11.131691281258657,
+      "supportMeanAbsChannel": 10.23044315992293
+    },
+    {
+      "role": "working",
+      "frame": 7,
+      "meanAbsChannel": 2.1935221354166665,
+      "rmseChannel": 11.151171813423915,
+      "supportMeanAbsChannel": 10.259730250481695
+    },
+    {
+      "role": "working",
+      "frame": 8,
+      "meanAbsChannel": 2.2079264322916665,
+      "rmseChannel": 11.16028682217106,
+      "supportMeanAbsChannel": 10.327938342967245
+    },
+    {
+      "role": "working",
+      "frame": 9,
+      "meanAbsChannel": 2.2032063802083335,
+      "rmseChannel": 11.15119735606712,
+      "supportMeanAbsChannel": 10.305587668593448
+    },
+    {
+      "role": "working",
+      "frame": 10,
+      "meanAbsChannel": 2.1985677083333335,
+      "rmseChannel": 11.149047920394368,
+      "supportMeanAbsChannel": 10.283622350674374
+    },
+    {
+      "role": "working",
+      "frame": 11,
+      "meanAbsChannel": 2.2010091145833335,
+      "rmseChannel": 11.156826257292737,
+      "supportMeanAbsChannel": 10.295183044315992
+    },
+    {
+      "role": "working",
+      "frame": 12,
+      "meanAbsChannel": 2.2103678385416665,
+      "rmseChannel": 11.18926385652969,
+      "supportMeanAbsChannel": 10.339499036608863
+    },
+    {
+      "role": "working",
+      "frame": 13,
+      "meanAbsChannel": 2.2162272135416665,
+      "rmseChannel": 11.210952925366856,
+      "supportMeanAbsChannel": 10.367244701348747
+    },
+    {
+      "role": "working",
+      "frame": 14,
+      "meanAbsChannel": 2.2129720052083335,
+      "rmseChannel": 11.198700311727027,
+      "supportMeanAbsChannel": 10.351830443159923
+    },
+    {
+      "role": "working",
+      "frame": 15,
+      "meanAbsChannel": 2.2019856770833335,
+      "rmseChannel": 11.159736266671658,
+      "supportMeanAbsChannel": 10.29980732177264
+    },
+    {
+      "role": "working",
+      "frame": 16,
+      "meanAbsChannel": 2.2056477864583335,
+      "rmseChannel": 11.162525225102144,
+      "supportMeanAbsChannel": 10.317148362235068
+    },
+    {
+      "role": "working",
+      "frame": 17,
+      "meanAbsChannel": 2.2093098958333335,
+      "rmseChannel": 11.16438778829811,
+      "supportMeanAbsChannel": 10.334489402697494
+    }
+  ],
+  "meanAbsChannelByRole": {
+    "wait": 1.210227683738426,
+    "working": 2.201687282986111
+  }
+}

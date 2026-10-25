@@ -1,0 +1,31 @@
+<div id="aero-vector-compare">
+ <div class="viz-controls">
+  <label class="form-label">Estado <select class="form-select" id="wc-role"><option value="wait">Ocupado: solo indicador de espera</option><option value="working">Trabajando: flecha e indicador</option></select></label>
+  <label class="form-label">Tamaño <span id="wc-size-value" class="tabular-nums">192 px</span><input class="form-range" id="wc-size" type="range" min="32" max="256" step="16" value="192"></label>
+  <label class="form-label">Fotograma <span id="wc-frame-value" class="tabular-nums">1 / 18</span><input class="form-range" id="wc-frame" type="range" min="0" max="17" value="0"></label><button class="btn" id="wc-play" type="button">Pausar animación</button>
+ </div>
+ <div class="viz-grid">
+  <section><h3>Aero actual · animado</h3><div class="wc-stage"><canvas id="wc-aero" width="512" height="512" role="img" aria-label="Fotogramas originales del cursor Aero, con sus tiempos originales"></canvas></div><div class="text-small">Original raster · fuente de 64 × 64 px</div></section>
+  <section><h3>Recreación vectorial · animada</h3><div class="wc-stage"><img id="wc-vector" alt="Recreación vectorial del mismo paso de Aero"></div><div class="text-small">Geometría nueva · aproximación de Aero</div></section>
+ </div>
+</div>
+<style>
+#aero-vector-compare .wc-stage{height:280px;display:flex;align-items:center;justify-content:center;background:var(--muted);overflow:hidden}
+#aero-vector-compare canvas{width:256px;height:256px;max-width:100%}
+#aero-vector-compare #wc-vector{width:192px;height:192px;max-width:100%}
+</style>
+<script>
+(()=>{
+ const root=document.getElementById('aero-vector-compare');
+ const data=__CURSOR_DATA__;
+ const role=root.querySelector('#wc-role'),size=root.querySelector('#wc-size'),value=root.querySelector('#wc-size-value'),button=root.querySelector('#wc-play'),canvas=root.querySelector('#wc-aero'),vector=root.querySelector('#wc-vector');
+ const frame=root.querySelector('#wc-frame'),frameValue=root.querySelector('#wc-frame-value');const ctx=canvas.getContext('2d');let active='wait',playing=!matchMedia('(prefers-reduced-motion: reduce)').matches,time=0,last=performance.now();
+ const images={};Object.keys(data).forEach(k=>images[k]=data[k].frames.map(src=>{const im=new Image();im.src=src;return im}));
+ function update(){active=role.value;vector.style.width=vector.style.height=size.value+'px';value.textContent=size.value+' px';button.textContent=playing?'Pausar animación':'Reproducir animación'}
+ function save(){if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{role:active,sizePx:+size.value,playing}}).catch(()=>{})}
+ function restore(state){const s=state?.modelContent;if(!s)return;if(data[s.role])role.value=s.role;if(s.sizePx>=32&&s.sizePx<=256)size.value=s.sizePx;if(typeof s.playing==='boolean')playing=s.playing;update()}
+ role.addEventListener('change',()=>{time=0;update();save()});size.addEventListener('input',()=>{update();save()});button.addEventListener('click',()=>{playing=!playing;update();save()});
+ restore(window.openai?.widgetState);window.addEventListener('openai:set_globals',e=>restore(e.detail?.globals?.widgetState));update();
+ frame.addEventListener('input',()=>{playing=false;time=Number(frame.value)*50;update();save()});let previous='';function draw(now){if(playing)time+=Math.min(now-last,100);last=now;const d=data[active],total=d.durations.reduce((a,b)=>a+b,0);let t=time%total,index=0;while(index<d.durations.length-1&&t>=d.durations[index])t-=d.durations[index++];const key=active+'-'+index;if(previous!==key){vector.src=d.vectors[d.sequence[index]];frame.value=index;frameValue.textContent=(index+1)+' / 18';previous=key}const im=images[active][d.sequence[index]];ctx.clearRect(0,0,512,512);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';const px=+size.value*2;if(im.complete&&im.naturalWidth)ctx.drawImage(im,(512-px)/2,(512-px)/2,px,px);requestAnimationFrame(draw)}requestAnimationFrame(draw);
+})();
+</script>

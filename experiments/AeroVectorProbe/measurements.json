@@ -1,0 +1,304 @@
+[
+  {
+    "role": "wait",
+    "sourceName": "aero_busy.ani",
+    "sourceSha256": "ff38afb523490e1a9f157c0447bc616b19c22df88bdb45c163243d834e9745f8",
+    "nativeSize": [
+      64,
+      64
+    ],
+    "hotspot": [
+      32,
+      32
+    ],
+    "frames": 18,
+    "stepDurationsMs": [
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0
+    ],
+    "geometry": {
+      "centerX": 32,
+      "centerY": 32,
+      "innerRadius": 11.7,
+      "outerRadius": 19.8
+    },
+    "fits": [
+      {
+        "centerDegrees": 189.966,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.4009
+      },
+      {
+        "centerDegrees": 209.944,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.1383
+      },
+      {
+        "centerDegrees": 229.96,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.3703
+      },
+      {
+        "centerDegrees": 249.749,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.4218
+      },
+      {
+        "centerDegrees": 269.846,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.5294
+      },
+      {
+        "centerDegrees": 290.024,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.372
+      },
+      {
+        "centerDegrees": 309.845,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.359
+      },
+      {
+        "centerDegrees": 329.711,
+        "halfWidthDegrees": 33.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.8469
+      },
+      {
+        "centerDegrees": 349.782,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.3911
+      },
+      {
+        "centerDegrees": 9.966,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.4009
+      },
+      {
+        "centerDegrees": 29.944,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.1383
+      },
+      {
+        "centerDegrees": 49.96,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.3703
+      },
+      {
+        "centerDegrees": 69.749,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.4218
+      },
+      {
+        "centerDegrees": 110.024,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.372
+      },
+      {
+        "centerDegrees": 110.024,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.372
+      },
+      {
+        "centerDegrees": 129.845,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.359
+      },
+      {
+        "centerDegrees": 149.711,
+        "halfWidthDegrees": 33.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.8469
+      },
+      {
+        "centerDegrees": 169.782,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.3911
+      }
+    ],
+    "approximation": true
+  },
+  {
+    "role": "working",
+    "sourceName": "aero_working.ani",
+    "sourceSha256": "f8b6c2a7e5913f6f39426dcce80404922c91cac458b5c8ec5f0d8c341cec7715",
+    "nativeSize": [
+      64,
+      64
+    ],
+    "hotspot": [
+      0,
+      16
+    ],
+    "frames": 18,
+    "stepDurationsMs": [
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0
+    ],
+    "geometry": {
+      "centerX": 28.5,
+      "centerY": 16.5,
+      "innerRadius": 8.75,
+      "outerRadius": 15.05
+    },
+    "fits": [
+      {
+        "centerDegrees": 189.854,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.9313
+      },
+      {
+        "centerDegrees": 209.796,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.4624
+      },
+      {
+        "centerDegrees": 230.039,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.6017
+      },
+      {
+        "centerDegrees": 249.939,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.851
+      },
+      {
+        "centerDegrees": 270.0,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.0307
+      },
+      {
+        "centerDegrees": 290.061,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.851
+      },
+      {
+        "centerDegrees": 309.961,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.6017
+      },
+      {
+        "centerDegrees": 330.286,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.3778
+      },
+      {
+        "centerDegrees": 350.146,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.9313
+      },
+      {
+        "centerDegrees": 9.854,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.9313
+      },
+      {
+        "centerDegrees": 29.796,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.4624
+      },
+      {
+        "centerDegrees": 50.039,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.6017
+      },
+      {
+        "centerDegrees": 69.939,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.851
+      },
+      {
+        "centerDegrees": 90.0,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 1.0307
+      },
+      {
+        "centerDegrees": 110.061,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.851
+      },
+      {
+        "centerDegrees": 129.961,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.6017
+      },
+      {
+        "centerDegrees": 150.286,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.3778
+      },
+      {
+        "centerDegrees": 170.146,
+        "halfWidthDegrees": 34.0,
+        "fadeDegrees": 6.0,
+        "interiorColorRmse": 0.9313
+      }
+    ],
+    "approximation": true
+  }
+]
