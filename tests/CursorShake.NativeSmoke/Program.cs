@@ -5,6 +5,8 @@ internal static class Program
     [STAThread]
     private static int Main(string[] args)
     {
+        if (args.Length == 3 && args[0] == "--reset-registered-scheme") { var result=CursorShake.Windows.Recovery.RecoveryBootstrap.ResetToRegisteredScheme(Path.GetFullPath(args[1])); File.WriteAllText(Path.GetFullPath(args[2]),System.Text.Json.JsonSerializer.Serialize(result,new System.Text.Json.JsonSerializerOptions{WriteIndented=true})); return result.AllOwnedRestored?0:1; }
+        if (args.Length == 5 && args[0] == "--engine-failure-regressions") return EngineFailureRegressionSmoke.Run(Path.GetFullPath(args[1]),Path.GetFullPath(args[2]),Path.GetFullPath(args[3]),Path.GetFullPath(args[4]));
         if (args.Length == 3 && args[0] == "--maintenance-close") { using var target=System.Diagnostics.Process.GetProcessById(int.Parse(args[1],System.Globalization.CultureInfo.InvariantCulture)); if(!string.Equals(target.MainModule?.FileName,Path.GetFullPath(args[2]),StringComparison.OrdinalIgnoreCase))throw new IOException("Process path differs from the requested installed executable."); using var timeout=new CancellationTokenSource(TimeSpan.FromSeconds(30)); CursorShake.Windows.Lifecycle.MaintenanceEndpoint.RequestShutdownAndWaitAsync(target,timeout.Token).GetAwaiter().GetResult(); return 0; }
         if (args.Length == 2 && args[0] == "--startup-logon-info") { File.WriteAllText(Path.GetFullPath(args[1]),System.Text.Json.JsonSerializer.Serialize(CursorShake.Windows.Lifecycle.StartupTimingProbe.ReadCurrentLogon(),new System.Text.Json.JsonSerializerOptions{WriteIndented=true})); return 0; }
         if (args.Length == 3 && args[0] == "--installer-wizard-preview") return InstallerWizardPreview.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]));

@@ -83,7 +83,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         Enqueue(()=>
         {
             try{Apply(prepared,maxScale);result.SetResult(new(true));}
-            catch(Exception ex){result.SetResult(new(false,ex.Message));Error?.Invoke(ex.Message);}
+            catch(Exception ex){result.SetResult(new(false,ex.Message));}
         });return result.Task;
     }
     private void Apply(PreparedTheme prepared,double maxScale)
@@ -109,7 +109,11 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
             if(previous!=null&&!session.IsExternalChangeDetected)
             {
                 try{foreach(var role in CursorRoles.All){var a=previous.Roles[role];Publish(role,a.Frames[a.Steps[0].FrameIndex],normalSize,0);}}
-                catch(Exception rollback){MarkFailed();Error?.Invoke("Theme rollback failed: "+rollback.Message);}
+                catch(Exception rollback)
+                {
+                    if(session.IsExternalChangeDetected)SetStatus(CursorEngineStatus.ExternalChange);
+                    else{MarkFailed();Error?.Invoke("Theme rollback failed: "+rollback.Message);}
+                }
             }
             else if(session.IsExternalChangeDetected)SetStatus(CursorEngineStatus.ExternalChange);else MarkFailed();
             throw;
@@ -250,9 +254,19 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
             }
             catch(Exception ex)
             {
-                MarkFailed();
-                try{Error?.Invoke(ex.ToString());}catch{}
-                // Keep the command loop alive: Stop must still drain and restore after a renderer failure.
+                if(session.IsExternalChangeDetected)
+                {
+                    // Native ownership was ceded, so no later publication or automatic baseline adoption
+                    // is allowed. This is a semantic external change, not a failed rasterizer.
+                    lock(gate){targetScale=1;hardEpoch++;normalize.Clear();Interlocked.Exchange(ref latestScaleRequest,null);}
+                    SetStatus(CursorEngineStatus.ExternalChange);
+                }
+                else
+                {
+                    MarkFailed();
+                    try{Error?.Invoke(ex.ToString());}catch{}
+                }
+                // Keep the command loop alive: Stop must still drain and attempt owned restoration.
             }
         }
     }

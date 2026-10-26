@@ -347,7 +347,7 @@ public sealed class AppHost : ApplicationContext
                 try
                 {
                     var pendingRecovery=RecoveryBootstrap.Inspect(options.StateDirectory);
-                    if(pendingRecovery.Count>0)failures.Add(new IOException("Se conserva una recuperación pendiente; no se permite retirar los recursos de la aplicación.\n"+string.Join(Environment.NewLine,pendingRecovery.Select(x=>x.Summary))));
+                    if(pendingRecovery.Count>0)failures.Add(new IOException("Se conservan recibos de recuperación pendientes; no se permite retirar los recursos de la aplicación. Resuelve la recuperación al volver a abrir CursorShake. Durante este cierre la propia instancia todavía puede figurar como viva.\n"+string.Join(Environment.NewLine,pendingRecovery.Select(x=>x.DirectoryPath))));
                 }
                 catch(Exception error){failures.Add(error);}
             }
