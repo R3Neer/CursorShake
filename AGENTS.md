@@ -4,6 +4,7 @@
 
 - Copia canónica: D:\Desarrollo\Proyectos\Herramientas\CursorShake. Preservar cambios locales y retiradas deliberadas; no reset/clean ni recrear documentos históricos.
 - Fase actual: implementación autorizada expresamente por el usuario hasta ejecutable autónomo con GUI, temas, recuperación, pruebas y revisión. Autorizados crear proyectos, compilar y probar; fases 2 a 5 del instalador autorizadas: receta, integración, mantenimiento y QA real. Instalar/actualizar/desinstalar temporalmente solo con preflight de destinos y registros, respaldo/restauración verificada de la tarea por usuario y conservación de datos personales. No cerrar sesiones ni reiniciar el equipo; la instancia personal se conserva durante las pruebas que no requieran cierre. La elevación real depende de UAC, nunca se elude. Sin release.
+- Aceptación de logon autorizada el 26-oct-2026: instalación definitiva en D:\Program Files\CursorShake con inicio para la cuenta actual; conservarla activa. Sonda temporal armada para la próxima sesión; no cerrar sesión por el usuario ni confundir calibración con aceptación. Retirar la solicitud tras leer el resultado.
 - Distribución: versión de proyecto 1.0.0. No crear la primera release de GitHub hasta que el instalador esté listo, según instrucción expresa del usuario.
 - El usuario dirige comportamiento del dominio. Detalles técnicos de integración delegados pueden concretarse y documentarse; consultar cambios materiales del comportamiento o limitaciones nuevas.
 

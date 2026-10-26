@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CursorShake.App.Dialogs;
@@ -49,6 +49,8 @@ public sealed class AppHost : ApplicationContext
     private volatile bool closing,userPaused,engineUnavailable=true;
     private readonly SessionAvailability session=new(Process.GetCurrentProcess().SessionId);
     private bool initializationFailed,lifecycleBusy,starting,maintenanceShutdown;
+    private bool startupInitialized;
+    private readonly StartupTimingProbe? startupTiming;
     private bool startupEnabled,systemEventsSubscribed;
     private AppConfiguration? effective;
     private string? pending;
@@ -63,6 +65,7 @@ public sealed class AppHost : ApplicationContext
     public AppHost(AppHostOptions? options=null)
     {
         this.options=options??new();
+        startupTiming=this.options.PersistLocator?StartupTimingProbe.TryBegin(this.options.ExecutablePath):null;
         // Validate persistent state before allocating a tray icon or native UI handle.
         workspace=new WorkspaceStore(this.options.WorkspaceRoot,this.options.StateDirectory,this.options.PersistLocator);
         preparer=new ThemePreparer(this.options.BundledThemes);startup=new StartupRegistration(this.options.ExecutablePath);
@@ -85,7 +88,7 @@ public sealed class AppHost : ApplicationContext
     private async Task StartAsync()
     {
         if(starting)throw new InvalidOperationException("An application initialization is already running.");
-        starting=true;
+        starting=true;startupInitialized=false;
         try
         {
             if(closing)return;
@@ -115,6 +118,7 @@ public sealed class AppHost : ApplicationContext
             engine.ObserveSystemCursor();
             statusText=effective==null?"Configuración con errores":StatusLabel(engine.Status);
             ShowWorkspaceNotices();
+            startupInitialized=true;
             UpdateTray();
         }
         catch(Exception ex)
@@ -153,6 +157,7 @@ public sealed class AppHost : ApplicationContext
         var configuration=effective??new AppConfiguration();
         var themes=preparer.AvailableThemes(configuration).ToDictionary(id=>id,id=>id switch{"windows"=>"Windows","bibata-ice"=>"Bibata Ice","nordzy-white"=>"Nordzy blanco",_=>id},StringComparer.OrdinalIgnoreCase);
         tray.Update(new(){ThemeId=configuration.Theme,Paused=userPaused||session.IsUnavailable,StartupEnabled=startupEnabled,HasErrors=diagnostics.HasErrors,PendingTheme=pending,StatusText=userPaused?"Pausado":statusText,Themes=themes});
+        if(startupInitialized && !initializationFailed && effective!=null && source!=null && !ShouldRemainSuspended())startupTiming?.RecordOperational();
     }
     private async void OnAction(TrayAction action)
     {
