@@ -1,18 +1,20 @@
 # CursorShake — experiencia de usuario y distribución
 
-Comportamiento acordado, sin implementar. [Arquitectura](Arquitectura.md) contiene los protocolos técnicos; [ConfiguracionInicial](ConfiguracionInicial.md), los defaults; [FormatosCursores](FormatosCursores.md), los recursos admitidos.
+Comportamiento acordado; ejecutable y GUI implementados; evidencia y límites de validación en Arquitectura9. El instalador queda fuera del hito actual. [Arquitectura](Arquitectura.md) contiene los protocolos técnicos; [ConfiguracionInicial](ConfiguracionInicial.md), los defaults; [FormatosCursores](FormatosCursores.md), los recursos admitidos.
 
 ## 1. Instalación y primera ejecución
 
-El usuario descargará CursorShake-Setup.exe de GitHub Releases. El instalador permite elegir carpeta de binarios, registra desinstalación y acceso en Inicio. Ofrece «Iniciar con Windows» y «Ejecutar al terminar» marcados y desmarcables. Ejecutar con identidad/sesión del usuario correcto, incluso si el destino requiere elevación. La aplicación trabaja normalmente sin administrador; no exige SDK ni instalación manual de .NET.
+El hito actual entrega artifacts/publish/win-x64/CursorShake.exe junto con dependencias, RecoveryGuard, temas y avisos; conservar la carpeta completa. No hay release público ni instalador todavía. Ejecutar el EXE no registra inicio automático por sí solo.
 
-La primera ejecución asegura config.toml, prepara el tema, habilita el gesto y aparece en bandeja. Explicación breve de acceso a configuración y posible presencia del icono en el desplegable de Windows. Una segunda apertura no duplica instancia en la misma sesión. Plataforma inicial objetivo: consola local Windows11x64, pendiente de certificación con producto real.
+En la fase de instalador, el usuario descargará CursorShake-Setup.exe de GitHub Releases. El instalador permite elegir carpeta de binarios, registra desinstalación y acceso en Inicio. Ofrece «Iniciar con Windows» y «Ejecutar al terminar» marcados y desmarcables. Ejecutar con identidad/sesión del usuario correcto, incluso si el destino requiere elevación. La aplicación trabaja normalmente sin administrador; no exige SDK ni instalación manual de .NET.
+
+La primera ejecución asegura config.toml, prepara el tema, habilita el gesto y aparece en bandeja. Arranque silencioso, sin popup ni notificación de bienvenida. El acceso a configuración está en el menú del icono, que Windows puede colocar en el desplegable de bandeja. Una segunda apertura no duplica instancia en la misma sesión. Plataforma inicial: consola local Windows11x64; las pruebas nativas se realizan en este equipo, sin certificar otras combinaciones de monitores o drivers.
 
 Inicio automático mediante tarea por usuario, sin retraso configurado. Objetivo: activa en menos de un minuto desde logon, no exactamente al entrar. StartupProbe comprueba lanzamiento manual con permisos normales, no ese plazo tras logon real. Al desactivar el inicio se retira solo nuestro registro; no mantener tarea y Run duplicados.
 
 ## 2. Bandeja y ventanas
 
-WinForms NotifyIcon/ContextMenuStrip y diálogos nativos, sin ventana principal permanente, CLI de usuario ni editor completo de preferencias inicial. Comprobar DPI, modo oscuro, alto contraste, teclado y recreación del icono tras reinicio de Explorer; el menú Fluent de Windows11 no se presupone automático.
+WinForms NotifyIcon/ContextMenuStrip y diálogos nativos con modo claro/oscuro del dispositivo y respeto del alto contraste, sin ventana principal permanente, CLI de usuario ni editor completo de preferencias inicial. Comprobar DPI, modo oscuro, alto contraste, teclado y recreación del icono tras reinicio de Explorer; el menú usa espaciado amplio y resaltado redondeado inspirado en Windows11, con preferencia de esquinas DWM cuando se admita. No requiere migrar a WinUI. Los cambios de preferencia se refrescan en el hilo UI y también al abrir el menú y sus submenús.
 
 | Acción | Resultado |
 | --- | --- |
@@ -30,7 +32,7 @@ Icono/texto distinguen activo, pausado y errores. Configuración preparada pero 
 
 ### Errores
 
-Forma estándar: popup, más estado de bandeja y Ver errores. Distribución inspirada en AutoHotkey, no colores ni tema: resumen; operación fallida; ubicación; explicación y detalles seleccionables/copiables. Incluir ruta, línea/columna TOML y tema/rol cuando existan. Acciones según problema: abrir configuración/carpeta/versiones conservadas, reintentar, copiar detalles, cerrar. Explicar qué configuración sigue efectiva y qué datos se han conservado.
+Forma estándar: popup, más estado de bandeja y Ver errores. Distribución inspirada en AutoHotkey, no colores ni tema: resumen; operación fallida; ubicación; explicación y detalles seleccionables/copiables. Incluir ruta, línea/columna TOML y tema/rol cuando existan. Acciones según problema: abrir configuración/carpeta/versiones conservadas, reintentar, copiar detalles, cerrar. Un conflicto de escritura ofrece revisar el TOML actual y conservar explícitamente su revisión validada; si cambia mientras se revisa se rechaza la resolución, sin sobrescribirlo. Explicar qué configuración sigue efectiva y qué datos se han conservado.
 
 Agrupar repeticiones del mismo fallo. Debounce/reintento trata guardados transitorios antes de diagnosticar; no popup por cada evento de FileSystemWatcher. Cursor oculto/privado es un estado previsto de compatibilidad, no un error repetitivo.
 
@@ -52,7 +54,7 @@ Condiciones del traslado:
 
 | Situación | Comportamiento |
 | --- | --- |
-| TOML realmente ausente, carpeta accesible | Crear exclusivamente desde plantilla comentada empaquetada; misma fuente de defaults en memoria. Comprobar al iniciar y durante uso. No sobrescribir archivo aparecido concurrentemente. |
+| TOML realmente ausente, carpeta accesible | Crear exclusivamente desde plantilla comentada generada desde los defaults tipados; misma fuente de defaults en memoria. Comprobar al iniciar y durante uso. No sobrescribir archivo aparecido concurrentemente. |
 | TOML presente inválido | Conservarlo y mantener última configuración válida; sin una previa, defaults en memoria y error. |
 | Ubicación inaccesible/unidad desconectada | No confundir con ausencia; conservar ubicación elegida, informar y mantener último estado válido cuando sea posible. Sin dispersar copias. |
 | Guardado válido | Preparar automáticamente y aplicar candidato completo en reposo, sin reiniciar ni Aplicar. |
@@ -64,7 +66,7 @@ FileSystemWatcher observa TOML y recursos personales. No respaldos acumulativos 
 
 ## 5. Detener, recuperar, actualizar y desinstalar
 
-Pausa conserva tema y devuelve tamaño normal. Salir impide publicaciones tardías antes de restaurar. Ante cambio externo del esquema, ceder control: no sobrescribirlo para restaurar a ciegas. RecoveryGuard auxiliar conservador cubre muerte del proceso solo si reconoce roles propios y baseline verificado; si no puede, deja diagnóstico y recuperación explícita. No promete restauración infalible.
+Pausa conserva tema y devuelve tamaño normal. Salir impide publicaciones tardías antes de restaurar. Ante cambio externo del esquema, ceder control: no sobrescribirlo para restaurar a ciegas. RecoveryGuard auxiliar conservador cubre muerte del proceso solo si reconoce roles propios y baseline verificado; si no puede, deja diagnóstico y recuperación explícita. No promete restauración infalible. Un cambio externo puede conservar un recibo bloqueante para evitar capturar un baseline incierto. En el siguiente arranque fallido, la recuperación ofrece «Volver a cargar esquema de Windows…», con confirmación: recarga el esquema guardado en Windows y puede reemplazar cambios temporales de otras utilidades. Solo procede sin motor activo y si se verifican identidad y ausencia de procesos dueños vivos; un fallo conserva los recibos. No se ejecuta automáticamente al salir ni supone adoptar el cursor actual.
 
 Actualización inicial mediante nuevo instalador, sin actualizador propio. Conservar TOML, ubicación y temas personales; política técnica de compatibilidad/migración por definir antes de distribuir versiones con cambios de esquema. Desinstalar detiene utilidad y auxiliar, retira accesos/inicio propios, restaura lo verificablemente propio antes de quitar recursos y ofrece conservar o retirar datos del usuario. No borrar datos ajenos ni recursos de recuperación aún necesarios.
 
@@ -74,9 +76,9 @@ Stack aceptado: C# estable/.NET10LTS, WinForms, JIT self-contained win-x64 en ca
 
 CursorShake.exe es la aplicación, generado durante desarrollo y publicable con dependencias. CursorShake-Setup.exe empaqueta e instala ese conjunto. La GUI mínima pertenece al ejecutable; no depende de tener instalador.
 
-Ruta de trabajo recomendada: primera función de extremo a extremo → publicación autónoma y prueba fuera del entorno de desarrollo → instalador básico para verificar rutas/identidad/inicio → producto y paquete final con pruebas de actualización/desinstalación. El ejecutable distribuible es un hito anterior al instalador final, pero conviene comprobar pronto supuestos de distribución. No autoriza implementación ahora.
+Ruta de trabajo recomendada: primera función de extremo a extremo → publicación autónoma y prueba fuera del entorno de desarrollo → instalador básico para verificar rutas/identidad/inicio → producto y paquete final con pruebas de actualización/desinstalación. El ejecutable distribuible es un hito anterior al instalador final, pero conviene comprobar pronto supuestos de distribución. La implementación del ejecutable ha sido autorizada; el instalador sigue siendo una fase posterior.
 
-Detalles por cerrar técnicamente: identidad estable de instalación, política de versión/migración y fijación de dependencias. El aviso MIT del trabajo original se publica a nombre de R3Neer en LICENSE. Firma de código por resolver antes de distribuir ejecutables según medios disponibles; generar EXE no lo firma. La cobertura de pruebas y QA visual se define en Arquitectura9.
+Versiones de dependencias y runtime fijadas para este hito mediante proyectos y locks. Quedan para el instalador la identidad estable de instalación y la política de versión/migración. El aviso MIT del trabajo original se publica a nombre de R3Neer en LICENSE. Firma de código por resolver antes de distribuir ejecutables según medios disponibles; generar EXE no lo firma. La cobertura de pruebas y QA visual se define en Arquitectura9.
 
 ## 7. Temas, licencias e icono
 
@@ -90,7 +92,7 @@ Temas iniciales Windows, Bibata Ice y Nordzy blanco, usados permanentemente. Cat
 | Windows | Fuentes locales verificadas y recreación propia aceptada de Wait/Working. No distribuir copias de imágenes/binarios propietarios. |
 | Dependencias | Sus licencias, incluidos componentes transitivos/nativos, con avisos antes de distribución. |
 
-Plan: temas como recursos externos identificados y sustituibles, conservando licencia, procedencia, versión/commit, modificaciones y fuentes editables/reproducción. No declarar todo el repositorio MIT. Separar carpetas no basta si se incorpora código GPL a la aplicación; comprobar la distribución real antes de publicarla. Aún no se han incorporado paquetes de temas al producto.
+Los temas se incorporan como recursos externos con licencia, procedencia, commit, modificaciones y fuentes editables. assets/themes contiene SVG y metadatos; el build genera VCUR/VANI y conserva créditos, licencias y fuentes upstream necesarias. El código original conserva MIT; cada dependencia y recurso conserva sus propios términos y avisos en la publicación.
 
 Créditos: Bibata, Abdulkaiz Khatri (ful1e5), [licencia original](https://github.com/ful1e5/Bibata_Cursor/blob/main/LICENSE); Nordzy, Guillaume Boehm y créditos del proyecto, [COPYING](https://github.com/guillaumeboehm/Nordzy-cursors/blob/main/COPYING). Preservar declaraciones originales; [consulta Bibata sobre only/or-later](https://github.com/ful1e5/Bibata_Cursor/issues/181) no se resuelve inventando licencia.
 

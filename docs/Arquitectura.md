@@ -1,6 +1,6 @@
 # CursorShake — arquitectura
 
-Especificación vigente, 25-oct-2026. Fase de diseño: aplicación sin implementar. Acuerdos funcionales adoptados; detalles técnicos y pruebas pendientes se identifican en su sección. Revisión documental cerrada en ronda3/10 con ambos revisores sin objeciones; recibo en apartado11.
+Especificación vigente, 25-oct-2026. Fase de implementación autorizada: ejecutable autónomo implementado, sin instalador ni inicio persistente durante QA. Acuerdos funcionales adoptados; detalles técnicos y pruebas pendientes se identifican en su sección. Recibo vigente de revisión y límites de la validación en apartados9 y11.
 
 Referencias: [configuración inicial y reglas](ConfiguracionInicial.md), [experiencia de usuario](ExperienciaUsuario.md), [equivalencias y procedencia](EquivalenciasCursores.md). No duplicar tablas ni convertir propuestas en acuerdos por repetición.
 
@@ -117,6 +117,8 @@ Lectura/preparación y rasterización salen del bucle. Commit serializa mutacion
 
 Contrato temporal: PointerInput reconoce en el RuntimeLoop, sobre muestras admitidas en FIFO. OccurredAt de ShakeStroke es la marca de admisión de la muestra que confirma el tramo invertido; no se reconstruye una orden de dominio en el extremo anterior. Las trazas del medidor conservan extremos retrospectivos: su calibración de130ms es punto de partida, y habrá que contrastar la cadencia entre confirmaciones con el reconocedor definitivo. No fingir equivalencia perfecta de ambos relojes ni cambiar130ms automáticamente.
 
+Advance(occurredThrough, applyAt) mantiene un horizonte semántico monotónico separado del instante de evaluación; Advance(now) equivale a ambos argumentos iguales. La finalización lógica de retorno/preview pertenece al detector, y no se deduce de que una evaluación física adelantada haya llegado ya a ×1.
+
 El bucle distingue **tiempo de ocurrencia/admisión**, usado para intervalos, de **ApplyAt**, tomado del reloj monótono al procesar una orden y nunca menor que el último ApplyAt. No calcular una curva en el pasado. Wake/plazos entran por la misma admisión FIFO; antes de un mensaje se resuelven los vencidos estrictamente anteriores a su marca, y las coincidencias siguen la política de prioridades aceptada en ConfiguracionInicial. Un prefijo admitido tiene orden determinista; el handler no adelanta plazos por delante de mensajes ya admitidos solo porque ahora el reloj de pared monótono sea mayor.
 
 Si una fuente trae una marca anterior al watermark de ocurrencia ya consumido, hay reordenación/pérdida o atraso superior al presupuesto de admisión, el dueño de admisión declara discontinuidad: reset coordinado de tramo/cuenta y resincronización, sin replay ni restaurar una cuenta ya vencida. Una pulsación tardía se procesa a ApplyAt actual y bloquea/reduce, nunca se pierde para evitar discontinuidad. El valor del presupuesto de atraso queda para medición; su propietario y resultado están fijados. Un retraso tolerado conserva OccurredAt para cadencia y aplica órdenes a ApplyAt actual, no retroactivamente.
@@ -168,7 +170,7 @@ Cambio duro descarta/libera resultado. Cambios duros continuos pueden impedir pu
 | Caché raster64MiB | RasterCache cuenta imágenes retenidas, incluidas copias nativas estimables; reserva antes de insertar y expulsa sin uso. No contar solo referencias managed. |
 | Trabajo gráfico | Uno activo+destino latest; liberar resultados obsoletos antes de admitir reemplazo. |
 | Preparación configuración | Un candidato activo+descriptor latest, independiente del gráfico. Cancelación cooperativa no inicia candidatos nuevos hasta liberar anterior. |
-| Temas | Admisión explícita de bytes fuente, frames y representación vector/decodificada; contar baseline/activo/candidato/compensación. Valores por fijar antes de congelar loader; no esconderlos en los64MiB. |
+| Temas | Admisión explícita de bytes fuente, frames y representación vector/decodificada; contar baseline/activo/candidato/compensación. Cuotas de admisión implementadas en FormatosCursores, distintas de la caché raster. |
 | Temporales | Medir filtros/copias y reservar presupuesto propio. Concurrencia acotada no garantiza memoria total acotada. Rechazar admisión que exceda presupuesto. |
 | Handles | SafeHandle/lease nativo. LoadCursor compartido no se destruye; SetSystemCursor consume copia propia. Toda cancelación tiene dueño. |
 | Baseline | NativeCursorSession captura esquema previo para restaurar; fallback usa catálogo Windows estándar. Ceder ante cambios externos, según 4.1. |
@@ -181,7 +183,7 @@ El tamaño normal sigue el escalado Windows y se conserva el multiplicador confi
 
 Cursor privado/desconocido: conservar dibujo de la aplicación, cancelar gesto y normalizar roles propios sin imponer selección. Cursor oculto: no mostrarlo ni admitir activaciones. Reentrada visible/conocida en ×1 requiere activación completa. Bloqueo, suspensión o cambio de usuario resetean el gesto; normalizar si escritorio permite, o diferir. No operar sobre escritorio seguro.
 
-Una instancia por sesión interactiva, con exclusión por usuario para mutaciones de workspace compartido. Plataforma inicial objetivo: consola local Windows 11 x64; efecto desactivado en contextos remotos/no certificados. La política está acordada; la certificación del producto no se ha ejecutado.
+Una instancia por sesión interactiva, con exclusión por usuario para mutaciones de workspace compartido. Plataforma inicial objetivo: consola local Windows 11 x64; efecto desactivado en contextos remotos/no certificados. La validación nativa descrita abajo cubre este equipo; no certifica todas las sesiones, monitores o drivers.
 
 ## 5. Configuración: un coordinador, dos productos
 
@@ -191,7 +193,7 @@ Pipeline único de arranque/watcher/bandeja: localizar→asegurar archivo→leer
 
 FileMonitor usa FileSystemWatcher sobre carpeta: Changed/Created/Renamed/Deleted/Error de TOML y recursos personales referenciados. Debounce y reintento de guardados transitorios; reconciliar por contenido/generación, no hash periódico primario ni botón Aplicar. Error/overflow fuerza reconciliación completa. Resultado obsoleto libera recursos sin culpar al TOML.
 
-Ausencia real en carpeta accesible crea exclusivamente plantilla empaquetada ConfigurationDefaults, también fuente de defaults en memoria. Presente inválido se conserva; usar último preparado o defaults en memoria sin uno previo. Unidad/permisos inaccesibles no son ausencia ni permiten dispersar copias. Recursos personales borrados no se regeneran.
+Ausencia real en carpeta accesible crea exclusivamente plantilla comentada generada por ConfigurationDefaults desde los defaults tipados, también fuente de defaults en memoria. Presente inválido se conserva; usar último preparado o defaults en memoria sin uno previo. Unidad/permisos inaccesibles no son ausencia ni permiten dispersar copias. Recursos personales borrados no se regeneran.
 
 ### 5.1. Aplicación y estado observable
 
@@ -233,7 +235,7 @@ Protocolo técnico propuesto; leer y luego reemplazar no equivale a compare-and-
 4. Escribir por MISMO handle, ajustar longitud, flush y verificar antes de soltar. Sin hueco cerrar-comparar-reemplazar ni rename sobre handle que deniega delete. No prometer visibilidad atómica a otros lectores durante escritura in-place.
 5. Confirmar journal, liberar bloqueo y usar pipeline normal. Limpiar temporales al terminar. Watcher propio no procesa parcial propio ni se desactiva frente a ediciones posteriores.
 
-Crash: si coincide con candidato confirmado, finalizar; si coincide con previo, abandonar sin cambio. Parcial/distinto/edición ajena: conservar TOML actual y versiones del journal, RecoveryRequired con rutas y resolución guiada; no sobrescribir edición posterior. Usar último efectivo/defaults en memoria y mostrar error accesible. Popup con rutas/versiones conservadas y resolución explícita. Contrato de recuperación pendiente de concretar antes de implementar.
+Crash: si coincide con candidato confirmado, finalizar; si coincide con previo, abandonar sin cambio. Parcial/distinto/edición ajena: conservar TOML actual y versiones del journal, RecoveryRequired con rutas y resolución guiada; no sobrescribir edición posterior. Usar último efectivo/defaults en memoria y mostrar error accesible. Popup con rutas/versiones conservadas y resolución explícita. La GUI permite revisar las versiones conservadas y conservar explícitamente el TOML actual validado por revisión/hash; no sustituye archivos por su fecha. Reintentar también reconcilia journals que ya coincidan con una versión completa.
 
 ## 6. Ubicación y traslado: un punto de autoridad
 
@@ -273,7 +275,7 @@ sequenceDiagram
 ```
 
 
-La retirada de cada original NO es check-then-delete por ruta: abrir con lectura y DELETE y compartición que impida writers/reemplazos incompatibles, verificar identidad/hash por ESE handle y marcar para retirada esa MISMA identidad mediante operación por handle. No cerrar/reabrir ni resolver de nuevo la ruta después de comprobar. Si no se obtiene la protección, hay reparse/enlace no autorizado o cambia identidad, conservar entrada y CleanupPending/Conflict. Directorios solo se retiran vacíos con identidad protegida, nunca recursivamente por un inventario previo; un objeto nuevo en la ruta no se retira por pertenecer al mismo nombre. Se verifican identidades/volumen y no se fuerzan ACL/propietarios. La semántica de la API por handle y compartición se verificará al implementar el auxiliar, no se sustituirá por Delete(path) como atajo.
+La retirada de cada original NO es check-then-delete por ruta: abrir con lectura y DELETE y compartición que impida writers/reemplazos incompatibles, verificar identidad/hash por ESE handle y marcar para retirada esa MISMA identidad mediante operación por handle. No cerrar/reabrir ni resolver de nuevo la ruta después de comprobar. Si no se obtiene la protección, hay reparse/enlace no autorizado o cambia identidad, conservar entrada y CleanupPending/Conflict. Directorios solo se retiran vacíos con identidad protegida, nunca recursivamente por un inventario previo; un objeto nuevo en la ruta no se retira por pertenecer al mismo nombre. Se verifican identidades/volumen y no se fuerzan ACL/propietarios. La implementación usa handles protegidos, identidad de volumen/archivo y FileDispositionInfo; las pruebas inyectan fallos y cambios concurrentes. No se sustituye esta retirada por Delete(path) ni por una limpieza recursiva.
 
 ## 7. Lifecycle, bandeja y arranque
 
@@ -299,7 +301,7 @@ La experiencia de bandeja, popups, rutas e instalación se define en [Experienci
 
 StartupRegistration usa tarea por usuario InteractiveToken/LeastPrivilege, delay0, sin condiciones de red/reposo/batería y sin límite de72h (ExecutionTimeLimit=PT0S). No duplicar Run+tarea ni usar servicio de sesión0. El instalador conserva identidad del usuario original aunque deba elevarse para el destino elegido. StartupProbe prueba lanzamiento manual, no latencia de logon del producto.
 
-RecoveryGuard es un proceso auxiliar de recuperación, no otro controlador: espera muerte del proceso y solo intenta restaurar último baseline verificado sobre roles identificables como propios. Cede ante cambios ajenos; sin gestos, relanzamiento en bucle ni preferencias independientes. Un cierre correcto debe comunicar restauración/disposición antes de desarmar al auxiliar; un fallo deja recibo y recuperación explícita. Contrato exacto de ownership, identificación de generaciones y handshake por definir/verificar antes de implementar esta caja.
+RecoveryGuard es un proceso auxiliar de recuperación, no otro controlador: espera muerte del proceso y solo intenta restaurar último baseline verificado sobre roles identificables como propios. Cede ante cambios ajenos; sin gestos, relanzamiento en bucle ni preferencias independientes. Un cierre correcto debe comunicar restauración/disposición antes de desarmar al auxiliar; un fallo deja recibo y recuperación explícita. El guard abre antes de Ready el handle del proceso padre y su identidad PID/start/session/SID. El ownership usa ledger MMF de doble buffer con estados previo/pendiente/confirmado antes de cada SetSystemCursor, sin escribir disco por frame. La sesión no publica antes del handshake. Bootstrap y guard serializan recuperación con lease y revalidan identidad; la limpieza conserva manifiesto ante entradas desconocidas y no recrea una sesión ya retirada. La resolución explícita del esquema registrado se describe en ExperienciaUsuario; excluye nuevos motores mientras opera.
 
 ## 8. Evidencias y límites de lo probado
 
@@ -317,24 +319,47 @@ Las alternativas antiguas dejan el cuerpo operativo, no sus evidencias. Experime
 
 Equipo probado Windows11 25H2 26200.9711. No certificar drivers/DPI/sesiones/versiones por esos resultados. Motor nativo con reloj propio es la vía elegida; overlay/ANI recompuesto por escala requieren rediseño explícito.
 
-## 9. Preparación técnica y validación
+## 9. Implementación, compilación y validación
 
-No quedan decisiones funcionales que requieran una nueva aceptación antes de comenzar la implementación cuando el usuario la autorice. Lo siguiente es trabajo técnico delegado, no funcionalidad ya comprobada:
+El objetivo autorizado es una carpeta autónoma win-x64 con GUI y dependencias, sin instalador ni activación de inicio persistente durante QA. Código y tests son la fuente de firmas C#; los diagramas anteriores expresan responsabilidades, no obligan a una clase por caja.
 
-| Trabajo | Resultado requerido |
+Compilar y publicar desde Windows con el SDK de global.json:
+
+```powershell
+./build/Build.ps1 -Task Test
+./build/Build.ps1 -Task Publish
+```
+
+Publicación en artifacts/publish/win-x64: CursorShake.exe, RecoveryGuard, .NET 10.0.13, DLLs, temas y avisos. Los locks normales y win-x64 son separados. El build regenera temas desde fuentes editables incluidas, sin necesitar ejecutar ImportThemes.py ni descargar de nuevo los upstreams. Las salidas solo se sustituyen bajo artifacts con marcador de propiedad exacto y sin ancestros reparse. Incluye manifest.sha256 y las licencias de dependencias y runtime.
+
+Contratos técnicos concretados al implementar:
+
+- Entrada con cola serial acotada, atraso máximo de 100 ms y discontinuidad ante desbordamiento; eventos de botones semánticos no se sobrescriben con snapshots físicos atrasados. La captura mantiene el estado observado y el reset geométrico no lo altera.
+- Aplicación de tema/perfil protegida por IsApplying hasta commit o compensación. Ninguna pausa de sesión/usuario quita esa barrera. Fallo de renderer permanece bloqueado hasta reiniciar; no se anuncia Available sin tema. SetScale entrega un único objetivo latest atómico, sin esperar el gate de publicación nativa; solo el worker consume y valida su aplicación.
+- Watcher con debounce de 150 ms y reconciliación completa; asegura ausencia accesible antes de observar. Presente inválido permanece intacto. Un workspace recordado cuya carpeta falta se vuelve a crear si es accesible.
+- Estado de bloqueo, desconexión, suspensión y cierre independiente; notificación WTS con identidad de sesión. Reintentos y recuperación comparten exclusión, y el cierre espera sus operaciones antes de desmontar componentes.
+- Journals/configuración y baseline protegidos por identidades y hashes. Guard listo antes de publicar, cese de publicaciones antes de restaurar, y detección de cambios externos que cede autoridad.
+
+La batería regular cubre dominio, formatos malformados, metadatos, fuentes de los tres temas, configuración, watchers, traslados, fault injection, concurrencia, recuperación y GUI por código. El replay de calibración y su límite de DPI están en ConfiguracionInicial. Las pruebas de filesystem usan fallos inyectados y bloqueos reales; no equivalen a cortar alimentación en cada fase.
+
+QA nativa aislada, ejecutada secuencialmente mediante NativeSmoke:
+
+| Comprobación | Evidencia y alcance |
 | --- | --- |
-| Contratos compartidos | Firmas C#, ownership, resultados/errores y ejemplos comunes antes de implementar cajas en paralelo. Los diagramas actuales son conceptuales. |
-| Entrada | Concretar geometría/normalización DPI, cola y atraso máximo; contrastar confirmaciones con calibración, sin cambiar silenciosamente defaults. |
-| Configuración | Nombres/rangos/versión del esquema, plantilla comentada única y tratamiento de versiones incompatibles sin sobrescribir. |
-| Recursos | Esquema detallado de VCUR/VANI, cuotas de admisión y picos temporales; comprobar paquetes reales, según FormatosCursores. |
-| Recuperación | Contratos de journals, bloqueo por usuario, API de retirada por handle y RecoveryGuard; inyectar fallos en cada fase. |
-| Dependencias y distribución | Fijar versiones/licencias, integrar fuentes de temas con procedencia y completar recursos Windows. Publicar carpeta autónoma; instalador separado. |
+| Aplicación | Arranque, preview, pausa, salida y limpieza de helper/recibos. |
+| Motor | Barrera IsApplying, fase al cambiar monitor/tamaño, roles, fallo de rasterización persistente y ninguna publicación tras Stop. Cambios DPI sintetizados por seam no certifican varios monitores físicos. |
+| Guard | Muerte forzada de hijo propio con dos roles modificados; igualdad de fingerprints de los 17 roles tras recuperar y salida del auxiliar. |
+| Cambio externo | Cede ante fixture propia de Arrow, tanto untouched como owned; cleanup de test condicionado por fingerprint, sin sobrescribir cambios no reconocidos. |
+| Tamaño/consumo | 32/512/2048 px, techo físico y caché. Bibata Wait512: aproximadamente 30,7 fps y 1,63% CPU total en 16 hilos durante cuatro segundos; reposo estabilizado: cero publicaciones en cinco segundos. A 2048 px el ensayo procedural baja a unos 6,6 fps; no prometer 60 Hz a tamaño extremo. |
+| Inicio automático | Tarea QA temporal: registro, identidad normalizada a SID, XML de permisos/retraso/batería y retirada verificada. No se ejecutó logon ni se certifica el objetivo de menos de un minuto tras entrar. |
+| GUI | Render privado y bounds a escala lógica 100%/200%; evita botones recortados. No equivale a QA de DPI real, lector de pantalla, alto contraste o reinicio real de Explorer. |
+| Reset explícito Windows | Precondiciones, fallos y limpieza por delegates; SPI real no ejecutado: 13 fuentes registradas verificables y cuatro roles heredados sin ruta explícita impedían certificar previamente la restitución exacta del escritorio del usuario. |
 
-Cambios que alteren comportamiento acordado o una limitación material descubierta se consultan al usuario. Los detalles técnicos anteriores pueden resolverse y registrarse autónomamente; no deben etiquetarse como elecciones humanas ya ratificadas.
+La QA nativa de la implementación principal, anterior al ajuste de apariencia, carga las tres DLL exactas de aquella publicación en un host aislado self-contained con .NET10.0.13; comprueba sus hashes y evita usar el workspace/registro reales del usuario. Arranque/preview/pausa/cierre, motor y caída forzada pasan; se verifican los 17 cursores restaurados y ausencia de helpers/recibos residuales. SetScale retorna en menos de 0,01 ms durante el bloqueo nativo de prueba. Resumen local: artifacts/tests/final-qa-c3e71b9fbc314b15ae95a466e69edb09/final-qa-summary.json.
 
-Pruebas por código: trazas de movimientos/botones, relojes simulados y prioridades; curvas y límites; decodificación/formato/hotspot; FileSystemWatcher y guardados parciales; cambios concurrentes; traslado/recuperación con fallos antes y después de commit; publicación lenta, resultado obsoleto, cambio de rol y cierre con trabajo activo; conservación de handles/recursos y consumo sostenido. Las pruebas nativas requieren Windows interactivo cuando usan APIs de cursor, aunque se controlen mediante código.
+Los informes locales están bajo artifacts/tests y son regenerables; no se incorporan logs personales ni capturas del escritorio a Git. La prueba vectorial Windows verifica fuentes locales por hash: una versión del sistema con fuentes diferentes produce diagnóstico, conservando el último estado aplicable, sin distribuir imágenes propietarias.
 
-La automatización sin computer use cubre gran parte de la lógica e integración, no certifica por sí sola sensibilidad percibida, fluidez/nitidez, acabado de diálogos, distintos monitores/drivers o logon real. Se reservan comprobaciones visuales y de uso para esos resultados. No cerrar sesiones activas ni cambiar arranque persistente como efecto de una comprobación no autorizada.
+Quedan QA humana de sensibilidad/fluidez/nitidez, logon real y otras configuraciones de hardware. No cerrar sesiones activas, registrar inicio persistente ni dar esas comprobaciones por hechas a partir de tests sintéticos.
 
 ## 10. Cobertura de requisitos
 
@@ -351,14 +376,89 @@ Los identificadores existentes se conservan como trazabilidad; las reglas normat
 | R-31, R-31a, R-32 | TOML desde bandeja, recarga al guardar y regeneración solo por ausencia: apartado 5 y ExperienciaUsuario. |
 | R-33–R-36 | Traslado verificado, sin CLI, inicio/salida y política de rutas: apartados 6–7 y ExperienciaUsuario. |
 
-## 11. Revisión documental
+## 11. Recibo de revisión
 
-Revisión documental cerrada el25-oct-2026 en ronda3 de un máximo de10. Arquitecto, simplificador y adversario revisan el mismo conjunto: cinco documentos temáticos, README/AGENTS, siete informes experimentales y procedencia del icono. Ambos revisores terminan sin objeciones sobre la misma versión.
+Implementación revisada de forma iterativa con responsables separados de implementación, pruebas y revisión adversaria. Cierre del código principal en ronda8/10 sin hallazgos accionables; ajuste posterior de apariencia y arranque silencioso revisado en ronda1/10, también sin objeciones; publicación/build en ronda2/10 y documentación en ronda3/10, también sin objeciones. Las versiones anteriores y sus correcciones se consultan en Git, sin documentos de crónica por agente.
 
-| Ronda | Simplificador | Adversario | Resultado |
-| --- | --- | --- | --- |
-| 1 | Una objeción: pausa configurable implícita y ejemplos expresados como constantes. | Cero objeciones. | Aclarar parámetro y defaults. |
-| 2 | Cero objeciones. | Dos objeciones: cuenta de sacudidas y duración de retorno expresadas como constantes. | Usar parámetros también en activación, rearme y preview. |
-| 3 | Cero objeciones. | Cero objeciones. | Cierre por el criterio acordado. |
+La batería completa de publicación pasa: 47 pruebas Core y 171 Windows, sin errores ni advertencias de compilación. Se verifica manifiesto completo de 383 archivos, DLLs publicadas y avisos de runtime. La apariencia incorpora seis pruebas de claro/oscuro, submenús, estados/acciones, idempotencia DPI y alto contraste, más una sonda aislada de Initialize/Refresh y render del menú real sin iniciar el motor. El apartado9 distingue evidencia nativa, pruebas con delegates/tiempos simulados y QA humana pendiente; el cierre de revisión no convierte estas últimas en resultados probados.
 
-Después de los dictámenes solo se añade este recibo y se actualizan referencias de estado; ambos revisores aceptan ese procedimiento. La revisión valida consistencia, organización y conservación de acuerdos, no código inexistente ni QA del producto. Las versiones y revisiones anteriores se consultan en Git.
+## 12. Árbol de directorios previsto
+
+Organización aceptada e implementada en sus módulos principales, posterior a la revisión documental registrada arriba. Los detalles técnicos viven en el código; este árbol guía responsabilidades y no altera los contratos acordados. Las carpetas de módulo se crean cuando contienen código; no son cajas que obliguen a crear una clase por nombre.
+
+```text
+CursorShake/
+├── CursorShake.slnx
+├── global.json
+├── .editorconfig
+├── .gitignore
+├── README.md
+├── LICENSE
+├── AGENTS.md
+├── src/
+│   ├── CursorShake.Core/
+│   │   ├── CursorShake.Core.csproj
+│   │   ├── Input/
+│   │   ├── Shake/
+│   │   ├── Growth/
+│   │   ├── Cursors/
+│   │   └── Runtime/
+│   ├── CursorShake.Windows/
+│   │   ├── CursorShake.Windows.csproj
+│   │   ├── Input/
+│   │   ├── Cursors/
+│   │   │   ├── Formats/
+│   │   │   └── Native/
+│   │   ├── Configuration/
+│   │   ├── Lifecycle/
+│   │   └── Recovery/
+│   ├── CursorShake.App/
+│   │   ├── CursorShake.App.csproj
+│   │   ├── Program.cs
+│   │   ├── AppHost.cs
+│   │   ├── Tray/
+│   │   ├── Dialogs/
+│   │   └── Resources/
+│   └── CursorShake.RecoveryGuard/
+│       ├── CursorShake.RecoveryGuard.csproj
+│       └── Program.cs
+├── tests/
+│   ├── CursorShake.Core.Tests/
+│   ├── CursorShake.Windows.Tests/
+│   └── Fixtures/
+├── assets/
+│   ├── branding/
+│   └── themes/
+│       ├── windows/
+│       ├── bibata-ice/
+│       └── nordzy-white/
+├── build/
+│   └── Build.ps1
+├── docs/
+│   ├── Arquitectura.md
+│   ├── ConfiguracionInicial.md
+│   ├── ExperienciaUsuario.md
+│   ├── EquivalenciasCursores.md
+│   └── FormatosCursores.md
+├── experiments/
+│   └── <pruebas técnicas existentes>/
+└── artifacts/                         # generado, fuera de Git
+    ├── generated-themes/
+    ├── test-results/
+    └── publish/win-x64/
+```
+
+- Core: tipos/puertos semánticos, reconocimiento puro, ShakeDetector, GrowthController y coordinación temporal, sin dependencia de WinForms/Win32/lectura de archivos.
+- Windows: captura, motor nativo y formatos/rasterizador, configuración/workspace, arranque/sesión y protocolo de recuperación. Bibliotecas del sistema e I/O quedan aquí; interfaces semánticas usadas por dominio junto al módulo dueño en Core.
+- App: ejecutable CursorShake.exe, composición y GUI WinForms. Recursos de interfaz incrustados desde assets/branding; la plantilla se genera en Windows.Configuration desde los defaults tipados del Core y se comprueba su correspondencia.
+- RecoveryGuard: segundo ejecutable pequeño, con el host del auxiliar aceptado. Reutiliza el protocolo/restauración de Windows, sin copiar motor, reglas ni configuración funcional.
+
+Dependencias: Windows→Core; App→Core+Windows; RecoveryGuard→Windows. No dependencias desde Core a proyectos Windows ni desde bibliotecas hacia App. Cada módulo conserva sus tipos e interfaces; sin carpetas globales Helpers/Managers/Interfaces/DTOs. Los proyectos permiten compilar/probar fronteras; los módulos internos no se convierten automáticamente en más proyectos.
+
+Core.Tests valida dominio con tiempos/trazas controlados. Windows.Tests agrupa formato, almacenamiento, integración nativa y comprobaciones de App/RecoveryGuard; separar categorías que necesitan escritorio o modifican entorno y ejecutarlas exclusivamente. Fixtures contiene datos sintéticos propios/pequeños y recursos redistribuibles con procedencia, nunca copias propietarias de Windows ni datos personales.
+
+assets conserva fuentes editables, manifiestos, licencias y créditos de recursos incorporados. Los contenedores derivados se generan en artifacts/generated-themes y se copian a la publicación. windows solo contiene recreaciones propias redistribuibles; recursos originales del sistema se leen localmente cuando proceda. assets/branding conserva la procedencia actual. No duplicar fuentes en carpetas de binarios.
+
+Build.ps1 orquesta compilación/pruebas/preparación de recursos/publicación; lógica compleja de formatos se reutiliza desde sus módulos, sin otra implementación en el script. Dependencias se fijan por proyecto con lock cuando corresponda; añadir configuración compartida de MSBuild solo si aporta y sin cambiar accidentalmente los experimentos. Experiments permanece separado del producto y no se incluye en publicación. Bin/obj también quedan ignorados.
+
+La publicación contiene ejecutable principal, auxiliar, runtime/DLL, temas incorporados y avisos de licencia. config.toml y themes personales se crean en el workspace elegido, nunca en artifacts de compilación. Estado pequeño de recuperación sigue la ubicación interna por usuario y el localizador acordados en ExperienciaUsuario. El instalador está fuera del hito de ejecutable y su carpeta se añadirá cuando se aborde.

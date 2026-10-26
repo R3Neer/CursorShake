@@ -1,6 +1,6 @@
 # CursorShake — configuración inicial y reglas
 
-Valores y reglas aceptados. Fuente única de defaults del gesto y crecimiento; sin implementar. Límites gráficos en [Arquitectura](Arquitectura.md).
+Valores y reglas aceptados. Fuente normativa de defaults del gesto y crecimiento; implementación y pruebas automatizadas completadas para este hito. Límites gráficos en [Arquitectura](Arquitectura.md).
 
 ## 1. Valores iniciales
 
@@ -27,7 +27,7 @@ Con 130 ms se exige una cadencia de al menos unas 7,7 inversiones por segundo du
 ## 2. Reconocimiento y transiciones
 
 1. La inversión válida que completa la cuenta configurada (tres inicialmente) inicia crecimiento desde la escala actual. La cuenta previa se pierde si el intervalo supera el máximo configurado (130 ms inicialmente); una inversión al límite exacto pertenece a la secuencia.
-2. Cada inversión válida mantiene actividad hasta el intervalo máximo configurado después de su instante (130 ms inicialmente). Al caducar esa ventana se congela el crecimiento. La reducción comienza al vencer la pausa de inactividad configurada desde la última inversión. La gracia de crecimiento está incluida en esa pausa, no se suma después. Con defaults: retorno a los 500 ms, incluidos 130 ms de gracia y 370 ms de mantenimiento. La relación válida entre ambos parámetros se concretará al definir rangos de configuración, sin convertir estas cifras en constantes.
+2. Cada inversión válida mantiene actividad hasta el intervalo máximo configurado después de su instante (130 ms inicialmente). Al caducar esa ventana se congela el crecimiento. La reducción comienza al vencer la pausa de inactividad configurada desde la última inversión. La gracia de crecimiento está incluida en esa pausa, no se suma después. Con defaults: retorno a los 500 ms, incluidos 130 ms de gracia y 370 ms de mantenimiento. El validador exige que la pausa de inactividad sea al menos igual al intervalo máximo entre inversiones, sin convertir las cifras iniciales en constantes.
 3. Durante crecimiento o mantenimiento, una nueva inversión válida mantiene o retoma el crecimiento sin repetir la cuenta completa. Durante reducción también basta una inversión válida mientras la escala aún supere ×1. Alcanzar ×1 rearma la cuenta configurada completa. Un clic siempre fuerza rearme completo y bloqueo hasta soltar todos los botones.
 4. El avance de la curva continúa entre sacudidas; no se reinicia cada vez. Para cadencia, usar la media de los dos últimos intervalos válidos, si existen. Multiplicador: clamp(intervalo máximo configurado / intervalo medio, 1, 1,5); si no hay estimación se usa ×1. Cambia la velocidad de avance, no el límite ni el reloj de los fotogramas del dibujo. La curva se evalúa desde la escala actual al cambiar fase, sin saltos. Al retomar crecimiento, tiempo base proporcional a la distancia restante; retorno con duración configurada (250 ms inicialmente) desde el tamaño alcanzado. No se promete continuidad de velocidad al interrumpir fase.
 5. Button-down prevalece sobre sacudida y plazos de crecimiento admitidos en el mismo instante: resetea y reduce. Salida/pausa o pérdida de sesión prevalecen sobre preview y gesto. Si coinciden una inversión y vencimiento de inactividad, se resuelve la inversión válida antes del plazo para evitar un retorno espurio. Admisión temporal según Arquitectura 3.1.
@@ -44,6 +44,19 @@ Con un reanálisis espacial uniforme de 32 px, se admiten 121/123 intervalos med
 
 El menor intervalo lento observado es 143 ms: 130 ms deja más margen que 140 ms, que también separa esta muestra. A 150 ms entra un intervalo lento aislado, insuficiente por sí solo para activar tres inversiones. El valor elegido procede de una calibración para este usuario; no es un óptimo universal ni una medición de falsos positivos en uso cotidiano. Las fórmulas y ventanas de las reglas anteriores usan el parámetro configurado, con 130 ms iniciales; no una constante antigua de 100 ms.
 
-## 4. Detalles técnicos por concretar
+## 4. Esquema de configuración implementado
 
-Defaults y reglas anteriores aceptados. Quedan comprobar reconocimiento con trazas y definir límites válidos/nombres/versión del esquema TOML en contratos. El filtro diagnóstico de 32 px no sustituye el recorrido inicial de 16 píxeles lógicos. No se genera TOML del producto todavía.
+La plantilla comentada se genera desde los defaults tipados en ConfigurationDefaults; no se mantiene otra plantilla con cifras duplicadas. La versión del TOML de aplicación es 1 (omitirla conserva compatibilidad con ese esquema). Se rechazan campos desconocidos y documentos de más de 1 MiB.
+
+| Sección | Claves |
+| --- | --- |
+| appearance | theme |
+| gesture | count, maximum_interval_ms, minimum_travel, minimum_speed |
+| growth | maximum_scale, growth_duration_ms, inactivity_delay_ms, return_duration_ms, maximum_cadence_multiplier |
+| themes.<id> | default y tabla roles |
+
+count admite enteros de 1 a 100. Los tiempos configurables se expresan en milisegundos, entre 0,001 ms y una hora. Recorrido positivo; velocidad mínima no negativa; escala y multiplicador de cadencia al menos 1; todos finitos. El máximo efectivo también debe caber en 2048 px para cada monitor conectado, sin recortar silenciosamente lo configurado. El ángulo de inversión conserva el valor fijo acordado.
+
+IDs personales: entre 1 y 64 letras/dígitos/guion/guion bajo, comenzando por letra o dígito. Las rutas son relativas a themes/<id> y usan CUR/ANI/VCUR/VANI. La bandeja modifica el tema conservando comentarios; sintaxis TOML válida que esa edición no pueda preservar se rechaza con error, permitiendo editarla directamente.
+
+El replay del reconocedor implementado contrasta las cuatro trazas guiadas con confirmaciones, no extremos retrospectivos. Con supuestos de DPI 96/120/144/192, los dos medios y el rápido activan y el lento no. El DPI original no fue registrado: es sensibilidad frente a esos supuestos, no certificación del monitor ni de falsos positivos cotidianos. Fixtures relativos bajo tests/Fixtures/Calibration; informe reproducible en artifacts/tests/calibration-replay.json. No se han cambiado los defaults para obtener ese resultado.

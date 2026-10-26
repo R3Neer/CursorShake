@@ -3,7 +3,7 @@
 ## Alcance y autoridad
 
 - Copia canónica: D:\Desarrollo\Proyectos\Herramientas\CursorShake. Preservar cambios locales y retiradas deliberadas; no reset/clean ni recrear documentos históricos.
-- Fase actual: diseño y documentación. La limpieza/revisión documental está autorizada; no implementar, instalar, registrar inicio persistente ni ejecutar nuevos experimentos sin autorización específica. No commit/push sin autorización nueva.
+- Fase actual: implementación autorizada expresamente por el usuario hasta ejecutable autónomo con GUI, temas, recuperación, pruebas y revisión. Autorizados crear proyectos, compilar y probar; sin instalador, instalación ni inicio automático persistente durante QA. No commit/push sin autorización nueva.
 - El usuario dirige comportamiento del dominio. Detalles técnicos de integración delegados pueden concretarse y documentarse; consultar cambios materiales del comportamiento o limitaciones nuevas.
 
 ## Fuentes y fronteras
@@ -20,4 +20,13 @@
 
 ## Revisión iterativa
 
-Arquitecto+simplificador+adversario, una misma versión por ronda, máximo diez. Cerrar solo con ambos sin objeciones. No retirar objeciones sin revisión ni atribuir dictámenes anteriores a cambios nuevos. Al agotar límite informar discusión final. Conservar solo recibo breve vigente en Arquitectura; Git conserva versiones. La revisión documental no valida implementación ni autoriza empezar a programar.
+Arquitecto+simplificador+adversario, una misma versión por ronda, máximo diez. Cerrar solo con ambos sin objeciones. No retirar objeciones sin revisión ni atribuir dictámenes anteriores a cambios nuevos. Al agotar límite informar discusión final. Conservar solo recibo breve vigente en Arquitectura; Git conserva versiones. La revisión documental no sustituye la revisión de código; la implementación ha sido autorizada posteriormente.
+
+## Objetivo y documentación durante implementación
+
+- Objetivo autorizado: carpeta autónoma Windows11x64 con CursorShake.exe, RecoveryGuard, GUI/temas/dependencias; compilación reproducible, pruebas exigidas y revisión adversaria. Sin instalador, instalación persistente ni registro de inicio permanente durante QA. Distinguir evidencia automática, observación Windows y QA visual pendiente.
+- Equipo previsto: dos implementadores (principal integra), adversario y responsable de pruebas. Concretar contratos comunes primero y repartir archivos por dueño; no rediseñar arquitectura como fase nueva. Pruebas que alteran cursores/entrada/registro/tareas se ejecutan exclusivamente y con limpieza verificada.
+- Documentar solo cambios relevantes de comportamiento, contrato, formato persistente, dependencia importante o compilación/uso. Editar la fuente temática existente; no diarios, informe por agente, inventarios de clases ni crónicas por ronda.
+- Código/tests describen implementación. Comentarios de contratos solo para unidades, tiempos, ownership y errores no evidentes. Decisiones no obvias: motivo y consecuencia breves. Hallazgos accionables con evidencia y prueba cuando proceda.
+- Cerrar bloque con código, tests y actualización documental imprescindible. Tests exigidos pasando y adversario sin objeciones; máximo diez rondas por bloque. Al agotar informar discrepancias. Una síntesis final de resultados/limitaciones, sin duplicar informes.
+- Árbol de Arquitectura12 aceptado; proceder con la implementación autorizada.
