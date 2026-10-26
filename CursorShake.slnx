@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CursorShake.App/CursorShake.App.csproj" />
+    <Project Path="src/CursorShake.Core/CursorShake.Core.csproj" />
+    <Project Path="src/CursorShake.RecoveryGuard/CursorShake.RecoveryGuard.csproj" />
+    <Project Path="src/CursorShake.Windows/CursorShake.Windows.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CursorShake.Core.Tests/CursorShake.Core.Tests.csproj" />
+    <Project Path="tests/CursorShake.Windows.Tests/CursorShake.Windows.Tests.csproj" />
+  </Folder>
+</Solution>
