@@ -60,3 +60,7 @@ count admite enteros de 1 a 100. Los tiempos configurables se expresan en milise
 IDs personales: entre 1 y 64 letras/dígitos/guion/guion bajo, comenzando por letra o dígito. Las rutas son relativas a themes/<id> y usan CUR/ANI/VCUR/VANI. La bandeja modifica el tema conservando comentarios; sintaxis TOML válida que esa edición no pueda preservar se rechaza con error, permitiendo editarla directamente.
 
 El replay del reconocedor implementado contrasta las cuatro trazas guiadas con confirmaciones, no extremos retrospectivos. Con supuestos de DPI 96/120/144/192, los dos medios y el rápido activan y el lento no. El DPI original no fue registrado: es sensibilidad frente a esos supuestos, no certificación del monitor ni de falsos positivos cotidianos. Fixtures relativos bajo tests/Fixtures/Calibration; informe reproducible en artifacts/tests/calibration-replay.json. No se han cambiado los defaults para obtener ese resultado.
+
+## Idioma de la bandeja (1.1.0)
+
+`language` es una clave raíz del TOML, anterior a las tablas. Admite exactamente `"english"` y `"spanish"`; su valor por defecto y al omitirla es `"english"`. Otros valores o tipos son configuración inválida y conservan la última revisión efectiva. El idioma forma parte de esa revisión, aplicada a tamaño normal junto al resto de configuración. Cubre menús, submenús, estado, tooltip y título del selector de carpeta, no la traducción de todos los diagnósticos técnicos. La versión del esquema sigue siendo 1.
