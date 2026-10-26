@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0-windows</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><RestorePackagesWithLockFile>true</RestorePackagesWithLockFile><OutputType>WinExe</OutputType><UseWindowsForms>true</UseWindowsForms><AssemblyName>CursorShake</AssemblyName><ApplicationIcon>../../assets/branding/cursorshake-propuesta-01.ico</ApplicationIcon></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../CursorShake.Core/CursorShake.Core.csproj" /><ProjectReference Include="../CursorShake.Windows/CursorShake.Windows.csproj" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../../assets/branding/cursorshake-propuesta-01.ico" LogicalName="CursorShake.Icon" /><Content Include="../../artifacts/generated-themes/**/*" Link="themes/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" /></ItemGroup>
+</Project>

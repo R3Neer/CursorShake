@@ -1,0 +1,18 @@
+namespace CursorShake.App.Tray;
+
+public enum TrayActionKind
+{
+    OpenConfiguration, ChooseWorkspace, OpenWorkspace, SelectTheme, Preview,
+    TogglePause, ToggleStartup, ShowErrors, Exit
+}
+public sealed record TrayAction(TrayActionKind Kind, string? ThemeId = null);
+public sealed record TrayState
+{
+    public string ThemeId { get; init; } = "windows";
+    public bool Paused { get; init; }
+    public bool StartupEnabled { get; init; }
+    public bool HasErrors { get; init; }
+    public string? PendingTheme { get; init; }
+    public string StatusText { get; init; } = "Activo";
+    public IReadOnlyDictionary<string, string> Themes { get; init; } = new Dictionary<string, string>();
+}
