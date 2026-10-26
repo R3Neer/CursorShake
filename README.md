@@ -2,7 +2,7 @@
 
 Make your mouse pointer grow when you shake the mouse. CursorShake is a Windows tray utility with adjustable sensitivity, smooth scaling, and static or animated cursor themes.
 
-**Availability:** version 1.0.0 is being prepared. The first GitHub release will include an installer; no downloadable release or installer is available yet. You can currently build and run the application from source.
+[Download CursorShake 1.0.0 for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/download/v1.0.0/CursorShake-1.0.0-Setup.exe) · [Release notes and SHA-256](https://github.com/R3Neer/CursorShake/releases/tag/v1.0.0)
 
 ## Features
 
@@ -20,6 +20,12 @@ Make your mouse pointer grow when you shake the mouse. CursorShake is a Windows 
 Windows 11 x64 in a local interactive session. Published packages include the .NET runtime; the SDK is only needed to build from source. The current tray interface is in Spanish.
 
 The Windows theme reads local system SVGs and checks their hashes against the verified references. Missing or different resources produce a diagnostic. Bibata Ice and Nordzy white are bundled and do not require those system SVGs.
+
+## Install
+
+Download and open `CursorShake-1.0.0-Setup.exe` normally. The installer defaults to your Windows user; you can choose all users and a different installation folder. Windows requests administrator approval when needed. Leave **Iniciar con Windows** selected to start the utility after signing in, and **Ejecutar CursorShake** to launch it when setup finishes.
+
+The installer is unsigned, so Windows may show an unknown-publisher or SmartScreen warning. No separate .NET installation is required. To update, run the new installer over the existing installation. To uninstall, use Windows Settings; configuration and personal themes are kept by default.
 
 ## Build and run
 
@@ -65,7 +71,7 @@ Invalid configuration or missing personal resources produce a diagnostic and pre
 
 ## Updating a source-built copy
 
-Exit CursorShake before replacing its application files. Keep the configuration folder and personal themes. If you remove the application, disable **Iniciar con Windows** first. The installer will provide the installation, update, and uninstall workflow when the first release is ready.
+Exit CursorShake before replacing its application files. Keep the configuration folder and personal themes. If you remove the application, disable **Iniciar con Windows** first. For installed copies, run the installer to update or use Windows Settings to uninstall.
 
 ## Development and specification
 
