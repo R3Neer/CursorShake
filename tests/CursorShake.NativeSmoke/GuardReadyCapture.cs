@@ -10,6 +10,11 @@ internal static class GuardReadyCapture
 {
     internal static int Run(string stateDirectory, string guardExecutable, string reportPath)
     {
+        Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+        return Task.Run(() => RunCore(stateDirectory, guardExecutable, reportPath)).GetAwaiter().GetResult();
+    }
+    private static int RunCore(string stateDirectory, string guardExecutable, string reportPath)
+    {
         bool ready = false, ledgerRemains = false;
         string? failure = null, ledgerName = null;
         var guardProcesses = new List<(int Id, long StartTicks)>();

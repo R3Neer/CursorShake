@@ -48,7 +48,7 @@ internal static class BaselineStore
         }
         if (role is CursorRole.Wait or CursorRole.Working)
             candidates.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Cursors", role == CursorRole.Wait ? "aero_busy.ani" : "aero_working.ani"));
-        bool animatedSourceUnverified = false;
+        bool animatedSourceUnverified = false; var failures = new List<Exception>();
         foreach (string candidate in candidates.Distinct(StringComparer.OrdinalIgnoreCase))
         {
             string extension = Path.GetExtension(candidate).ToLowerInvariant();
@@ -66,13 +66,15 @@ internal static class BaselineStore
                 construction.WriteBytes(localPath, bytes);
                 using var sourceProtection = ProtectedFile.Open(localPath);
                 using var reloaded = CursorNative.LoadFile(localPath, baseline.Width, baseline.Height);
-                if (CursorFingerprint.Of(CursorNative.Capture(reloaded.DangerousGetHandle())) == fingerprint)
+                string reloadedFingerprint = CursorFingerprint.Of(CursorNative.Capture(reloaded.DangerousGetHandle()));
+                if (reloadedFingerprint == fingerprint)
                     return (localName, Convert.ToHexString(SHA256.HashData(bytes)), bytes.LongLength);
+                failures.Add(new InvalidDataException($"Cursor source {candidate}: expected {fingerprint}, reloaded {reloadedFingerprint}."));
             }
-            catch (Exception e) when (e is IOException or UnauthorizedAccessException or System.ComponentModel.Win32Exception or InvalidDataException) { }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException or System.ComponentModel.Win32Exception or InvalidDataException) { failures.Add(new IOException("Cannot preserve cursor source: " + candidate, e)); }
             if (File.Exists(localPath)) construction.DeleteTracked(localPath);
         }
-        if (animatedSourceUnverified) throw new InvalidOperationException("Cannot verify the original animation for " + role + "; no system cursor was changed.");
+        if (animatedSourceUnverified) throw new InvalidOperationException("Cannot verify the original animation for " + role + "; no system cursor was changed.", new AggregateException(failures));
         return (null, null, 0);
     }
     public static RecoveryManifest ReadManifest(string directory)

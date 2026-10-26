@@ -44,7 +44,14 @@ public sealed class NativeCursorSession : IDisposable
                 var start = new ProcessStartInfo(Path.GetFullPath(guardExecutablePath)) { UseShellExecute = false, CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
                 start.ArgumentList.Add("--session"); start.ArgumentList.Add(_sessionDirectory);
                 _guard = Process.Start(start) ?? throw new IOException("RecoveryGuard could not start.");
-                if (!_ready.WaitOne(TimeSpan.FromSeconds(15)) || _guard.HasExited) throw new IOException("RecoveryGuard did not confirm readiness; no cursor was modified.");
+                using var guardExited = new GuardExitWaitHandle(_guard.SafeHandle);
+                int readiness = WaitHandle.WaitAny([_ready, guardExited], TimeSpan.FromSeconds(15));
+                bool exited = _guard.HasExited;
+                if (readiness != 0 || exited)
+                {
+                    string outcome = readiness == WaitHandle.WaitTimeout ? "15-second readiness timeout" : readiness == 1 ? "guard exited before Ready" : "Ready was signaled but the guard had already exited";
+                    throw GuardReadinessFailure(_sessionDirectory, _manifest, outcome, _guard.Id, exited ? _guard.ExitCode : null);
+                }
                 _checkpoint?.Invoke(RecoveryCheckpoint.GuardReady);
             }
             construction.Complete();
@@ -61,6 +68,32 @@ public sealed class NativeCursorSession : IDisposable
             throw;
         }
         finally { construction?.Dispose(); }
+    }
+
+    internal static IOException GuardReadinessFailure(string directory, RecoveryManifest expected, string outcome, int pid, int? exitCode)
+    {
+        string status;
+        try
+        {
+            using var protection = BaselineStore.ProtectExistingSession(directory);
+            if (protection is null) status = "The recovery receipt directory is absent.";
+            else if (!BaselineStore.ExistsWithIdentity(directory, expected)) status = "The verified recovery receipt was retired.";
+            else
+            {
+                using var file = ProtectedFile.Open(Path.Combine(directory, "result.json"));
+                var result = System.Text.Json.JsonSerializer.Deserialize<RestoreResult>(file.ReadBytes(128 * 1024), DurableState.Json)
+                    ?? throw new InvalidDataException("Guard status is empty.");
+                status = "Verified guard result: AllOwnedRestored=" + result.AllOwnedRestored + "\n" + string.Join("\n", result.Diagnostics);
+            }
+        }
+        catch (FileNotFoundException) { status = "A recovery receipt or guard result file is absent; no unverified status was read."; }
+        catch (Exception error) { status = "Guard status could not be read from a verified protected receipt:\n" + error; }
+        return new IOException($"RecoveryGuard did not confirm readiness; no cursor was modified. Outcome: {outcome}; PID={pid}; ExitCode={(exitCode is { } code ? code.ToString(System.Globalization.CultureInfo.InvariantCulture) : "still running")}.\n{status}");
+    }
+    private sealed class GuardExitWaitHandle : WaitHandle
+    {
+        public GuardExitWaitHandle(Microsoft.Win32.SafeHandles.SafeProcessHandle process)
+            => SafeWaitHandle = new Microsoft.Win32.SafeHandles.SafeWaitHandle(process.DangerousGetHandle(), false);
     }
 
     public void Publish(CursorRole role, CursorPixels pixels)
