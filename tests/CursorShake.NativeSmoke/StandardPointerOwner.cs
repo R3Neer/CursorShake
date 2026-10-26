@@ -72,7 +72,10 @@ internal static class StandardPointerOwner
         {
             if (readyPublished) return;
             var info = new Native.CursorInfo { Size = Marshal.SizeOf<Native.CursorInfo>() };
-            if (!Native.GetCursorInfo(ref info) || info.Cursor != arrow) return;
+            bool observed=Native.GetCursorInfo(ref info);
+            string observation=readyPath+".observation.json";
+            if(!File.Exists(observation))File.WriteAllText(observation,JsonSerializer.Serialize(new {Observed=observed,Expected=arrow.ToInt64(),Actual=info.Cursor.ToInt64(),info.Flags,Visible,Window=Handle.ToInt64(),Foreground=Native.GetForegroundWindow().ToInt64(),Selections=selections,info.Position.X,info.Position.Y}));
+            if (!observed || info.Cursor != arrow) return;
             readyPublished = true; readyTimer.Stop();
             string temporary = readyPath + ".tmp";
             File.WriteAllText(temporary, JsonSerializer.Serialize(new { Pid = Environment.ProcessId, WindowHandle = Handle.ToInt64(), SharedArrow = arrow.ToInt64(), SelectedCursor = info.Cursor.ToInt64(), SelectionsBeforeReady = selections, TimerReselectsCursor = false, info.Position.X, info.Position.Y }));
@@ -102,7 +105,7 @@ internal static class StandardPointerOwner
             string name = "Local\\CursorShake.NativeSmoke.PointerOwner." + Guid.NewGuid().ToString("N");
             stop = new EventWaitHandle(false, EventResetMode.ManualReset, name);
             var executable = Environment.ProcessPath ?? throw new InvalidOperationException("Test host executable is unavailable.");
-            var start = new ProcessStartInfo(executable) { UseShellExecute = false, CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
+            var start = new ProcessStartInfo(executable) { UseShellExecute = false, CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Normal };
             start.ArgumentList.Add("--pointer-owner"); start.ArgumentList.Add(ReadyPath); start.ArgumentList.Add(name); start.ArgumentList.Add(roleId.ToString(System.Globalization.CultureInfo.InvariantCulture));
             process = Process.Start(start) ?? throw new InvalidOperationException("Cannot start independent cursor owner.");
             pid = process.Id;

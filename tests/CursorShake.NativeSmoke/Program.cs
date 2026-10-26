@@ -5,12 +5,15 @@ internal static class Program
     [STAThread]
     private static int Main(string[] args)
     {
+        if (args.Length == 3 && args[0] == "--installer-wizard-preview") return InstallerWizardPreview.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]));
         if (args.Length == 2 && args[0] == "--windows-svg-sheet") { WindowsSvgSheet.Create(Path.GetFullPath(args[1])); return 0; }
         if (args.Length == 3 && args[0] == "--prepared-theme-sheet") { PreparedThemeSheet.Create(Path.GetFullPath(args[1]), Path.GetFullPath(args[2])); return 0; }
         if (args.Length == 3 && args[0] == "--roundtrip") return NativeRoundtrip.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]));
         if (args.Length == 3 && args[0] == "--capture-only") return NativeCapture.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]));
         if (args.Length == 4 && args[0] == "--guard-ready-capture") return GuardReadyCapture.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]), Path.GetFullPath(args[3]));
         if (args.Length == 5 && args[0] == "--app-smoke") return AppSmoke.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]), Path.GetFullPath(args[3]), Path.GetFullPath(args[4]));
+        if (args.Length == 3 && args[0] == "--installer-roundtrip") return InstallerRoundtripSmoke.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]));
+        if (args.Length == 3 && args[0] == "--installer-roundtrip-all-users") return InstallerRoundtripSmoke.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]), allUsers: true);
         if (args.Length == 2 && args[0] == "--maintenance-process-smoke") return MaintenanceProcessSmoke.Run(Path.GetFullPath(args[1]));
         if (args.Length == 3 && args[0] == "--maintenance-process-child") return MaintenanceProcessSmoke.Child(int.Parse(args[1], System.Globalization.CultureInfo.InvariantCulture), Path.GetFullPath(args[2]));
         if (args.Length == 2 && args[0] == "--tray-menu-render") return TrayMenuRender.Run(Path.GetFullPath(args[1]));
