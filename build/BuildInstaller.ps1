@@ -60,7 +60,7 @@ foreach($required in @('CursorShake.exe','CursorShake.dll','CursorShake.Recovery
 }
 # An older 1.0.0 binary may ignore maintenance arguments and start the cursor engine.
 $protocol=Join-Path $PayloadRoot 'installer-protocol.txt'
-if(-not $actual.Contains('installer-protocol.txt') -or [IO.File]::ReadAllText($protocol).Trim() -ne 'CursorShake installer protocol 1'){throw 'Publication does not support installer protocol 1. Publish the current source before packaging.'}
+if(-not $actual.Contains('installer-protocol.txt') -or [IO.File]::ReadAllText($protocol).Trim() -ne 'CursorShake installer protocol 2'){throw 'Publication does not support installer protocol 2. Publish the current source before packaging.'}
 foreach($theme in @('windows','bibata-ice','nordzy-white')){
     if(-not @($actual | Where-Object {$_ -like "themes/$theme/*"}).Count){throw "Bundled theme missing: $theme"}
 }
@@ -98,7 +98,7 @@ try {
     $output=Reset-OwnedBuildOutput $projectRoot $outputPath
     & $Compiler --quiet --no-ide-signtools "--define=AppVersion=$version" "--define=PayloadRoot=$stage" "--define=InstallerOutput=$output" (Join-Path $projectRoot 'installer/CursorShake.iss')
     if($LASTEXITCODE -ne 0){throw "Inno Setup compilation failed: $LASTEXITCODE"}
-    $setup=Join-Path $output "CursorShake-$version-phase3-preview-Setup.exe"
+    $setup=Join-Path $output "CursorShake-$version-phase4-candidate-Setup.exe"
     Assert-X64 $setup
     if(-not(Test-Path -LiteralPath (Join-Path $output 'payload-manifest.txt'))){throw 'Compiler payload manifest missing.'}
     # Compare Inno's actual compiled sources and hashes with the intended snapshot.
@@ -110,12 +110,13 @@ try {
         $source=[string]$entry.SourceFilename
         if($source.StartsWith('\\?\')){$source=$source.Substring(4)}
         $relative=[IO.Path]::GetRelativePath($stage,$source).Replace('\','/')
-        if(-not $compiledExpected.ContainsKey($relative) -or -not $compiledSeen.Add($relative) -or $entry.SHA256Sum -ne $compiledExpected[$relative]){throw "Compiler payload differs from snapshot: $source"}
+        if(-not $compiledExpected.ContainsKey($relative) -or $entry.SHA256Sum -ne $compiledExpected[$relative]){throw "Compiler payload differs from snapshot: $source"}
+        [void]$compiledSeen.Add($relative)
     }
     if($compiledSeen.Count -ne $compiledExpected.Count){throw 'Compiler payload is incomplete.'}
     if([Diagnostics.FileVersionInfo]::GetVersionInfo($setup).FileVersion.Trim() -ne "$version.0"){throw 'Installer version differs from project version.'}
     $setupHash=(Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()
     [IO.File]::WriteAllText("$setup.sha256","$setupHash  $([IO.Path]::GetFileName($setup))`n")
-    [pscustomobject]@{Version=$version;CompilerVersion=$compilerVersion;PreviewOnly=$true;InstallerExecuted=$false;PayloadFiles=$packaged.Count+1;SetupSHA256=$setupHash}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'build.json') -Encoding utf8
-    Write-Host "Preview installer: $setup"
+    [pscustomobject]@{Version=$version;CompilerVersion=$compilerVersion;PreviewOnly=$false;LifecycleIntegrated=$true;RealInstallQaComplete=$false;InstallerExecuted=$false;PayloadFiles=$packaged.Count+1;SetupSHA256=$setupHash}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'build.json') -Encoding utf8
+    Write-Host "Installer candidate: $setup"
 } finally {foreach($handle in $locks){$handle.Dispose()}}

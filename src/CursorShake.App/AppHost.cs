@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CursorShake.App.Dialogs;
@@ -48,7 +48,7 @@ public sealed class AppHost : ApplicationContext
     private ConfigurationCoordinator? coordinator;
     private volatile bool closing,userPaused,engineUnavailable=true;
     private readonly SessionAvailability session=new(Process.GetCurrentProcess().SessionId);
-    private bool initializationFailed,lifecycleBusy,starting;
+    private bool initializationFailed,lifecycleBusy,starting,maintenanceShutdown;
     private bool startupEnabled,systemEventsSubscribed;
     private AppConfiguration? effective;
     private string? pending;
@@ -320,6 +320,11 @@ public sealed class AppHost : ApplicationContext
             Attempt(()=>detector?.Dispose());
             Attempt(()=>engine?.Dispose());engine=null;input=null;detector=null;engineUnavailable=true;
     }
+    public void RequestMaintenanceShutdown() => Post(() =>
+    {
+        maintenanceShutdown=true;
+        _=StopAsync();
+    });
     public async Task StopAsync()
     {
         if(closing){await Stopped;return;}closing=true;
@@ -332,6 +337,15 @@ public sealed class AppHost : ApplicationContext
             await AwaitAttempt(()=>retryOperation);
             await AwaitAttempt(()=>diagnostics.BeginShutdownAsync());
             await StopComponentsAsync(failures);
+            if(maintenanceShutdown)
+            {
+                try
+                {
+                    var pendingRecovery=RecoveryBootstrap.Inspect(options.StateDirectory);
+                    if(pendingRecovery.Count>0)failures.Add(new IOException("Se conserva una recuperación pendiente; no se permite retirar los recursos de la aplicación.\n"+string.Join(Environment.NewLine,pendingRecovery.Select(x=>x.Summary))));
+                }
+                catch(Exception error){failures.Add(error);}
+            }
             if(failures.Count>0)
             {
                 var diagnostic=new UiDiagnostic("Cierre","StopFailed","La restauración o el cierre necesitan revisión.",string.Join(Environment.NewLine,failures.Select(x=>x.ToString())),options.StateDirectory);

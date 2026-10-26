@@ -1,1 +1,1 @@
-CursorShake installer protocol 1
+CursorShake installer protocol 2

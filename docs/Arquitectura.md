@@ -303,6 +303,16 @@ StartupRegistration usa tarea por usuario InteractiveToken/LeastPrivilege, delay
 
 RecoveryGuard es un proceso auxiliar de recuperación, no otro controlador: espera muerte del proceso y solo intenta restaurar último baseline verificado sobre roles identificables como propios. Cede ante cambios ajenos; sin gestos, relanzamiento en bucle ni preferencias independientes. Un cierre correcto debe comunicar restauración/disposición antes de desarmar al auxiliar; un fallo deja recibo y recuperación explícita. El guard abre antes de Ready el handle del proceso padre y su identidad PID/start/session/SID. El ownership usa ledger MMF de doble buffer con estados previo/pendiente/confirmado antes de cada SetSystemCursor, sin escribir disco por frame. La sesión no publica antes del handshake. Bootstrap y guard serializan recuperación con lease y revalidan identidad; la limpieza conserva manifiesto ante entradas desconocidas y no recrea una sesión ya retirada. La resolución explícita del esquema registrado se describe en ExperienciaUsuario; excluye nuevos motores mientras opera.
 
+### Mantenimiento de una instalación
+
+Inno posee una barrera Global por hash UTF-16LE de la ruta canónica en mayúsculas; la mantiene desde PrepareToInstall hasta ssPostInstall, o desde usUninstall hasta DeinitializeUninstall. La admisión normal toma esa misma barrera solo durante registro de estado, endpoint y construcción de AppHost. Si está ocupada, sale sin interfaz; no se mantiene durante la vida normal de la aplicación. La barrera impide admitir un motor nuevo, pero no el mapeo inicial del EXE por Windows: conservar aborto/reintento ante locks nativos.
+
+MaintenanceEndpoint ofrece únicamente STOP por pipe local identificado con PID+inicio, ACL SID/Admin/System y verificación de PID del peer. El cliente usa token Anonymous y el intercambio STOP/OK/ACK precede a postear cierre en UI. InstallationProcesses retiene identidades de procesos de esta ruta, pide cerrar Apps, verifica salida 0, espera Guards y repite la comprobación con límite de 30 segundos. No mata procesos. AppHost utiliza su StopAsync existente y verifica recuperación pendiente; Program refleja el resultado de Stopped en el exit code. Un proceso inaccesible o anterior sin endpoint bloquea y pide salida manual desde bandeja.
+
+Setup ejecuta el helper desde una copia temporal del payload; no mantiene un proceso .NET desde los archivos que va a reemplazar. El helper de uninstall termina antes de retirar esos archivos. InstalledStartupTasks planifica y revalida Source, SID/principal, acción única sin argumentos y ruta exacta antes de retirar una tarea; otra copia se conserva. La retirada personal es un plan revisable de PersonalDataRemoval: contexto sin elevar, localizador Ready, sin recibos/journals, preflight de todos los archivos con identidad/hash y protección contra reparse/hardlinks. Las tareas se resuelven antes de ejecutar el borrado personal. Un fallo parcial bloquea la retirada de binarios y conserva lo restante; no se promete transacción global del filesystem.
+
+InstallationRecoveryIndex provisiona metadatos protegidos por instalación y registra cada ruta de estado antes de permitir el motor. AssertClear examina todos los registros bajo barrera antes de tareas o datos, sin suponer que el perfil elevado es el usuario original ni adivinar perfiles desconectados. El ámbito, rutas y comportamiento de conservación aceptados están en ExperienciaUsuario6. Los datos personales para todos se conservan; el índice plano se retira después de los binarios mediante operaciones no recursivas con ancestros fijados.
+
 ## 8. Evidencias y límites de lo probado
 
 Las alternativas antiguas dejan el cuerpo operativo, no sus evidencias. Experimentos enlazados conservan protocolos, fuentes primarias, versiones y mediciones. Son pruebas aisladas autorizadas, no implementación del producto.
@@ -321,7 +331,7 @@ Equipo probado Windows11 25H2 26200.9711. No certificar drivers/DPI/sesiones/ver
 
 ## 9. Implementación, compilación y validación
 
-El objetivo autorizado es una carpeta autónoma win-x64 con GUI y dependencias, sin instalador ni activación de inicio persistente durante QA. Código y tests son la fuente de firmas C#; los diagramas anteriores expresan responsabilidades, no obligan a una clase por caja.
+El objetivo autorizado incluye la carpeta autónoma win-x64 con GUI/dependencias y el candidato del instalador hasta la fase 4, sin instalación real ni activación de inicio persistente durante QA. Código y tests son la fuente de firmas C#; los diagramas anteriores expresan responsabilidades, no obligan a una clase por caja.
 
 Compilar y publicar desde Windows con el SDK de global.json:
 
@@ -434,6 +444,8 @@ CursorShake/
 │       └── nordzy-white/
 ├── build/
 │   └── Build.ps1
+├── installer/
+│   └── CursorShake.iss
 ├── docs/
 │   ├── Arquitectura.md
 │   ├── ConfiguracionInicial.md
@@ -461,4 +473,4 @@ assets conserva fuentes editables, manifiestos, licencias y créditos de recurso
 
 Build.ps1 orquesta compilación/pruebas/preparación de recursos/publicación; lógica compleja de formatos se reutiliza desde sus módulos, sin otra implementación en el script. Dependencias se fijan por proyecto con lock cuando corresponda; añadir configuración compartida de MSBuild solo si aporta y sin cambiar accidentalmente los experimentos. Experiments permanece separado del producto y no se incluye en publicación. Bin/obj también quedan ignorados.
 
-La publicación contiene ejecutable principal, auxiliar, runtime/DLL, temas incorporados y avisos de licencia. config.toml y themes personales se crean en el workspace elegido, nunca en artifacts de compilación. Estado pequeño de recuperación sigue la ubicación interna por usuario y el localizador acordados en ExperienciaUsuario. El instalador está fuera del hito de ejecutable y su carpeta se añadirá cuando se aborde.
+La publicación contiene ejecutable principal, auxiliar, runtime/DLL, temas incorporados y avisos de licencia. config.toml y themes personales se crean en el workspace elegido, nunca en artifacts de compilación. Estado pequeño de recuperación sigue la ubicación interna por usuario y el localizador acordados en ExperienciaUsuario. installer/CursorShake.iss y build/BuildInstaller.ps1 definen el candidato del instalador; su QA real y publicación pertenecen a la fase 5.

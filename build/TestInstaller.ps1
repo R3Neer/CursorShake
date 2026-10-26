@@ -65,11 +65,11 @@ Invoke-Case 'Required file remains required after removing its manifest entry' {
 }
 Invoke-Case 'Publication without the installer protocol marker is rejected even after updating its manifest' {
     $path=Assert-PrivatePath (Join-Path $fixture 'installer-protocol.txt');$backup=Assert-PrivatePath (Join-Path $runRoot 'installer-protocol.backup')
-    try {[IO.File]::Move($path,$backup);Set-FixtureManifest @($originalLines|Where-Object {$_ -notmatch '  installer-protocol\.txt$'});Assert-Rejected 'does not support installer protocol 1'}finally{Restore-FixtureManifest;if([IO.File]::Exists($backup)){[IO.File]::Move($backup,$path)}}
+    try {[IO.File]::Move($path,$backup);Set-FixtureManifest @($originalLines|Where-Object {$_ -notmatch '  installer-protocol\.txt$'});Assert-Rejected 'does not support installer protocol 2'}finally{Restore-FixtureManifest;if([IO.File]::Exists($backup)){[IO.File]::Move($backup,$path)}}
 }
 Invoke-Case 'A different installer protocol cannot be accepted by updating its manifest hash' {
     $path=Assert-PrivatePath (Join-Path $fixture 'installer-protocol.txt');$bytes=[IO.File]::ReadAllBytes($path)
-    try {[IO.File]::WriteAllText($path,'CursorShake installer protocol 999');Update-FixtureHash 'installer-protocol.txt';Assert-Rejected 'does not support installer protocol 1'}finally{[IO.File]::WriteAllBytes($path,$bytes);Restore-FixtureManifest}
+    try {[IO.File]::WriteAllText($path,'CursorShake installer protocol 999');Update-FixtureHash 'installer-protocol.txt';Assert-Rejected 'does not support installer protocol 2'}finally{[IO.File]::WriteAllBytes($path,$bytes);Restore-FixtureManifest}
 }
 Invoke-Case 'Unmanifested extra file is rejected' {
     $path=Assert-PrivatePath (Join-Path $fixture 'qa-extra.txt')

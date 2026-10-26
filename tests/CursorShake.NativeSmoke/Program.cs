@@ -11,6 +11,8 @@ internal static class Program
         if (args.Length == 3 && args[0] == "--capture-only") return NativeCapture.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]));
         if (args.Length == 4 && args[0] == "--guard-ready-capture") return GuardReadyCapture.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]), Path.GetFullPath(args[3]));
         if (args.Length == 5 && args[0] == "--app-smoke") return AppSmoke.Run(Path.GetFullPath(args[1]), Path.GetFullPath(args[2]), Path.GetFullPath(args[3]), Path.GetFullPath(args[4]));
+        if (args.Length == 2 && args[0] == "--maintenance-process-smoke") return MaintenanceProcessSmoke.Run(Path.GetFullPath(args[1]));
+        if (args.Length == 3 && args[0] == "--maintenance-process-child") return MaintenanceProcessSmoke.Child(int.Parse(args[1], System.Globalization.CultureInfo.InvariantCulture), Path.GetFullPath(args[2]));
         if (args.Length == 2 && args[0] == "--tray-menu-render") return TrayMenuRender.Run(Path.GetFullPath(args[1]));
         if (args.Length == 2 && args[0] == "--ui-theme-smoke") return UiThemeSmoke.Run(Path.GetFullPath(args[1]));
         if (args.Length == 2 && args[0] == "--menu-render") return MenuRender.Run(Path.GetFullPath(args[1]));
