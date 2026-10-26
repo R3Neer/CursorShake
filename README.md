@@ -4,6 +4,8 @@ Make your mouse pointer grow when you shake the mouse. CursorShake is a Windows 
 
 [Download CursorShake 1.1.0 for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/download/v1.1.0/CursorShake-1.1.0-Setup.exe) · [Release notes and SHA-256](https://github.com/R3Neer/CursorShake/releases/tag/v1.1.0)
 
+The current **1.1.1 source** fixes a timing error that could interrupt growth or return when input was delayed. The latest published installer is still 1.1.0.
+
 ## Features
 
 - Adjustable shake count, movement thresholds, timing, and maximum size multiplier.
