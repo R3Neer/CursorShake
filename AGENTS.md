@@ -4,6 +4,7 @@
 
 - Copia canónica: D:\Desarrollo\Proyectos\Herramientas\CursorShake. Preservar cambios locales y retiradas deliberadas; no reset/clean ni recrear documentos históricos.
 - Fase actual: implementación autorizada expresamente por el usuario hasta ejecutable autónomo con GUI, temas, recuperación, pruebas y revisión. Autorizados crear proyectos, compilar y probar; sin instalador, instalación ni inicio automático persistente durante QA. No commit/push sin autorización nueva.
+- Distribución: versión de proyecto 1.0.0. No crear la primera release de GitHub hasta que el instalador esté listo, según instrucción expresa del usuario.
 - El usuario dirige comportamiento del dominio. Detalles técnicos de integración delegados pueden concretarse y documentarse; consultar cambios materiales del comportamiento o limitaciones nuevas.
 
 ## Fuentes y fronteras

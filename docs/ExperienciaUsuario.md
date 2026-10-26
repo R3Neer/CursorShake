@@ -4,7 +4,7 @@ Comportamiento acordado; ejecutable y GUI implementados; evidencia y límites de
 
 ## 1. Instalación y primera ejecución
 
-El hito actual entrega artifacts/publish/win-x64/CursorShake.exe junto con dependencias, RecoveryGuard, temas y avisos; conservar la carpeta completa. No hay release público ni instalador todavía. Ejecutar el EXE no registra inicio automático por sí solo.
+El hito actual entrega artifacts/publish/win-x64/CursorShake.exe junto con dependencias, RecoveryGuard, temas y avisos; conservar la carpeta completa. La versión de proyecto es 1.0.0, fijada en Directory.Build.props. No se creará la primera release de GitHub hasta disponer del instalador; todavía no hay release público ni instalador. Ejecutar el EXE no registra inicio automático por sí solo.
 
 En la fase de instalador, el usuario descargará CursorShake-Setup.exe de GitHub Releases. El instalador permite elegir carpeta de binarios, registra desinstalación y acceso en Inicio. Ofrece «Iniciar con Windows» y «Ejecutar al terminar» marcados y desmarcables. Ejecutar con identidad/sesión del usuario correcto, incluso si el destino requiere elevación. La aplicación trabaja normalmente sin administrador; no exige SDK ni instalación manual de .NET.
 
