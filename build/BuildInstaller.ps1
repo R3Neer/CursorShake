@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$PayloadRoot,
     [string]$Compiler='D:\Desarrollo\Toolchains\InnoSetup7\ISCC.exe',
     [switch]$ValidateOnly
@@ -98,7 +98,7 @@ try {
     $output=Reset-OwnedBuildOutput $projectRoot $outputPath
     & $Compiler --quiet --no-ide-signtools "--define=AppVersion=$version" "--define=PayloadRoot=$stage" "--define=InstallerOutput=$output" (Join-Path $projectRoot 'installer/CursorShake.iss')
     if($LASTEXITCODE -ne 0){throw "Inno Setup compilation failed: $LASTEXITCODE"}
-    $setup=Join-Path $output "CursorShake-$version-phase4-candidate-Setup.exe"
+    $setup=Join-Path $output "CursorShake-$version-Setup.exe"
     Assert-X64 $setup
     if(-not(Test-Path -LiteralPath (Join-Path $output 'payload-manifest.txt'))){throw 'Compiler payload manifest missing.'}
     # Compare Inno's actual compiled sources and hashes with the intended snapshot.
@@ -118,5 +118,5 @@ try {
     $setupHash=(Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()
     [IO.File]::WriteAllText("$setup.sha256","$setupHash  $([IO.Path]::GetFileName($setup))`n")
     [pscustomobject]@{Version=$version;CompilerVersion=$compilerVersion;PreviewOnly=$false;LifecycleIntegrated=$true;RealInstallQaComplete=$false;InstallerExecuted=$false;PayloadFiles=$packaged.Count+1;SetupSHA256=$setupHash}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'build.json') -Encoding utf8
-    Write-Host "Installer candidate: $setup"
+    Write-Host "Installer: $setup"
 } finally {foreach($handle in $locks){$handle.Dispose()}}

@@ -1,4 +1,4 @@
-﻿; Installer candidate: lifecycle integrated; real installation QA precedes publication.
+; CursorShake installer: lifecycle and original-user integration.
 #ifndef AppVersion
   #error AppVersion must be supplied by build/BuildInstaller.ps1
 #endif
@@ -35,7 +35,7 @@ WizardSmallImageFileDynamicDark=
 SetupIconFile=..\assets\branding\cursorshake-propuesta-01.ico
 UninstallDisplayIcon={app}\CursorShake.exe
 OutputDir={#InstallerOutput}
-OutputBaseFilename=CursorShake-{#AppVersion}-phase4-candidate-Setup
+OutputBaseFilename=CursorShake-{#AppVersion}-Setup
 OutputManifestFile=payload-manifest.txt
 Compression=lzma2
 SolidCompression=yes
@@ -47,8 +47,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [CustomMessages]
-english.PreviewNotice=Installer candidate. Installation, update and uninstall testing must be completed before public release.
-spanish.PreviewNotice=Candidato del instalador. Las pruebas reales de instalación, actualización y desinstalación deben completarse antes de publicarlo.
+english.PreviewNotice=Install CursorShake, a Windows tray utility that enlarges your pointer when you shake the mouse.
+spanish.PreviewNotice=Instala CursorShake, la utilidad de bandeja que agranda el cursor cuando agitas el ratón.
 
 english.MaintenanceFailed=CursorShake could not complete verified shutdown. No process was forcibly terminated. Application files have not been replaced or removed. Exit all instances from the tray and retry.
 spanish.MaintenanceFailed=CursorShake no ha podido completar el cierre verificado. No se ha terminado ningún proceso por la fuerza ni sustituido o retirado archivos de la aplicación. Sal de todas las instancias desde la bandeja y reintenta.
@@ -72,8 +72,9 @@ Name: "autostart"; Description: "{cm:AutoStart}"
 Filename: "{app}\CursorShake.exe"; Parameters: "--installer-launch"; WorkingDir: "{app}"; Description: "{cm:Launch}"; Flags: postinstall nowait runasoriginaluser skipifsilent; Check: CanLaunchAfterInstall
 
 [Files]
-; A separate temporary copy can close the installed app without locking its binaries.
-Source: "{#PayloadRoot}\*"; DestDir: "{tmp}\CursorShakeMaintenance"; Excludes: ".cursorshake-build-owned"; Flags: dontcopy recursesubdirs createallsubdirs
+; Maintenance never starts the engine: stage root binaries only, without themes/notices/symbols.
+; A short temporary path avoids unnecessary MAX_PATH failures in Inno extraction.
+Source: "{#PayloadRoot}\*"; DestDir: "{tmp}\cs"; Excludes: ".cursorshake-build-owned,*.pdb"; Flags: dontcopy
 Source: "{#PayloadRoot}\*"; DestDir: "{app}"; Excludes: ".cursorshake-build-owned"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
@@ -444,10 +445,10 @@ begin
     BeginMaintenance;
     if not TemporaryPayloadReady then
     begin
-      ExtractTemporaryFiles('{tmp}\CursorShakeMaintenance\*');
+      ExtractTemporaryFiles('{tmp}\cs\*');
       TemporaryPayloadReady := True;
     end;
-    if not RunMaintenance(ExpandConstant('{tmp}\CursorShakeMaintenance\CursorShake.exe'), '--installer-quiesce') then
+    if not RunMaintenance(ExpandConstant('{tmp}\cs\CursorShake.exe'), '--installer-quiesce') then
       Result := CustomMessage('MaintenanceFailed');
   except
     Result := CustomMessage('MaintenanceFailed') + #13#10 + GetExceptionMessage;
