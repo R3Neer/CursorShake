@@ -2,9 +2,7 @@
 
 Make your mouse pointer grow when you shake the mouse. CursorShake is a Windows tray utility with smooth scaling, adjustable sensitivity, and **vector cursor themes that are rendered at the enlarged size**, including animated cursors.
 
-[Download CursorShake 1.0.0 for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/download/v1.0.0/CursorShake-1.0.0-Setup.exe) · [Release notes and SHA-256](https://github.com/R3Neer/CursorShake/releases/tag/v1.0.0)
-
-The latest published installer is **1.0.0**. The menu-language setting described below is available in the **1.1.0 source build**, ahead of its release.
+[Download CursorShake 1.1.0 for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/download/v1.1.0/CursorShake-1.1.0-Setup.exe) · [Release notes and SHA-256](https://github.com/R3Neer/CursorShake/releases/tag/v1.1.0)
 
 ## Features
 
@@ -19,13 +17,13 @@ The latest published installer is **1.0.0**. The menu-language setting described
 
 ## Requirements
 
-Windows 11 x64 in a local interactive session. Published packages include the .NET runtime; the SDK is only needed to build from source. Version 1.0.0 has a Spanish tray menu; 1.1.0 adds English by default and Spanish as an option.
+Windows 11 x64 in a local interactive session. Published packages include the .NET runtime; the SDK is only needed to build from source. The tray menu supports English (default) and Spanish.
 
 The Windows theme reads local system SVGs and checks their hashes against the verified references. Missing or different resources produce a diagnostic. Bibata Ice and Nordzy white are bundled and do not require those system SVGs.
 
 ## Install
 
-Download and open `CursorShake-1.0.0-Setup.exe` normally. The installer defaults to your Windows user; you can choose all users and a different installation folder. Windows requests administrator approval when needed. Leave **Iniciar con Windows** selected to start the utility after signing in, and **Ejecutar CursorShake** to launch it when setup finishes.
+Download and open `CursorShake-1.1.0-Setup.exe` normally. The installer defaults to your Windows user; you can choose all users and a different installation folder. Windows requests administrator approval when needed. Leave **Iniciar con Windows** selected to start the utility after signing in, and **Ejecutar CursorShake** to launch it when setup finishes.
 
 The installer is unsigned, so Windows may show an unknown-publisher or SmartScreen warning. No separate .NET installation is required. To update, run the new installer over the existing installation. To uninstall, use Windows Settings; configuration and personal themes are kept by default.
 
@@ -77,7 +75,7 @@ Raster CUR/ANI sources do not gain detail when enlarged. Output is limited to 20
 
 The app generates a commented `config.toml` on first use. **Open configuration** shows it in your associated editor. Changes reload when saved; themes and gesture settings apply together at normal cursor size. Moving the configuration through the tray menu also moves personal themes.
 
-In **1.1.0**, choose the tray-menu language at the **top of the file, before any `[section]`**:
+Choose the tray-menu language at the **top of the file, before any `[section]`**:
 
 ```toml
 language = "english" # english or spanish
