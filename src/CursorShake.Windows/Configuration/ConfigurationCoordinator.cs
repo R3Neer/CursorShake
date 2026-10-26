@@ -100,13 +100,13 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
                     }).ConfigureAwait(false);
                     await ready.Task.WaitAsync(token).ConfigureAwait(false);
                     bool admitted=false;
-                    await runtime.InvokeAsync(()=>
+                    await runtime.InvokeAsync(time=>
                     {
                         lock(gate)
                         {
                             if(stopping||revision!=wanted||generation!=workspace.Generation)return;
                             if(!detector.CanApplyProfile)return;
-                            applying=true;detector.SetSuspended(true,clock.Now);admitted=true;
+                            applying=true;detector.SetSuspended(true,time.ApplyAt);admitted=true;
                         }
                     }).ConfigureAwait(false);
                     if(admitted)break;
@@ -116,12 +116,12 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
                 var applied=await engine.ApplyThemeAsync(candidate,configuration.Gesture.Growth.MaximumScale).ConfigureAwait(false);
                 if(!applied.Applied)throw new ConfigurationException("ThemeApplyFailed",applied.Error??"Unable to apply cursor theme.",workspace.ConfigPath);
                 candidate=null; // Engine owns the prepared resource graph now.
-                await runtime.InvokeAsync(()=>
+                await runtime.InvokeAsync(time=>
                 {
                     input.ApplyProfile(configuration.Gesture);
-                    detector.ApplyProfile(configuration.Gesture,clock.Now);
+                    detector.ApplyProfile(configuration.Gesture,time.OccurredAt,time.ApplyAt);
                     applying=false;
-                    detector.SetSuspended(stopping||remainSuspended(),clock.Now);
+                    detector.SetSuspended(stopping||remainSuspended(),time.ApplyAt);
                 }).ConfigureAwait(false);
                 lock(gate){effective=configuration;pendingTheme=null;hasError=!validCandidate;}
                 if(workspace.CleanupPending)workspace.CompletePendingMove();
@@ -132,7 +132,7 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
             {
                 lock(gate)hasError=true;
                 Error?.Invoke(ex);
-                try{await runtime.InvokeAsync(()=>{applying=false;detector.SetSuspended(stopping||remainSuspended(),clock.Now);}).ConfigureAwait(false);}catch(ObjectDisposedException){}
+                try{await runtime.InvokeAsync(time=>{applying=false;detector.SetSuspended(stopping||remainSuspended(),time.ApplyAt);}).ConfigureAwait(false);}catch(ObjectDisposedException){}
             }
             finally
             {

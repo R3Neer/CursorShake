@@ -85,25 +85,27 @@ public sealed class ShakeDetector : IDisposable
         Reset(now);
     }
 
-    public void ApplyProfile(GestureProfile profile, TimeSpan now)
+    public void ApplyProfile(GestureProfile profile, TimeSpan now) => ApplyProfile(profile, now, now);
+    public void ApplyProfile(GestureProfile profile, TimeSpan occurredAt, TimeSpan applyAt)
     {
         EnsureUsable(); profile.Validate();
-        Advance(now);
+        Advance(occurredAt, applyAt);
         if (!CanApplyProfile) throw new InvalidOperationException("Configuration waits for normal size before becoming effective.");
         _profile = profile;
-        _growth.ApplyProfile(profile.Growth, ApplyTime(now));
-        Reset(now);
+        _growth.ApplyProfile(profile.Growth, ApplyTime(applyAt));
+        Reset(applyAt);
     }
 
-    public bool TryStartPreview(TimeSpan now)
+    public bool TryStartPreview(TimeSpan now) => TryStartPreview(now, now);
+    public bool TryStartPreview(TimeSpan occurredAt, TimeSpan applyAt)
     {
         EnsureUsable();
-        Advance(now);
+        Advance(occurredAt, applyAt);
         if (IsSuspended || Phase != GesturePhase.Idle || _buttons != PointerButtons.None || !CanApplyProfile) return false;
         ClearSequence(); _input.Reset();
         GestureEpoch++;
         IsPreview = true;
-        _growth.BeginGrowth(1, ApplyTime(now), GestureEpoch);
+        _growth.BeginGrowth(1, ApplyTime(applyAt), GestureEpoch);
         _phaseCompletion = _growth.CompletionAt;
         Phase = _growth.IsAnimating ? GesturePhase.Growing : GesturePhase.Idle;
         if (!_growth.IsAnimating) IsPreview = false;

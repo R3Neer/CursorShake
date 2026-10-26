@@ -2,10 +2,13 @@ using CursorShake.Core.Runtime;
 using CursorShake.Core.Shake;
 namespace CursorShake.Windows.Input;
 
+/// <summary>Admission time orders semantic transitions; application time evaluates the current visual curve.</summary>
+public readonly record struct RuntimeCommandTime(TimeSpan OccurredAt,TimeSpan ApplyAt);
+
 /// <summary>Serial ownership of domain/configuration commands with bounded input admission and deadline wakeups.</summary>
 public sealed class PointerRuntimeLoop : IDisposable
 {
-    private sealed record Item(TimeSpan At,RawPointerEvent? Pointer,Action? Action,bool Deadline=false,bool Discontinuity=false);
+    private sealed record Item(TimeSpan At,RawPointerEvent? Pointer,Action<RuntimeCommandTime>? Action,bool Deadline=false,bool Discontinuity=false);
     private readonly object gate=new();
     private readonly Queue<Item> queue=new();
     private readonly AutoResetEvent wake=new(false);
@@ -37,13 +40,17 @@ public sealed class PointerRuntimeLoop : IDisposable
         }
         wake.Set();
     }
+    /// <summary>Compatibility for queries without temporal domain mutations. Domain commands must use the timed overload.</summary>
     public Task InvokeAsync(Action action)
+    {ArgumentNullException.ThrowIfNull(action);return InvokeAsync(_=>action());}
+    public Task InvokeAsync(Action<RuntimeCommandTime> action)
     {
+        ArgumentNullException.ThrowIfNull(action);
         var result=new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         lock(gate)
         {
             if(stopping)return Task.FromException(new ObjectDisposedException(nameof(PointerRuntimeLoop)));
-            queue.Enqueue(new(clock.Now,null,()=>{try{action();result.SetResult();}catch(Exception ex){result.SetException(ex);}}));
+            queue.Enqueue(new(clock.Now,null,time=>{try{action(time);result.SetResult();}catch(Exception ex){result.SetException(ex);}}));
         }
         wake.Set();return result.Task;
     }
@@ -61,18 +68,20 @@ public sealed class PointerRuntimeLoop : IDisposable
             {
                 try
                 {
-                    if(item.Deadline){BeforeDeadline?.Invoke(item.At);lock(gate)deadlineQueued=false;watermark=item.At;detector.Advance(item.At,clock.Now);}
-                    else if(item.Discontinuity){lock(gate)overflow=false;watermark=item.At;input.SignalDiscontinuity(clock.Now);}
+                    if(item.Deadline){BeforeDeadline?.Invoke(item.At);lock(gate)deadlineQueued=false;watermark=item.At>watermark?item.At:watermark;detector.Advance(item.At,clock.Now);}
+                    else if(item.Discontinuity){lock(gate)overflow=false;watermark=item.At>watermark?item.At:watermark;input.SignalDiscontinuity(item.At);}
                     else if(item.Pointer is{} pointer)
                     {
                         bool late=item.At<watermark||clock.Now-item.At>MaximumInputAge;
-                        if(late){input.SignalDiscontinuity(clock.Now);if(pointer.Kind==RawPointerKind.Move)continue;}
+                        if(late){input.SignalDiscontinuity(item.At);if(pointer.Kind==RawPointerKind.Move)continue;}
                         watermark=item.At>watermark?item.At:watermark;
-                        input.Process(pointer,late?clock.Now:item.At);
+                        // Stale movement is discarded, but button order retains its admitted timestamp.
+                        // Core applies cancellation at the current clock without consuming future FIFO deadlines.
+                        input.Process(pointer,item.At);
                     }
-                    else{watermark=item.At>watermark?item.At:watermark;item.Action?.Invoke();}
+                    else{watermark=item.At>watermark?item.At:watermark;item.Action?.Invoke(new(item.At,clock.Now));}
                 }
-                catch(Exception ex){Error?.Invoke(ex);try{input.SignalDiscontinuity(clock.Now);}catch{}}
+                catch(Exception ex){Error?.Invoke(ex);try{input.SignalDiscontinuity(item.At);}catch{}}
             }
             due=detector.NextDeadline;
             if(due is{} time&&clock.Now>=time)

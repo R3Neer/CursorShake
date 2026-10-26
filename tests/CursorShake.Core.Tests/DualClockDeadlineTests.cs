@@ -53,6 +53,27 @@ public sealed class DualClockDeadlineTests
         rig.Detector.Advance(Ms(1100), Ms(1100));
         Assert.Equal(GesturePhase.Idle, rig.Detector.Phase); Assert.True(rig.Detector.CanApplyProfile);
     }
+    [Fact] public void DelayedPreviewCommandUsesAdmissionForSemanticsAndPresentTimeForItsCurve()
+    {
+        using var rig = new DetectorRig(); rig.Clock.Now = Ms(1000);
+        Assert.True(rig.Detector.TryStartPreview(Ms(20), Ms(1000)));
+        Assert.True(rig.Detector.IsPreview); Assert.Equal(1, rig.Detector.Scale);
+        Assert.All(rig.Engine.Samples, sample => Assert.True(sample.EvaluatedAt >= Ms(1000)));
+        // A wake already admitted immediately after this command must remain legal.
+        rig.Detector.Advance(Ms(21), Ms(1020));
+        Assert.True(rig.Detector.IsPreview); Assert.True(rig.Detector.Scale > 1); Monotonic(rig);
+    }
+    [Fact] public void DelayedProfileCommandDoesNotConsumeEventsAfterItsAdmissionTime()
+    {
+        using var rig = new DetectorRig(); rig.Stroke(0); rig.Clock.Now = Ms(1000);
+        rig.Detector.ApplyProfile(new GestureProfile { CountToActivate = 2 }, Ms(150), Ms(1000));
+        Assert.Equal(2, rig.Detector.Profile.CountToActivate);
+        rig.Detector.Advance(Ms(151), Ms(1000)); // Queued wake precedes the application clock.
+        rig.Input.EmitStroke(Ms(160));
+        Assert.Equal(GesturePhase.Counting, rig.Detector.Phase); Assert.Equal(1, rig.Detector.Count);
+        rig.Clock.Now = Ms(1020); rig.Input.EmitStroke(Ms(260));
+        Assert.Equal(GesturePhase.Growing, rig.Detector.Phase); Monotonic(rig);
+    }
     private static DetectorRig Active(){var rig=new DetectorRig();rig.Stroke(0);rig.Stroke(100);rig.Stroke(200);return rig;}
     private static TimeSpan Ms(double value)=>TimeSpan.FromMilliseconds(value);
     private static void Monotonic(DetectorRig rig)

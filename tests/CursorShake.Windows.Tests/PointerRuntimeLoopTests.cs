@@ -174,6 +174,113 @@ public sealed class PointerRuntimeLoopTests
             Assert.True(samples[index].EvaluatedAt >= samples[index - 1].EvaluatedAt, "Delayed semantic replay must never publish a retrospective sample.");
     }
 
+    [Theory]
+    [InlineData("Advance")]
+    [InlineData("Preview")]
+    [InlineData("Discontinuity")]
+    [InlineData("Profile")]
+    public async Task CommandOccurrenceContextKeepsAQueuedDeadlineOrderedWhenTheClockAdvances(string operation)
+    {
+        var clock = new RuntimeTestClock(); var input = NewInput(); var engine = new RuntimeTestEngine();
+        var profile = operation == "Profile" ? new GestureProfile { Growth = new CursorShake.Core.Growth.GrowthProfile { GrowthDuration = TimeSpan.FromMilliseconds(1), ReturnDuration = TimeSpan.FromMilliseconds(1) } } : new GestureProfile();
+        using var detector = new ShakeDetector(input, engine, clock, profile);
+        using var loop = new PointerRuntimeLoop(clock, input, detector);
+        var errors = new ConcurrentQueue<Exception>(); loop.Error += errors.Enqueue;
+        using var entered = new ManualResetEventSlim(); using var release = new ManualResetEventSlim();
+        var seed = loop.InvokeAsync(() =>
+        {
+            Assert.True(detector.TryStartPreview(TimeSpan.Zero));
+            entered.Set();
+            if (!release.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException("Seed command was not released.");
+        });
+        Assert.True(entered.Wait(TimeSpan.FromSeconds(5)));
+        Task change;
+        try
+        {
+            clock.Now = TimeSpan.FromMilliseconds(20);
+            change = loop.InvokeAsync(time =>
+            {
+                clock.Now = TimeSpan.FromMilliseconds(40);
+                Assert.Equal(TimeSpan.FromMilliseconds(20), time.OccurredAt);
+                Assert.True(time.ApplyAt >= time.OccurredAt);
+                switch (operation)
+                {
+                    case "Advance": detector.Advance(time.OccurredAt, time.ApplyAt); break;
+                    case "Preview": Assert.False(detector.TryStartPreview(time.OccurredAt, time.ApplyAt)); break;
+                    case "Discontinuity": input.SignalDiscontinuity(time.OccurredAt); break;
+                    case "Profile":
+                        detector.ApplyProfile(new GestureProfile(), time.OccurredAt, time.ApplyAt);
+
+                        break;
+                }
+            });
+        }
+        finally { release.Set(); }
+        await Task.WhenAll(seed, change).WaitAsync(TimeSpan.FromSeconds(5));
+        // Seed completion admitted a wake at20 behind the command; its occurrence must stay20 even if processing takes longer.
+        await loop.InvokeAsync(() => { }).WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.Empty(errors);
+        if (operation is "Advance" or "Preview") Assert.True(detector.IsPreview);
+        loop.Accept(new(RawPointerKind.LeftDown, 0, 0));
+        await loop.InvokeAsync(() => { }).WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.Equal(PointerButtons.Left, input.CurrentButtons);
+        Assert.Equal(GesturePhase.Blocked, detector.Phase);
+        Assert.Empty(errors);
+        AssertMonotonicSamples(engine);
+    }
+
+    [Fact]
+    public async Task StaleMovementDiscontinuityCannotMakeTheFollowingQueuedDeadlineGoBackInTime()
+    {
+        var clock = new RuntimeTestClock(); int held = 0;
+        var input = new PointerInput(new GestureProfile(), () => (PointerButtons)Volatile.Read(ref held), (_, _) => (1, 96));
+        var engine = new RuntimeTestEngine();
+        int processingDelay = 0;
+        input.Discontinuity += _ => { if (Interlocked.Exchange(ref processingDelay, 1) == 0) clock.Now = TimeSpan.FromMilliseconds(220); };
+        using var detector = new ShakeDetector(input, engine, clock);
+        using var loop = new PointerRuntimeLoop(clock, input, detector);
+        var errors = new ConcurrentQueue<Exception>(); loop.Error += errors.Enqueue;
+        using var entered = new ManualResetEventSlim(); using var release = new ManualResetEventSlim();
+        var seed = loop.InvokeAsync(() =>
+        {
+            Assert.True(detector.TryStartPreview(TimeSpan.Zero));
+            entered.Set();
+            if (!release.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException("Seed command was not released.");
+        });
+        Assert.True(entered.Wait(TimeSpan.FromSeconds(5)));
+        Task lateCommand;
+        try
+        {
+            clock.Now = TimeSpan.FromMilliseconds(20);
+            loop.Accept(new(RawPointerKind.Move, 100, 0));
+            Volatile.Write(ref held, (int)PointerButtons.Left);
+            loop.Accept(new(RawPointerKind.LeftDown, 100, 0));
+            lateCommand = loop.InvokeAsync(() =>
+            {
+                Assert.Equal(TimeSpan.FromMilliseconds(220), clock.Now);
+            });
+            clock.Now = TimeSpan.FromMilliseconds(200);
+        }
+        finally { release.Set(); }
+        await Task.WhenAll(seed, lateCommand).WaitAsync(TimeSpan.FromSeconds(5));
+        await loop.InvokeAsync(() => { }).WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.Empty(errors);
+        Assert.Equal(PointerButtons.Left, input.CurrentButtons);
+        Assert.Equal(GesturePhase.Blocked, detector.Phase);
+        Assert.Equal(0, detector.Count);
+        clock.Now = TimeSpan.FromMilliseconds(500);
+        await loop.InvokeAsync(() => { }).WaitAsync(TimeSpan.FromSeconds(5));
+        await Eventually(loop, () => detector.Scale == 1);
+        Assert.Empty(errors); // Continued progress must neither flood errors nor get stuck on a stale deadline.
+        AssertMonotonicSamples(engine);
+    }
+
+    private static void AssertMonotonicSamples(RuntimeTestEngine engine)
+    {
+        var samples = engine.Samples.ToArray();
+        for (int index = 1; index < samples.Length; index++)
+            Assert.True(samples[index].EvaluatedAt >= samples[index - 1].EvaluatedAt, "Runtime processing must never publish a retrospective sample.");
+    }
     private static PointerInput NewInput() => new(new GestureProfile(), () => PointerButtons.None, (_, _) => (1, 96));
     private static async Task Eventually(PointerRuntimeLoop loop, Func<bool> condition)
     {

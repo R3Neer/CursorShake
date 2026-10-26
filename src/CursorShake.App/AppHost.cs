@@ -114,7 +114,7 @@ public sealed class AppHost : ApplicationContext
             await coordinator.InitializeAsync();
             if(closing)return;
             source=new WindowsPointerSource(runtime.Accept);
-            await runtime.InvokeAsync(()=>input.SignalDiscontinuity(clock.Now));
+            await runtime.InvokeAsync(time=>input.SignalDiscontinuity(time.OccurredAt));
             engine.ObserveSystemCursor();
             statusText=effective==null?"Configuración con errores":StatusLabel(engine.Status);
             ShowWorkspaceNotices();
@@ -136,7 +136,7 @@ public sealed class AppHost : ApplicationContext
     {
         engineUnavailable=status!=CursorEngineStatus.Available;
         var loop=runtime;var gesture=detector;
-        if(loop!=null&&gesture!=null&&!closing)_=ObserveTask(loop.InvokeAsync(()=>gesture.SetSuspended(ShouldRemainSuspended(),clock.Now)),"Cursor");
+        if(loop!=null&&gesture!=null&&!closing)_=ObserveTask(loop.InvokeAsync(time=>gesture.SetSuspended(ShouldRemainSuspended(),time.ApplyAt)),"Cursor");
         Post(()=>{statusText=StatusLabel(status);UpdateTray();});
     }
     private static string StatusLabel(CursorEngineStatus value)=>value switch
@@ -178,10 +178,10 @@ public sealed class AppHost : ApplicationContext
                     if(action.ThemeId is{} id)await coordinator.ChangeThemeAsync(id);break;
                 case TrayActionKind.Preview:
                     if(runtime==null||detector==null)throw new InvalidOperationException("El motor no está preparado.");
-                    await runtime.InvokeAsync(()=>{if(!detector.TryStartPreview(clock.Now))throw new InvalidOperationException("La prueba requiere reposo, cursor compatible y botones libres.");});break;
+                    await runtime.InvokeAsync(time=>{if(!detector.TryStartPreview(time.OccurredAt,time.ApplyAt))throw new InvalidOperationException("La prueba requiere reposo, cursor compatible y botones libres.");});break;
                 case TrayActionKind.TogglePause:
                     userPaused=!userPaused;
-                    if(runtime!=null&&detector!=null)await runtime.InvokeAsync(()=>detector.SetSuspended(ShouldRemainSuspended(),clock.Now));UpdateTray();break;
+                    if(runtime!=null&&detector!=null)await runtime.InvokeAsync(time=>detector.SetSuspended(ShouldRemainSuspended(),time.ApplyAt));UpdateTray();break;
                 case TrayActionKind.ToggleStartup:
                     await Task.Run(()=>startup.SetEnabled(!startupEnabled));startupEnabled=startup.IsEnabled();diagnostics.ClearArea("Inicio con Windows");UpdateTray();break;
                 case TrayActionKind.ShowErrors: diagnostics.ShowErrors();break;
@@ -190,9 +190,9 @@ public sealed class AppHost : ApplicationContext
         }
         catch(Exception ex){Report(ex,action.Kind==TrayActionKind.ToggleStartup?"Inicio con Windows":"Configuración",workspace.ConfigPath);}
     }
-    public Task PreviewAsync()=>runtime!=null&&detector!=null?runtime.InvokeAsync(()=>{if(!detector.TryStartPreview(clock.Now))throw new InvalidOperationException("Preview unavailable.");}):Task.FromException(new InvalidOperationException("Not ready."));
+    public Task PreviewAsync()=>runtime!=null&&detector!=null?runtime.InvokeAsync(time=>{if(!detector.TryStartPreview(time.OccurredAt,time.ApplyAt))throw new InvalidOperationException("Preview unavailable.");}):Task.FromException(new InvalidOperationException("Not ready."));
     public Task PauseAsync(bool paused)
-    {userPaused=paused;return runtime!=null&&detector!=null?runtime.InvokeAsync(()=>detector.SetSuspended(ShouldRemainSuspended(),clock.Now)):Task.CompletedTask;}
+    {userPaused=paused;return runtime!=null&&detector!=null?runtime.InvokeAsync(time=>detector.SetSuspended(ShouldRemainSuspended(),time.ApplyAt)):Task.CompletedTask;}
     private async void Retry()
     {
         if(closing||lifecycleBusy||!initialization.IsCompleted)return;
@@ -285,7 +285,7 @@ public sealed class AppHost : ApplicationContext
     private void ResetContext()
     {
         if(closing)return;
-        if(runtime!=null&&input!=null&&detector!=null)_=ObserveTask(runtime.InvokeAsync(()=>{input.SignalDiscontinuity(clock.Now);detector.SetSuspended(ShouldRemainSuspended(),clock.Now);}),"Entrada");
+        if(runtime!=null&&input!=null&&detector!=null)_=ObserveTask(runtime.InvokeAsync(time=>{input.SignalDiscontinuity(time.OccurredAt);detector.SetSuspended(ShouldRemainSuspended(),time.ApplyAt);}),"Entrada");
         engine?.NotifyDisplayChanged();Post(UpdateTray);
     }
     private async Task ObserveTask(Task task,string area){try{await task.ConfigureAwait(false);}catch(Exception ex){Report(ex,area);}}
@@ -313,7 +313,7 @@ public sealed class AppHost : ApplicationContext
                 SystemEvents.PowerModeChanged-=OnPowerModeChanged;
                 SystemEvents.DisplaySettingsChanged-=OnDisplayChanged;SystemEvents.UserPreferenceChanged-=OnUserPreferenceChanged;systemEventsSubscribed=false;
             }
-            if(runtime!=null&&detector!=null)await AwaitAttempt(()=>runtime.InvokeAsync(()=>detector.SetSuspended(true,clock.Now)));
+            if(runtime!=null&&detector!=null)await AwaitAttempt(()=>runtime.InvokeAsync(time=>detector.SetSuspended(true,time.ApplyAt)));
             if(coordinator!=null)await AwaitAttempt(()=>coordinator.DisposeAsync().AsTask());coordinator=null;
             if(engine!=null)await AwaitAttempt(async()=>
             {
