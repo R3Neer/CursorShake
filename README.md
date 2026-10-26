@@ -2,9 +2,7 @@
 
 Make your mouse pointer grow when you shake the mouse. CursorShake is a Windows tray utility with smooth scaling, adjustable sensitivity, and **vector cursor themes that are rendered at the enlarged size**, including animated cursors.
 
-[Download CursorShake 1.1.0 for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/download/v1.1.0/CursorShake-1.1.0-Setup.exe) · [Release notes and SHA-256](https://github.com/R3Neer/CursorShake/releases/tag/v1.1.0)
-
-The current **1.1.1 source** fixes a timing error that could interrupt growth or return when input was delayed. The latest published installer is still 1.1.0.
+[Download CursorShake 1.1.1 for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/download/v1.1.1/CursorShake-1.1.1-Setup.exe) · [Release notes and SHA-256](https://github.com/R3Neer/CursorShake/releases/tag/v1.1.1)
 
 ## Features
 
@@ -25,7 +23,7 @@ The Windows theme reads local system SVGs and checks their hashes against the ve
 
 ## Install
 
-Download and open `CursorShake-1.1.0-Setup.exe` normally. The installer defaults to your Windows user; you can choose all users and a different installation folder. Windows requests administrator approval when needed. Leave **Iniciar con Windows** selected to start the utility after signing in, and **Ejecutar CursorShake** to launch it when setup finishes.
+Download and open `CursorShake-1.1.1-Setup.exe` normally. The installer defaults to your Windows user; you can choose all users and a different installation folder. Windows requests administrator approval when needed. Leave **Iniciar con Windows** selected to start the utility after signing in, and **Ejecutar CursorShake** to launch it when setup finishes.
 
 The installer is unsigned, so Windows may show an unknown-publisher or SmartScreen warning. No separate .NET installation is required. To update, run the new installer over the existing installation. To uninstall, use Windows Settings; configuration and personal themes are kept by default.
 
