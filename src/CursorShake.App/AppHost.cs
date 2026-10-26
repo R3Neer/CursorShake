@@ -156,7 +156,7 @@ public sealed class AppHost : ApplicationContext
         if(closing||dispatch.IsDisposed)return;
         var configuration=effective??new AppConfiguration();
         var themes=preparer.AvailableThemes(configuration).ToDictionary(id=>id,id=>id switch{"windows"=>"Windows","bibata-ice"=>"Bibata Ice","nordzy-white"=>"Nordzy blanco",_=>id},StringComparer.OrdinalIgnoreCase);
-        tray.Update(new(){ThemeId=configuration.Theme,Paused=userPaused||session.IsUnavailable,StartupEnabled=startupEnabled,HasErrors=diagnostics.HasErrors,PendingTheme=pending,StatusText=userPaused?"Pausado":statusText,Themes=themes});
+        tray.Update(new(){Language=configuration.Language,ThemeId=configuration.Theme,Paused=userPaused||session.IsUnavailable,StartupEnabled=startupEnabled,HasErrors=diagnostics.HasErrors,PendingTheme=pending,StatusText=userPaused?"Pausado":statusText,Themes=themes});
         if(startupInitialized && !initializationFailed && effective!=null && source!=null && !ShouldRemainSuspended())startupTiming?.RecordOperational();
     }
     private async void OnAction(TrayAction action)
@@ -170,7 +170,7 @@ public sealed class AppHost : ApplicationContext
                 case TrayActionKind.OpenWorkspace: OpenPath(workspace.RootPath);break;
                 case TrayActionKind.ChooseWorkspace:
                     if(coordinator==null)throw new InvalidOperationException("La configuración todavía no está preparada.");
-                    using(var picker=new FolderBrowserDialog{Description="Carpeta para config.toml y sus temas personales",UseDescriptionForTitle=true,SelectedPath=workspace.RootPath})
+                    using(var picker=new FolderBrowserDialog{Description=(effective?.Language??AppLanguage.English)==AppLanguage.Spanish?"Carpeta para config.toml y sus temas personales":"Folder for config.toml and personal themes",UseDescriptionForTitle=true,SelectedPath=workspace.RootPath})
                         if(picker.ShowDialog()==DialogResult.OK)await coordinator.MoveWorkspaceAsync(picker.SelectedPath);
                     break;
                 case TrayActionKind.SelectTheme:

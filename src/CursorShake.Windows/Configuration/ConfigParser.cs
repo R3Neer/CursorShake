@@ -61,8 +61,14 @@ public static class ConfigParser
             if (!new[] { ".cur", ".ani", ".vcur", ".vani" }.Contains(Path.GetExtension(value), StringComparer.OrdinalIgnoreCase)) throw Invalid("Unsupported cursor extension: " + value, key);
             return value;
         }
-        Keys(root, "", "version", "appearance", "gesture", "growth", "themes");
+        Keys(root, "", "version", "language", "appearance", "gesture", "growth", "themes");
         if (Integer(root, "version", 1) != 1) throw new ConfigurationException("UnsupportedVersion", "Only configuration version 1 is supported.", sourcePath);
+        AppLanguage language = Text(root, "language", "english") switch
+        {
+            "english" => AppLanguage.English,
+            "spanish" => AppLanguage.Spanish,
+            _ => throw Invalid("language must be exactly 'english' or 'spanish'.", "language")
+        };
         var appearance = Table(root, "appearance"); Keys(appearance, "appearance.", "theme");
         var gesture = Table(root, "gesture"); Keys(gesture, "gesture.", "count", "maximum_interval_ms", "minimum_travel", "minimum_speed");
         var growth = Table(root, "growth"); Keys(growth, "growth.", "maximum_scale", "growth_duration_ms", "inactivity_delay_ms", "return_duration_ms", "maximum_cadence_multiplier");
@@ -101,6 +107,6 @@ public static class ConfigParser
         }
         string selected = Text(appearance, "theme", "windows");
         if (!new[] { "windows", "bibata-ice", "nordzy-white" }.Contains(selected, StringComparer.OrdinalIgnoreCase) && !themes.ContainsKey(selected)) throw Invalid("Selected theme is not declared: " + selected, "theme");
-        return new AppConfiguration { Theme = selected, Gesture = profile, PersonalThemes = new ReadOnlyDictionary<string, PersonalThemeDefinition>(themes) };
+        return new AppConfiguration { Language = language, Theme = selected, Gesture = profile, PersonalThemes = new ReadOnlyDictionary<string, PersonalThemeDefinition>(themes) };
     }
 }

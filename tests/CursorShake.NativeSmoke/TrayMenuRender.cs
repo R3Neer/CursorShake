@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text.Json;
 using CursorShake.App.Appearance;
 using CursorShake.App.Tray;
+using CursorShake.Windows.Configuration;
 using CursorShake.Windows.Lifecycle;
 
 namespace CursorShake.NativeSmoke;
@@ -28,9 +29,12 @@ internal static class TrayMenuRender
             var menu = (ContextMenuStrip)typeof(TrayView).GetField("_menu", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(tray)!;
             shortcutFree = menu.Items.OfType<ToolStripMenuItem>().All(item => item.ShortcutKeys == Keys.None && string.IsNullOrEmpty(item.ShortcutKeyDisplayString));
             if (!shortcutFree) throw new InvalidOperationException("Real product menu unexpectedly has a keyboard shortcut.");
-            menu.Items.Cast<ToolStripItem>().Single(item => item.Text == "Abrir configuración").Select();
+            menu.Items.Cast<ToolStripItem>().Single(item => item.Text == TrayText.Label(TrayActionKind.OpenConfiguration,AppLanguage.English)).Select();
             Draw(menu, png);
-            Draw(menu.Items.OfType<ToolStripMenuItem>().Single(item => item.Text == "Tema").DropDown, submenu);
+            Draw(menu.Items.OfType<ToolStripMenuItem>().Single(item => item.Text == TrayText.ThemeTitle(AppLanguage.English,false)).DropDown, submenu);
+            tray.Update(new TrayState { Language=AppLanguage.Spanish, StartupEnabled=startup, Themes=new Dictionary<string,string>{["windows"]="Windows",["bibata-ice"]="Bibata Ice",["nordzy-white"]="Nordzy White"} });
+            Draw(menu,Path.ChangeExtension(report,".spanish.png"));
+            Draw(menu.Items.OfType<ToolStripMenuItem>().Single(item=>item.Text==TrayText.ThemeTitle(AppLanguage.Spanish,false)).DropDown,Path.ChangeExtension(report,".spanish.submenu.png"));
         }
         catch (Exception error) { failure = error.ToString(); }
         finally

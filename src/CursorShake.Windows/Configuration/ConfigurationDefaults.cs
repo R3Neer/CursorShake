@@ -12,6 +12,7 @@ public static class ConfigurationDefaults
             return FormattableString.Invariant($"""
                 # CursorShake configuration. Saving valid changes applies them at normal cursor size.
                 version = 1
+                language = "english" # english or spanish; omitted means english
 
                 [appearance]
                 theme = "windows" # windows, bibata-ice, nordzy-white, or a declared personal theme

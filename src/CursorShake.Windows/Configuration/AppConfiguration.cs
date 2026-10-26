@@ -2,9 +2,12 @@ using CursorShake.Core.Shake;
 using CursorShake.Windows.Cursors;
 namespace CursorShake.Windows.Configuration;
 
+public enum AppLanguage { English, Spanish }
+
 public sealed record AppConfiguration
 {
     public int Version { get; init; } = 1;
+    public AppLanguage Language { get; init; } = AppLanguage.English;
     public string Theme { get; init; } = "windows";
     public GestureProfile Gesture { get; init; } = new();
     public IReadOnlyDictionary<string, PersonalThemeDefinition> PersonalThemes { get; init; } = new Dictionary<string, PersonalThemeDefinition>(StringComparer.OrdinalIgnoreCase);

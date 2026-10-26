@@ -9,53 +9,57 @@ public sealed class TrayView : IDisposable
     private readonly NotifyIcon _notify;
     private readonly ContextMenuStrip _menu = new();
     private readonly ToolStripMenuItem _status = new() { Enabled = false };
-    private readonly ToolStripMenuItem _themes = new("Tema");
-    private readonly ToolStripMenuItem _pause, _startup, _errors;
+    private readonly ToolStripMenuItem _themes = new("Theme");
+    private readonly ToolStripMenuItem _pause, _startup;
     private readonly Icon _normalIcon, _pausedIcon, _errorIcon;
-    private readonly ExplorerMessages _messages;
+    private readonly ExplorerMessages? _messages;
     private string _themeSignature = "";
     private bool _disposed;
+    private readonly Dictionary<TrayActionKind, ToolStripMenuItem> _commands = new();
+    internal ContextMenuStrip Menu => _menu;
+    internal string Tooltip => _notify.Text;
     public event Action<TrayAction>? ActionRequested;
 
-    public TrayView(Icon icon)
+    public TrayView(Icon icon) : this(icon, true) { }
+    internal TrayView(Icon icon, bool visible)
     {
         ArgumentNullException.ThrowIfNull(icon);
         _normalIcon = (Icon)icon.Clone();
         _pausedIcon = CreateBadge(icon, false); _errorIcon = CreateBadge(icon, true);
         _menu.Items.Add(_status); _menu.Items.Add(new ToolStripSeparator());
-        Add("Abrir configuración", TrayActionKind.OpenConfiguration);
-        Add("Ubicación de configuración…", TrayActionKind.ChooseWorkspace);
-        Add("Abrir carpeta de configuración", TrayActionKind.OpenWorkspace);
+        Add(TrayActionKind.OpenConfiguration);
+        Add(TrayActionKind.ChooseWorkspace);
+        Add(TrayActionKind.OpenWorkspace);
         _menu.Items.Add(new ToolStripSeparator()); _menu.Items.Add(_themes);
-        Add("Probar crecimiento", TrayActionKind.Preview);
-        _pause = Add("Pausar crecimiento", TrayActionKind.TogglePause);
-        _startup = Add("Iniciar con Windows", TrayActionKind.ToggleStartup);
+        Add(TrayActionKind.Preview);
+        _pause = Add(TrayActionKind.TogglePause);
+        _startup = Add(TrayActionKind.ToggleStartup);
         _menu.Items.Add(new ToolStripSeparator());
-        _errors = Add("Ver errores…", TrayActionKind.ShowErrors);
-        Add("Salir", TrayActionKind.Exit);
+        Add(TrayActionKind.ShowErrors);
+        Add(TrayActionKind.Exit);
         RefreshAppearance();
         _menu.Opening+=(_,_)=>RefreshAppearance();
         _menu.Opened+=(_,_)=>WindowsAppearance.PreferRoundedCorners(_menu);
         _themes.DropDownOpening+=(_,_)=>WindowsAppearance.StyleMenu(_themes.DropDown);
         _themes.DropDownOpened+=(_,_)=>WindowsAppearance.PreferRoundedCorners(_themes.DropDown);
-        _notify = new NotifyIcon { Icon = _normalIcon, Text = "CursorShake", ContextMenuStrip = _menu, Visible = true };
+        _notify = new NotifyIcon { Icon = _normalIcon, Text = "CursorShake", ContextMenuStrip = _menu, Visible = visible };
         _notify.MouseDoubleClick += (_, e) => { if (e.Button == MouseButtons.Left) Request(TrayActionKind.OpenConfiguration); };
-        _messages = new ExplorerMessages(() => { if (!_disposed) { _notify.Visible = false; _notify.Visible = true; } });
+        if (visible) _messages = new ExplorerMessages(() => { if (!_disposed) { _notify.Visible = false; _notify.Visible = true; } });
         Update(new TrayState());
     }
     public void Update(TrayState state)
     {
         RequireThread(); ObjectDisposedException.ThrowIf(_disposed, this); ArgumentNullException.ThrowIfNull(state);
-        _status.Text = state.StatusText;
-        _pause.Text = state.Paused ? "Reanudar crecimiento" : "Pausar crecimiento";
+        string status = TrayText.Status(state.StatusText, state.Language);
+        _status.Text = status;
+        foreach (var command in _commands) command.Value.Text = TrayText.Label(command.Key, state.Language, state.Paused, state.HasErrors);
         _pause.Checked = state.Paused; _startup.Checked = state.StartupEnabled;
-        _errors.Text = state.HasErrors ? "Ver errores… (hay incidencias)" : "Ver errores…";
         _notify.Icon = state.HasErrors ? _errorIcon : state.Paused ? _pausedIcon : _normalIcon;
-        string tooltip = "CursorShake — " + state.StatusText;
+        string tooltip = "CursorShake — " + status;
         int maximum = Math.Min(63, tooltip.Length);
         if (maximum > 0 && char.IsHighSurrogate(tooltip[maximum - 1])) maximum--;
         _notify.Text = tooltip[..maximum];
-        _themes.Text = state.PendingTheme is null ? "Tema" : "Tema (cambio pendiente)";
+        _themes.Text = TrayText.ThemeTitle(state.Language, state.PendingTheme is not null);
         string signature = string.Join("\0", state.Themes.Select(x => x.Key + "=" + x.Value));
         if (_themeSignature != signature)
         {
@@ -64,7 +68,7 @@ public sealed class TrayView : IDisposable
             foreach (var entry in state.Themes)
             {
                 string id = entry.Key;
-                var item = new ToolStripMenuItem(entry.Value.Replace("&", "&&", StringComparison.Ordinal)) { Tag = id };
+                var item = new ToolStripMenuItem(TrayText.ThemeName(id, entry.Value, state.Language).Replace("&", "&&", StringComparison.Ordinal)) { Tag = id };
                 item.Click += (_, _) => Request(TrayActionKind.SelectTheme, id);
                 _themes.DropDownItems.Add(item);
             }
@@ -73,20 +77,21 @@ public sealed class TrayView : IDisposable
         foreach (ToolStripMenuItem item in _themes.DropDownItems)
         {
             string id = (string)item.Tag!;
+            item.Text = TrayText.ThemeName(id, state.Themes[id], state.Language).Replace("&", "&&", StringComparison.Ordinal);
             item.Checked = string.Equals(id, state.ThemeId, StringComparison.OrdinalIgnoreCase);
         }
     }
     public void RefreshAppearance()=>WindowsAppearance.StyleMenu(_menu);
-    private ToolStripMenuItem Add(string label, TrayActionKind kind)
+    private ToolStripMenuItem Add(TrayActionKind kind)
     {
-        var item = new ToolStripMenuItem(label); item.Click += (_, _) => Request(kind); _menu.Items.Add(item); return item;
+        var item = new ToolStripMenuItem(TrayText.Label(kind, CursorShake.Windows.Configuration.AppLanguage.English)); _commands.Add(kind, item); item.Click += (_, _) => Request(kind); _menu.Items.Add(item); return item;
     }
     private void Request(TrayActionKind kind, string? theme = null) { if (!_disposed) ActionRequested?.Invoke(new(kind, theme)); }
     private void RequireThread() { if (Environment.CurrentManagedThreadId != _thread) throw new InvalidOperationException("Tray access must run on its UI thread."); }
     public void Dispose()
     {
         RequireThread(); if (_disposed) return; _disposed = true;
-        _notify.Visible = false; _messages.Dispose(); _notify.Dispose(); _menu.Dispose();
+        _notify.Visible = false; _messages?.Dispose(); _notify.Dispose(); _menu.Dispose();
         _normalIcon.Dispose(); _pausedIcon.Dispose(); _errorIcon.Dispose();
     }
     private static Icon CreateBadge(Icon source, bool error)
