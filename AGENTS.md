@@ -1,9 +1,9 @@
-﻿# Trabajo en CursorShake
+# Trabajo en CursorShake
 
 ## Alcance y autoridad
 
 - Copia canónica: D:\Desarrollo\Proyectos\Herramientas\CursorShake. Preservar cambios locales y retiradas deliberadas; no reset/clean ni recrear documentos históricos.
-- Fase actual: implementación autorizada expresamente por el usuario hasta ejecutable autónomo con GUI, temas, recuperación, pruebas y revisión. Autorizados crear proyectos, compilar y probar; fases 2, 3 y 4 del instalador autorizadas: receta, inicio/ejecución, cierre coordinado, actualización y desinstalación; sin instalación persistente ni cierre de la instancia personal durante QA. Sin release.
+- Fase actual: implementación autorizada expresamente por el usuario hasta ejecutable autónomo con GUI, temas, recuperación, pruebas y revisión. Autorizados crear proyectos, compilar y probar; fases 2 a 5 del instalador autorizadas: receta, integración, mantenimiento y QA real. Instalar/actualizar/desinstalar temporalmente solo con preflight de destinos y registros, respaldo/restauración verificada de la tarea por usuario y conservación de datos personales. No cerrar sesiones ni reiniciar el equipo; la instancia personal se conserva durante las pruebas que no requieran cierre. La elevación real depende de UAC, nunca se elude. Sin release.
 - Distribución: versión de proyecto 1.0.0. No crear la primera release de GitHub hasta que el instalador esté listo, según instrucción expresa del usuario.
 - El usuario dirige comportamiento del dominio. Detalles técnicos de integración delegados pueden concretarse y documentarse; consultar cambios materiales del comportamiento o limitaciones nuevas.
 
@@ -25,7 +25,7 @@ Arquitecto+simplificador+adversario, una misma versión por ronda, máximo diez.
 
 ## Objetivo y documentación durante implementación
 
-- Objetivo autorizado: carpeta autónoma Windows11x64 con CursorShake.exe, RecoveryGuard, GUI/temas/dependencias; compilación reproducible, pruebas exigidas y revisión adversaria. Instalador en fase 4: integrar cierre, actualización y desinstalación; fase 5 de pruebas reales y entrega posterior; sin instalación persistente durante QA. Distinguir evidencia automática, observación Windows y QA visual pendiente.
+- Objetivo autorizado: carpeta autónoma Windows11x64 con CursorShake.exe, RecoveryGuard, GUI/temas/dependencias; compilación reproducible, pruebas exigidas y revisión adversaria. Instalador con QA local por ámbito y GUI realizada; cierre de entrega y logon real pendiente; no dejar instalaciones de QA ni cambios personales sin restaurar. Distinguir evidencia automática, observación Windows y QA visual pendiente.
 - Equipo previsto: dos implementadores (principal integra), adversario y responsable de pruebas. Concretar contratos comunes primero y repartir archivos por dueño; no rediseñar arquitectura como fase nueva. Pruebas que alteran cursores/entrada/registro/tareas se ejecutan exclusivamente y con limpieza verificada.
 - Documentar solo cambios relevantes de comportamiento, contrato, formato persistente, dependencia importante o compilación/uso. Editar la fuente temática existente; no diarios, informe por agente, inventarios de clases ni crónicas por ronda.
 - Código/tests describen implementación. Comentarios de contratos solo para unidades, tiempos, ownership y errores no evidentes. Decisiones no obvias: motivo y consecuencia breves. Hallazgos accionables con evidencia y prueba cuando proceda.

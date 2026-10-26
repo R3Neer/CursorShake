@@ -1,6 +1,6 @@
 # CursorShake — arquitectura
 
-Especificación vigente, 25-oct-2026. Fase de implementación autorizada: ejecutable autónomo implementado, sin instalador ni inicio persistente durante QA. Acuerdos funcionales adoptados; detalles técnicos y pruebas pendientes se identifican en su sección. Recibo vigente de revisión y límites de la validación en apartados9 y11.
+Especificación vigente, 26-oct-2026. Ejecutable autónomo e instalador implementados; QA real temporal autorizada con restauración de los cambios personales. Acuerdos funcionales adoptados; detalles técnicos y pruebas pendientes se identifican en su sección. Recibo vigente de revisión y límites de la validación en apartados9 y11.
 
 Referencias: [configuración inicial y reglas](ConfiguracionInicial.md), [experiencia de usuario](ExperienciaUsuario.md), [equivalencias y procedencia](EquivalenciasCursores.md). No duplicar tablas ni convertir propuestas en acuerdos por repetición.
 
@@ -331,7 +331,7 @@ Equipo probado Windows11 25H2 26200.9711. No certificar drivers/DPI/sesiones/ver
 
 ## 9. Implementación, compilación y validación
 
-El objetivo autorizado incluye la carpeta autónoma win-x64 con GUI/dependencias y el candidato del instalador hasta la fase 4, sin instalación real ni activación de inicio persistente durante QA. Código y tests son la fuente de firmas C#; los diagramas anteriores expresan responsabilidades, no obligan a una clase por caja.
+El objetivo autorizado incluye la carpeta autónoma win-x64 con GUI/dependencias y la QA del instalador hasta la fase 5, con instalaciones temporales por ámbito y restauración verificada de la tarea original. Código y tests son la fuente de firmas C#; los diagramas anteriores expresan responsabilidades, no obligan a una clase por caja.
 
 Compilar y publicar desde Windows con el SDK de global.json:
 
@@ -369,7 +369,7 @@ La QA nativa de la implementación principal, anterior al ajuste de apariencia, 
 
 Los informes locales están bajo artifacts/tests y son regenerables; no se incorporan logs personales ni capturas del escritorio a Git. La prueba vectorial Windows verifica fuentes locales por hash: una versión del sistema con fuentes diferentes produce diagnóstico, conservando el último estado aplicable, sin distribuir imágenes propietarias.
 
-Quedan QA humana de sensibilidad/fluidez/nitidez, logon real y otras configuraciones de hardware. No cerrar sesiones activas, registrar inicio persistente ni dar esas comprobaciones por hechas a partir de tests sintéticos.
+Quedan QA humana de sensibilidad/fluidez/nitidez, logon real y otras configuraciones de hardware. No cerrar sesiones activas ni dar esas comprobaciones por hechas a partir de tests sintéticos. La QA temporal del instalador restaura el registro de inicio previo.
 
 ## 10. Cobertura de requisitos
 
@@ -388,9 +388,9 @@ Los identificadores existentes se conservan como trazabilidad; las reglas normat
 
 ## 11. Recibo de revisión
 
-Implementación revisada de forma iterativa con responsables separados de implementación, pruebas y revisión adversaria. Cierre del código principal en ronda8/10 sin hallazgos accionables; ajuste posterior de apariencia y arranque silencioso revisado en ronda1/10, también sin objeciones; publicación/build en ronda2/10 y documentación en ronda3/10, también sin objeciones. Las versiones anteriores y sus correcciones se consultan en Git, sin documentos de crónica por agente.
+Implementación revisada de forma iterativa con responsables separados de implementación, pruebas y revisión adversaria. Cierre del código principal en ronda8/10 sin hallazgos accionables; ajuste posterior de apariencia y arranque silencioso revisado en ronda1/10, también sin objeciones; publicación/build en ronda2/10 y documentación en ronda3/10, también sin objeciones. La revisión adversaria de la fase 5 cierra sin hallazgos de producto, receta, empaquetado ni NativeSmoke; se corrige una referencia documental antigua. Las versiones anteriores y sus correcciones se consultan en Git, sin documentos de crónica por agente.
 
-La batería completa de publicación pasa: 47 pruebas Core y 171 Windows, sin errores ni advertencias de compilación. Se verifica manifiesto completo de 383 archivos, DLLs publicadas y avisos de runtime. La apariencia incorpora seis pruebas de claro/oscuro, submenús, estados/acciones, idempotencia DPI y alto contraste, más una sonda aislada de Initialize/Refresh y render del menú real sin iniciar el motor. El apartado9 distingue evidencia nativa, pruebas con delegates/tiempos simulados y QA humana pendiente; el cierre de revisión no convierte estas últimas en resultados probados.
+La batería completa de publicación pasa: 47 pruebas Core y 297 Windows, sin errores ni advertencias de compilación. Se verifica manifiesto completo de 383 archivos, DLLs publicadas y avisos de runtime. La apariencia incorpora seis pruebas de claro/oscuro, submenús, estados/acciones, idempotencia DPI y alto contraste, más una sonda aislada de Initialize/Refresh y render del menú real sin iniciar el motor. El apartado9 distingue evidencia nativa, pruebas con delegates/tiempos simulados y QA humana pendiente; el cierre de revisión no convierte estas últimas en resultados probados.
 
 ## 12. Árbol de directorios previsto
 
@@ -473,4 +473,4 @@ assets conserva fuentes editables, manifiestos, licencias y créditos de recurso
 
 Build.ps1 orquesta compilación/pruebas/preparación de recursos/publicación; lógica compleja de formatos se reutiliza desde sus módulos, sin otra implementación en el script. Dependencias se fijan por proyecto con lock cuando corresponda; añadir configuración compartida de MSBuild solo si aporta y sin cambiar accidentalmente los experimentos. Experiments permanece separado del producto y no se incluye en publicación. Bin/obj también quedan ignorados.
 
-La publicación contiene ejecutable principal, auxiliar, runtime/DLL, temas incorporados y avisos de licencia. config.toml y themes personales se crean en el workspace elegido, nunca en artifacts de compilación. Estado pequeño de recuperación sigue la ubicación interna por usuario y el localizador acordados en ExperienciaUsuario. installer/CursorShake.iss y build/BuildInstaller.ps1 definen el candidato del instalador; su QA real y publicación pertenecen a la fase 5.
+La publicación contiene ejecutable principal, auxiliar, runtime/DLL, temas incorporados y avisos de licencia. config.toml y themes personales se crean en el workspace elegido, nunca en artifacts de compilación. Estado pequeño de recuperación sigue la ubicación interna por usuario y el localizador acordados en ExperienciaUsuario. installer/CursorShake.iss y build/BuildInstaller.ps1 definen el candidato del instalador; su QA local real está descrita en ExperienciaUsuario; la publicación en GitHub sigue pendiente.

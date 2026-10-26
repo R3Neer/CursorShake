@@ -75,20 +75,22 @@ Run the regular automated checks with:
 ./build/Build.ps1 -Task Test
 ```
 
-The installer recipe currently builds a **phase 4 candidate**. It can install, but real installation/update/uninstall QA is still required before release. After publishing, compile it with [Inno Setup 7.1.0](https://jrsoftware.org/isdl.php):
+The installer has been tested locally for installation, update, and uninstallation in both per-user and all-user scope. After publishing, compile it with [Inno Setup 7.1.0](https://jrsoftware.org/isdl.php):
 
 ```powershell
 ./build/BuildInstaller.ps1 -Compiler 'C:/path/to/Inno Setup 7/ISCC.exe'
 ./build/TestInstaller.ps1
 ```
 
-The build verifies the publication hashes, stages a separate snapshot, and writes the candidate EXE, SHA-256, compiler payload manifest, and build metadata under `artifacts/installer`. It does not run the installer. The wizard offers per-user or all-user scope and a selectable destination. Open Setup normally and let it request elevation when needed; starting it from an elevated process prevents safe per-user startup and launch integration. Themes and dependency notices accompany the payload. `-ValidateOnly` checks the existing publication without compiling or changing it. Packaging requires a fresh publication supporting installer protocol 2.
+The build verifies the publication hashes, stages a separate snapshot, and writes `CursorShake-1.0.0-Setup.exe`, SHA-256, compiler payload manifest, and build metadata under `artifacts/installer`. It does not run the installer. The wizard offers per-user or all-user scope and a selectable destination. Open Setup normally and let it request elevation when needed; starting it from an elevated process prevents safe per-user startup and launch integration. Themes and dependency notices accompany the payload. `-ValidateOnly` checks the existing publication without compiling or changing it. Packaging requires a fresh publication supporting installer protocol 2.
 
 Updates and uninstallation request a verified shutdown of the app and RecoveryGuard before changing application files. Unresponsive processes, failed restoration, pending recovery or uncertain ownership block the operation. Processes are never forcibly terminated. A maintenance gate prevents a newly admitted cursor engine while files are being changed; ordinary Windows file locks still require abort/retry if a process maps the executable during maintenance.
 
 Uninstallation preserves configuration and personal themes by default. An unelevated per-user uninstall can explicitly remove them after showing their locations; it preserves unrelated files and their containing folder. An all-user uninstall preserves every user's personal data. A protected installation index records the state locations of users who ran the installed app, so inactive users' pending recovery can also block removal. Its records are separate from the user-selectable configuration folder and are retired after binary removal.
 
 When testing beside a running copy, publish to a separate owned directory with `./build/Build.ps1 -Task Publish -PublishDirectory artifacts/publish/installer-win-x64`, then supply that directory to `BuildInstaller.ps1 -PayloadRoot` and `TestInstaller.ps1 -PayloadRoot`. Some native baseline tests require the cursor utility to be closed; an explicitly supplied `-TestFilter` limits the tests run and is printed in the build output. A filtered run does not certify the excluded checks.
+
+The installer is currently unsigned. Windows may show an unknown-publisher or SmartScreen warning. Real sign-in startup timing and other Windows/hardware configurations still require manual verification.
 
 The version is defined centrally in `Directory.Build.props`. Native smoke modes and projects under `experiments/` are separate test tools; some temporarily replace system cursors and must run in isolation.
 
