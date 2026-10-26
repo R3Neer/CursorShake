@@ -1,0 +1,11 @@
+Svg.Skia-MIT.txt
+https://raw.githubusercontent.com/wieslawsoltes/Svg.Skia/7910666415a96a09643d1729eb5da5d115d75748/LICENSE.TXT
+
+Svg.Custom-MS-PL.txt
+https://raw.githubusercontent.com/wieslawsoltes/Svg.Skia/7910666415a96a09643d1729eb5da5d115d75748/src/Svg.Custom/LICENSE.TXT
+
+ExCSS-MIT.txt
+https://raw.githubusercontent.com/TylerBrinks/ExCSS/c97e84d6126bb2e42658cf5af627d52e697c8779/license.txt
+
+Tomlyn-BSD-2-Clause.txt
+https://raw.githubusercontent.com/xoofx/Tomlyn/ee3e3ca5b1f016b0db21ceb74d6c85d28a08ca16/license.txt

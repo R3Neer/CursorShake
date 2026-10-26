@@ -1,0 +1,91 @@
+version = 1
+
+[[frames]]
+image = "frame-000.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-001.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-002.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-003.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-004.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-005.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-006.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-007.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-008.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-009.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-010.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-011.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-012.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-013.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-014.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-015.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-016.svg"
+duration_ms = 50
+hotspot = [0, 16]
+
+[[frames]]
+image = "frame-017.svg"
+duration_ms = 50
+hotspot = [0, 16]

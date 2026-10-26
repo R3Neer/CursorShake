@@ -1,0 +1,3 @@
+version = 1
+image = "frame.svg"
+hotspot = [31, 31]

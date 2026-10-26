@@ -1,0 +1,620 @@
+{
+  "commit": "ddb09273cde49faeb6a32282660ff4293f52d6e0",
+  "files": [
+    {
+      "role": "arrow",
+      "path": "svg/groups/modern/left_ptr.svg",
+      "sha256": "dcaec7b594b577c7b396a4e327f6b30b2ef40bf200c4fd54ce029ab2fa519669"
+    },
+    {
+      "role": "text",
+      "path": "svg/groups/shared/xterm.svg",
+      "sha256": "d6d63769c2f6e709315f5876bd2e7dd7feec11efd07f71eea8606d42c4a255e2"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-01.svg",
+      "sha256": "f25c4ee201d478e91b809c6ce5f9b3d79264bb0e9b93e483987debccafba178b"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-02.svg",
+      "sha256": "e579b47bf3091c37beee6f1dc54d45cd083f311c2a6626a46e4ab3c4c038da12"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-03.svg",
+      "sha256": "e9b7aebf96288b08e48545c3c018ad7f523912d60d9a9dde9f16a736cf94b429"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-04.svg",
+      "sha256": "9d651e3737c420087a9d31f12ae2b228df577ed84a4cde52e25915566cef4a8f"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-05.svg",
+      "sha256": "d96408071bd2fc65e82c2f9d07f72aa621ebd42cf33e4ad40c75c71b12e8b964"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-06.svg",
+      "sha256": "2084b232a24b606cf9272a8e0460761db670aca66a81d585f19503f18eeff33c"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-07.svg",
+      "sha256": "cb45c63386ac5aea5d55285dacd36dcd8f4a3ac4baceeb0e46ce685e13e85211"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-08.svg",
+      "sha256": "ee5bcba58d7953f232d94a4945abe2998937d32fb12a8f528a3e0e3aa59ff67d"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-09.svg",
+      "sha256": "1ceff178f73bc324425be785316aab600c9ba0f8b7ed135953d54f3a0405d72e"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-10.svg",
+      "sha256": "a27e6ef421ae45973d5407527a9bcfd7278710493cda72a2b1521a6c0929c9bf"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-11.svg",
+      "sha256": "cf3a2dd8cf12ec9362e550c3ba285f9e4312ba7db509068aef427f6b65841779"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-12.svg",
+      "sha256": "f560895b491af97b4d3f39db28faaa2f4e0283b8c95209135dd0210e8d96a9dd"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-13.svg",
+      "sha256": "79b6821d886edf8ead0984adf7d042cd54970438afb599770a7f454c192b9cb3"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-14.svg",
+      "sha256": "10ee24dab19f1af30fca510c6e3f6b3ef7356415de2b1ca5277a80aaf393c420"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-15.svg",
+      "sha256": "6e9be6514b42b737c74a4d14c7b9f33328880daf3b3b164d72ec7d3dfc0946c9"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-16.svg",
+      "sha256": "645a2067ddb26e6f9ee1a6170d318d348558e8ea9db2d7d08a7b7027bd4ac62c"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-17.svg",
+      "sha256": "c848d80ee8f2c4d27a3a22548435bfd6bea0c64cde27be1bb985579e104e0484"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-18.svg",
+      "sha256": "10b17af87f312cd58cc582aafdac406a99b081f13ea035263db7411d04379e0f"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-19.svg",
+      "sha256": "ea87f4e5d7c109f08c3643115428db67fc8852b84a9f702395e4c0d835037c8f"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-20.svg",
+      "sha256": "9648e03390ccdcce1553ca681e534a03ef33146c6b94caf8d1af49bd8c0a3d6f"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-21.svg",
+      "sha256": "e08dbb5f58417cdf1222cdca53a1c6994155c8b51c27f18a2084c32f14abbcf4"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-22.svg",
+      "sha256": "3862c9e136328d52c916815c4bdca2bde4fc32251a8eea35c386059813374905"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-23.svg",
+      "sha256": "ede9eb17f7d833df023324b9ddcebf8bb5f67f3dd5b7d808a0238bebb76a7fe2"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-24.svg",
+      "sha256": "c8e389bf5d00f2e56bfdbf4643a73e004d7da9d6cefb83e77f1e842334f60c89"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-25.svg",
+      "sha256": "fb33d442c24a5263717878756a2d0f58b7e37b0afcf98531da5c7d88b2e621c8"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-26.svg",
+      "sha256": "f6d72c336f2d6b7435f44c3504298e871ace4e9e5720f3d6ac5e18df9947909a"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-27.svg",
+      "sha256": "163298da7d1a6dcfcc536cd983a1426f3d65f696251b1ddbc59406944b1dea4c"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-28.svg",
+      "sha256": "0eac5b73adaaf305a72a288af9a2cc466ee6adc051cdb9c1dabce0e092946223"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-29.svg",
+      "sha256": "1f320a6f717416c079ec21bdf1a684aa1b05b01ece31a7e01653bda1f332ac9c"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-30.svg",
+      "sha256": "77f3fc477fe37679ee6f9662317f001b09a62b83d66f7dbf5f38c550c186fffc"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-31.svg",
+      "sha256": "9718d2115f0b4d568b71c74dccf5d92f9d0ebc3cd9eb1cc2eb261712f2491678"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-32.svg",
+      "sha256": "c9fa8a7e73ba9f4ea993b59273d852f6f8c8bd27411312f011193dd4e1e9d32c"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-33.svg",
+      "sha256": "578bc7da842031bdb99f30aae691bc624dca92560a01611fbb499b86906d82b4"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-34.svg",
+      "sha256": "95d55bb37d958e80becd02d2c05ae56a37e21b2a8ec5cc168341e173fec7c181"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-35.svg",
+      "sha256": "6eb513d8f4915b6ae5808dafab7854ce073d57e79632b94e979b1140b61a1cfb"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-36.svg",
+      "sha256": "070ab686ca2753193ea8e9e0728a50e43766c38834af4d5d718560680307436f"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-37.svg",
+      "sha256": "02025ca245650e0ad1ac3d7befc65937de30ca99907f296ed061f2598f10dde2"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-38.svg",
+      "sha256": "061d5f50d8df75d4babd70c4d755251f75a06af32bc4fe7a0f058803a74260bf"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-39.svg",
+      "sha256": "65e0fb8d92dc0159090bda05cd36237d946791a8816580e38710f4acc0c31a0d"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-40.svg",
+      "sha256": "01f90b90d669c949bccc6bc082615c61c615c77cebf7720bec3d839256636c56"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-41.svg",
+      "sha256": "324afec7f50d205cbd10cc1907165fa5720b6e0f3d6bfb2d271856ffe3a8c6a6"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-42.svg",
+      "sha256": "25b80bea0de71046e2ce603fdabfd438a10c57707580a53d4910bea1011f1da0"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-43.svg",
+      "sha256": "de86ef884691a70acccb9829a1a2b1d286ed71c5b550dc60708df8b131463c7e"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-44.svg",
+      "sha256": "ab5c0cee2583ba1fed548bc21f22689dbb094af4a72e39676e6ec2c31bfdbd4b"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-45.svg",
+      "sha256": "2f71dbe2dea3b15817d08949f4b76446461f22e174386683a31b0fa82e0ef1a9"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-46.svg",
+      "sha256": "d20377baa8c359111244393d729a707c3f8cef47843ac14d6acf290a56d2f32f"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-47.svg",
+      "sha256": "36287247ff64f4f11715375e6da27858918e645213455d7c3af6a41d8ed9ab20"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-48.svg",
+      "sha256": "8c903e38e30e96677e554ac7d3e732fa3ca8b0a1c7b3f60d5758a6767be8aa58"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-49.svg",
+      "sha256": "736a9a58a92bc377cc7309211de58db06e1a1e7c3d96ecbc092b75d4fa642344"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-50.svg",
+      "sha256": "c068b4862880576b0e70ba4fec468e0e255577675d38b30c29c65291f2c05129"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-51.svg",
+      "sha256": "765f277c7da5eecb9c1e5aa8fa5542bb2786c77e6233eaf74acd6faaa4517e7a"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-52.svg",
+      "sha256": "141dd6eb077b27f8e9ac463ca001f6c0c0faae2db7bfd38cc39279d7b676865b"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-53.svg",
+      "sha256": "bf5638214511e5ec1d146327abd38953fa1d26cab2dfe62bfcc6fbd711e1b86f"
+    },
+    {
+      "role": "wait",
+      "path": "svg/groups/shared/wait/wait-54.svg",
+      "sha256": "f0b11103bb02aaa6d58ef90fe888d9a28ac1f0daad76ea6d95c4ad5f5662235b"
+    },
+    {
+      "role": "cross",
+      "path": "svg/groups/shared/crosshair.svg",
+      "sha256": "5e07815f3f71926213e6305382b8ba505fca90ce29c8ad00d8a8aaacf5672e83"
+    },
+    {
+      "role": "uparrow",
+      "path": "svg/groups/modern/right_ptr.svg",
+      "sha256": "b554b3fbc5d6fd5f0d266514f9942d182eb62279739d0583443346431e99b84d"
+    },
+    {
+      "role": "handwriting",
+      "path": "svg/groups/shared/pencil.svg",
+      "sha256": "760178f2e5235a3b04b1be549741ae2e7d38a61898a6e7ea955e2a928002b4db"
+    },
+    {
+      "role": "sizenwse",
+      "path": "svg/groups/modern-arrow/bd_double_arrow.svg",
+      "sha256": "b4dc56ba7939199e6d27308cda9e58ed93f20f274da96eb1ac470b3d2fc20c05"
+    },
+    {
+      "role": "sizenesw",
+      "path": "svg/groups/modern-arrow/fd_double_arrow.svg",
+      "sha256": "dfe6239fa06b918fd33c7e1f2390d79d0a9850b87b47f1cae5d7cd29a720c84d"
+    },
+    {
+      "role": "sizewe",
+      "path": "svg/groups/modern-arrow/sb_h_double_arrow.svg",
+      "sha256": "0efc9398334bcef3f6967452ef085e72c5cd3cb0f4ee82ccd62b0b944206fd04"
+    },
+    {
+      "role": "sizens",
+      "path": "svg/groups/modern-arrow/sb_v_double_arrow.svg",
+      "sha256": "4e773fe9d551a2b4e12709994c96bfedfd81ac56e4c556513c7e0f0b93241d71"
+    },
+    {
+      "role": "sizeall",
+      "path": "svg/groups/modern-arrow/move.svg",
+      "sha256": "2d0487b91e1cb3a5405a31932ac37d71838a9eb9f19f75ef992b35adc750d983"
+    },
+    {
+      "role": "no",
+      "path": "svg/groups/modern/circle.svg",
+      "sha256": "f47c4507bb0e85dcdef2260bfd3bf5428ff97088246c4e2aecedbea8d50d15cb"
+    },
+    {
+      "role": "hand",
+      "path": "svg/groups/hand/hand2.svg",
+      "sha256": "a4e67b28cac42e857da7bfeac442879c0786770a8416cf65495eaf6f50fc1a57"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-01.svg",
+      "sha256": "0658462db160cd5ea38d98cb79ddcf98e4f9f4781a8f4353f32163725137da1e"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-02.svg",
+      "sha256": "3bfb024956e72bf1b7b10b87de2c19a7af8b85b2fb24a8c4854fe9515ccdd1d7"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-03.svg",
+      "sha256": "ed4d849c114b3ba0bd694631818b4e9e6f1b2e16ff98236d779e81586b9034f4"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-04.svg",
+      "sha256": "3d049f0eb8251d6c851c4948768052b34d58b06dc6be4db68d688e7d80c6eb21"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-05.svg",
+      "sha256": "425851941772cfabf5e42cfad0e51ea66d9adf3a612a76b8c880b20d94b44651"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-06.svg",
+      "sha256": "adfdc771f480a16d784f7905ddc2610803147e624a370f66b73b980d4fa91ab5"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-07.svg",
+      "sha256": "b03f5ebd04740a42b0d13cbd16e65564677acba0fb3244fb80d1abbbe993d04b"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-08.svg",
+      "sha256": "90762e598e2c643f8df8977a0c5776dcc20913c96a91bc897d8435ab876c074d"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-09.svg",
+      "sha256": "734e53224ad749597100c6c8a297e339338070aea980a82d642a0598a7bd76e2"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-10.svg",
+      "sha256": "a599b5ca7d498e62148e26d2dd3c8de7f1be67847fd7c1b48d06e4e3573fa3ca"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-11.svg",
+      "sha256": "f21658e8dc7a5616420bf335bbdf70b076fdf4a0443df4873cd926ad029b54c3"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-12.svg",
+      "sha256": "ba9ab8b2df94ff3d526d67ece63e10e78a7354b43fafd3162792c1a1469f79cf"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-13.svg",
+      "sha256": "f9e67ac2167aeefce9517e4b96200d01f6a8222a196a0552afef3e033f523cb5"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-14.svg",
+      "sha256": "16d0e28a09b9130a2853a5361f730bcd7a48284ea7ffd990e718946a6c402027"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-15.svg",
+      "sha256": "dc461b1008b4c0831abd92777f3bacc37f82d6615a197c57872f3f996be4a110"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-16.svg",
+      "sha256": "bd1e5e044d92e9b661e296c40228dae8fdd73bd76a9ac9aec8f38652adcedf3c"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-17.svg",
+      "sha256": "895d132314b66adcda03ce82ee281236553f634594f9c5f77c976ce9ce2cea8c"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-18.svg",
+      "sha256": "ee0ebf028371167de6b0e9afd3b9507dd9b879a4937a5d1a7570b0e6d06de1b7"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-19.svg",
+      "sha256": "888e2dda12b0bdc7b71da1f454a39ae04a051289fe814bb319c84a74bad906e8"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-20.svg",
+      "sha256": "6b525a710f1803a44802b6b163785ff1d24ef058a3f4416169cc1aeb3894bc56"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-21.svg",
+      "sha256": "ef6b269a0932ba1426775e1f9fe7a0c0030a294951d0036b4f27f8b92719edef"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-22.svg",
+      "sha256": "c9f5837e5549088f010125cafe3e78696fa83a5a3a36a45b6d1da305de292cb2"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-23.svg",
+      "sha256": "629116e9f51413156e7e3a56a843022d4c26597a2b047983804088e93c3e28b2"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-24.svg",
+      "sha256": "8d4fbb5cc2c2e34a20abad245fe032a555fd0c07ec9c53f55b4e9c5f00474ca9"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-25.svg",
+      "sha256": "e4dbfe824819b8da051ffd9701d5eb5181faaa59938aaef4ff6739930815fb93"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-26.svg",
+      "sha256": "5ed41bc8e1fb29da4ccf3b49f02972429c79503f57042ec5acca2cc3e6b763ff"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-27.svg",
+      "sha256": "581ba45cba23994835badd287d7d60aaf08270e3cb15482abdc6345b7628e966"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-28.svg",
+      "sha256": "1c3652260226ddd8a54c48e661ae69f24467ada6b406710668837eabece91788"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-29.svg",
+      "sha256": "aaf445a9d87b8cb4f718f7e1ec9efe281a14cc5a585f5dc98b9f7841c0bd8c32"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-30.svg",
+      "sha256": "629fd6af109e9ffd353c04410d6890c5371f460cd894d06becd8a3c31296b11a"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-31.svg",
+      "sha256": "5121e8f58976bd35d6489fd34012bbf33023a4d590cd52e46ae6fbba0fdd766d"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-32.svg",
+      "sha256": "0f35a674ce58be064c5eebacba648dd2ff3f774ac926814ca8c5532439f0ca04"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-33.svg",
+      "sha256": "dfad29c2a2509e83cfa9e1497f7f8ddc5d1e0dfe0f6732a5892398a3f8986700"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-34.svg",
+      "sha256": "971dd725a4e321a32aa81b4c5d2332bcff06ce30cc6d99216e28c1efb36bb384"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-35.svg",
+      "sha256": "85de508ac5d7ff9ae594d075a6cb185cdbfeb8b077da9f70b8e3c206df2c276e"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-36.svg",
+      "sha256": "08cea32bd4c67e7e19b70439188830a87e696f9b313b621f26d853ba77a74770"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-37.svg",
+      "sha256": "9e59901faade91f427e389dfd24a0a442e401b5648eb1472f38781d4352f89b2"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-38.svg",
+      "sha256": "3bd8f819e850ee7ba32de0ba033826e610cd3306bbbf32816d12915855105ec1"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-39.svg",
+      "sha256": "a74c99eb22bd97106c9d07733412b44e2f8c73d8c43f9719821a77c3259e9089"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-40.svg",
+      "sha256": "67581573ded5c8383c64c7e8032e99d4d56187f366bb9d51903bd0c7228a381b"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-41.svg",
+      "sha256": "abf30ff9ffeb50035f559a8d6147f6e8963e274e4ef3453ac1e2b42735bac60f"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-42.svg",
+      "sha256": "da619d31570c6dda2fbf8c45e4f4921586f54a7310905f72a0c2b542cac04d3a"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-43.svg",
+      "sha256": "78fac35845e0c52ab9685bba53c7fccddb2ce243a835db32fb03fdd9f4c2be40"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-44.svg",
+      "sha256": "846bc8fa54e87a75f463a7e9c5f1d50541b9665854f7d2740fb287f2cdcc2abf"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-45.svg",
+      "sha256": "78d120a39ac48d3fac22c1b52c1122089a0610d469458252521c9ee8cc9269ba"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-46.svg",
+      "sha256": "73427bfcbde588a17199b9c813ab9acd8ce0b9e25d18a9d1c5f66dce6be6a836"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-47.svg",
+      "sha256": "feec58ae7f2c974d3c7b3804519661f8573a24be1aec4ed93a9cfebbad271393"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-48.svg",
+      "sha256": "8355b0b746a628fbdf89dbd602d4163ceb0ceeaa2ed4458205ffc11ee6846d4d"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-49.svg",
+      "sha256": "bb1853fae4595d8a3ae26fd588d5087a69604027c3d5e1121227203ec26a4c3f"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-50.svg",
+      "sha256": "1d6a19b1acaf8b07537a164e8b1de438faa54b26badedbfb0103ac4c3e6084aa"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-51.svg",
+      "sha256": "6ab67e1cabf1e5d887aa19a7150930afd18d94e0200638d7fcff09dd66b5ac1a"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-52.svg",
+      "sha256": "69495c25b0899389c94c6cc0a6b831d9c905b39858d51b4ed0a95d9f4fb98cdd"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-53.svg",
+      "sha256": "b97fbfc574aecc37cdc8ba52ba1edfdcf7f1e7d2865cfa99094e5c3532e5c6dc"
+    },
+    {
+      "role": "working",
+      "path": "svg/groups/modern/left_ptr_watch/left_ptr_watch-54.svg",
+      "sha256": "07a16c2bdca18a836f1c6752f08ff39f01e887ae5dcc64a8e2351a9ca229be17"
+    },
+    {
+      "role": "help",
+      "path": "svg/groups/shared/question_arrow.svg",
+      "sha256": "edf09f6f1223e8e5da83d43c9f2f1cfa818c95fb7745ddbab611aa58c61695b1"
+    },
+    {
+      "role": "pin",
+      "path": "svg/groups/modern/pin.svg",
+      "sha256": "af5f1a5d1f22bfeccc9997d3486d1000c6f6e34988a618435229f9db55f06a6a"
+    },
+    {
+      "role": "person",
+      "path": "svg/groups/modern/person.svg",
+      "sha256": "0f95a33180244adc73b8b6e52041e6d01887c256cdfa46cdd293fce9c674e62e"
+    }
+  ]
+}

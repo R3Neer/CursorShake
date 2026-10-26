@@ -1,0 +1,6 @@
+id = "windows"
+name = "Windows"
+
+[roles]
+wait = "wait.vani"
+working = "working.vani"
