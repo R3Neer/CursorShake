@@ -7,7 +7,7 @@ $ErrorActionPreference='Stop'
 $projectRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $PSScriptRoot 'BuildOutput.ps1')
 if(-not $PayloadRoot){$PayloadRoot=Join-Path $projectRoot 'artifacts/publish/win-x64'}
-$PayloadRoot=[IO.Path]::GetFullPath($PayloadRoot)
+$PayloadRoot=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($PayloadRoot)
 [xml]$props=[IO.File]::ReadAllText((Join-Path $projectRoot 'Directory.Build.props'))
 $version=[string]$props.Project.PropertyGroup.Version
 if($version -notmatch '^\d+\.\d+\.\d+$'){throw 'The installer requires a stable three-part project version.'}
@@ -58,6 +58,9 @@ if($actual.Count -ne $expected.Count){throw 'Publication manifest refers to miss
 foreach($required in @('CursorShake.exe','CursorShake.dll','CursorShake.RecoveryGuard.exe','CursorShake.RecoveryGuard.dll','coreclr.dll','hostfxr.dll','CursorShake.runtimeconfig.json','CursorShake.RecoveryGuard.runtimeconfig.json','LICENSE','notices/packages.json')){
     if(-not $actual.Contains($required)){throw "Required publication file missing: $required"}
 }
+# An older 1.0.0 binary may ignore maintenance arguments and start the cursor engine.
+$protocol=Join-Path $PayloadRoot 'installer-protocol.txt'
+if(-not $actual.Contains('installer-protocol.txt') -or [IO.File]::ReadAllText($protocol).Trim() -ne 'CursorShake installer protocol 1'){throw 'Publication does not support installer protocol 1. Publish the current source before packaging.'}
 foreach($theme in @('windows','bibata-ice','nordzy-white')){
     if(-not @($actual | Where-Object {$_ -like "themes/$theme/*"}).Count){throw "Bundled theme missing: $theme"}
 }
@@ -95,7 +98,7 @@ try {
     $output=Reset-OwnedBuildOutput $projectRoot $outputPath
     & $Compiler --quiet --no-ide-signtools "--define=AppVersion=$version" "--define=PayloadRoot=$stage" "--define=InstallerOutput=$output" (Join-Path $projectRoot 'installer/CursorShake.iss')
     if($LASTEXITCODE -ne 0){throw "Inno Setup compilation failed: $LASTEXITCODE"}
-    $setup=Join-Path $output "CursorShake-$version-phase2-preview-Setup.exe"
+    $setup=Join-Path $output "CursorShake-$version-phase3-preview-Setup.exe"
     Assert-X64 $setup
     if(-not(Test-Path -LiteralPath (Join-Path $output 'payload-manifest.txt'))){throw 'Compiler payload manifest missing.'}
     # Compare Inno's actual compiled sources and hashes with the intended snapshot.

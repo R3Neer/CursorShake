@@ -75,14 +75,16 @@ Run the regular automated checks with:
 ./build/Build.ps1 -Task Test
 ```
 
-The installer recipe is currently a **phase 2 preview**, not an installable release. After publishing, compile it with [Inno Setup 7.1.0](https://jrsoftware.org/isdl.php):
+The installer recipe is currently a **phase 3 preview**, not an installable release. After publishing, compile it with [Inno Setup 7.1.0](https://jrsoftware.org/isdl.php):
 
 ```powershell
 ./build/BuildInstaller.ps1 -Compiler 'C:/path/to/Inno Setup 7/ISCC.exe'
 ./build/TestInstaller.ps1
 ```
 
-The build verifies the publication hashes, stages a separate snapshot, and writes the preview EXE, SHA-256, compiler payload manifest, and build metadata under `artifacts/installer`. It does not run the installer. The wizard offers per-user or all-user scope and a selectable destination, but deliberately stops before installation. Startup/launch integration and safe update/uninstall handling must be completed before that block is removed. Themes and dependency notices accompany the payload. `-ValidateOnly` checks the existing publication without compiling or changing it.
+The build verifies the publication hashes, stages a separate snapshot, and writes the preview EXE, SHA-256, compiler payload manifest, and build metadata under `artifacts/installer`. It does not run the installer. The wizard offers per-user or all-user scope and a selectable destination, but deliberately stops before installation. The startup and launch checkboxes are integrated; safe update/uninstall handling must be completed before that block is removed. The installer applies startup only to the initiating Windows account, using its normal privileges. Open Setup normally and let it request elevation when needed; starting it from an elevated process prevents that per-user integration. Themes and dependency notices accompany the payload. `-ValidateOnly` checks the existing publication without compiling or changing it. Older publications without `installer-protocol.txt` must be rebuilt before packaging.
+
+When testing beside a running copy, publish to a separate owned directory with `./build/Build.ps1 -Task Publish -PublishDirectory artifacts/publish/installer-win-x64`, then supply that directory to `BuildInstaller.ps1 -PayloadRoot` and `TestInstaller.ps1 -PayloadRoot`. Some native baseline tests require the cursor utility to be closed; an explicitly supplied `-TestFilter` limits the tests run and is printed in the build output. A filtered run does not certify the excluded checks.
 
 The version is defined centrally in `Directory.Build.props`. Native smoke modes and projects under `experiments/` are separate test tools; some temporarily replace system cursors and must run in isolation.
 

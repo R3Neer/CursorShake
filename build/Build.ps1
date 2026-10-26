@@ -1,6 +1,8 @@
-param(
+﻿param(
     [ValidateSet('Build','Test','Publish')][string]$Task='Test',
-    [ValidateSet('Debug','Release')][string]$Configuration='Release'
+    [ValidateSet('Debug','Release')][string]$Configuration='Release',
+    [string]$PublishDirectory='artifacts/publish/win-x64',
+    [string]$TestFilter
 )
 $ErrorActionPreference='Stop'
 $projectRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
@@ -18,10 +20,13 @@ try {
     Invoke-DotNet -CommandArguments @('build','CursorShake.slnx','-c',$Configuration,'--no-restore')
     if($Task -eq 'Build'){return}
     $results=Join-Path $projectRoot 'artifacts/test-results'
-    Invoke-DotNet -CommandArguments @('test','tests/CursorShake.Core.Tests/CursorShake.Core.Tests.csproj','-c',$Configuration,'--no-build','--no-restore','--logger','trx;LogFileName=core.trx','--results-directory',$results)
-    Invoke-DotNet -CommandArguments @('test','tests/CursorShake.Windows.Tests/CursorShake.Windows.Tests.csproj','-c',$Configuration,'--no-build','--no-restore','--logger','trx;LogFileName=windows.trx','--results-directory',$results)
+    $testArguments=if($TestFilter){@('--filter',$TestFilter)}else{@()}
+    if($TestFilter){Write-Host "Explicit test filter: $TestFilter"}
+    Invoke-DotNet -CommandArguments (@('test','tests/CursorShake.Core.Tests/CursorShake.Core.Tests.csproj','-c',$Configuration,'--no-build','--no-restore','--logger','trx;LogFileName=core.trx','--results-directory',$results)+$testArguments)
+    Invoke-DotNet -CommandArguments (@('test','tests/CursorShake.Windows.Tests/CursorShake.Windows.Tests.csproj','-c',$Configuration,'--no-build','--no-restore','--logger','trx;LogFileName=windows.trx','--results-directory',$results)+$testArguments)
     if($Task -ne 'Publish'){return}
-    $publish=Reset-OwnedBuildOutput $projectRoot (Join-Path $projectRoot 'artifacts/publish/win-x64')
+    $publishPath=if([IO.Path]::IsPathRooted($PublishDirectory)){$PublishDirectory}else{Join-Path $projectRoot $PublishDirectory}
+    $publish=Reset-OwnedBuildOutput $projectRoot $publishPath
     $guard=Reset-OwnedBuildOutput $projectRoot (Join-Path $projectRoot 'artifacts/guard-publish')
     # Pin the currently supported .NET10 patch; publishing does not install a machine-wide runtime.
     $runtime='10.0.13'

@@ -1,10 +1,10 @@
-param([string]$PayloadRoot)
+﻿param([string]$PayloadRoot)
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 $projectRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $builder=Join-Path $PSScriptRoot 'BuildInstaller.ps1'
 if(-not $PayloadRoot){$PayloadRoot=Join-Path $projectRoot 'artifacts/publish/win-x64'}
-$PayloadRoot=[IO.Path]::GetFullPath($PayloadRoot)
+$PayloadRoot=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($PayloadRoot)
 # Validate the immutable source before enumerating/copying it; the builder rejects links.
 & $builder -PayloadRoot $PayloadRoot -ValidateOnly
 $sourceManifestHash=(Get-FileHash -LiteralPath (Join-Path $PayloadRoot 'manifest.sha256')).Hash
@@ -62,6 +62,14 @@ Invoke-Case 'Manifested missing file is rejected' {
 Invoke-Case 'Required file remains required after removing its manifest entry' {
     $path=Assert-PrivatePath (Join-Path $fixture 'LICENSE');$backup=Assert-PrivatePath (Join-Path $runRoot 'required-license.backup')
     try {[IO.File]::Move($path,$backup);Set-FixtureManifest @($originalLines|Where-Object {$_ -notmatch '  LICENSE$'});Assert-Rejected 'Required publication file missing'}finally{Restore-FixtureManifest;if([IO.File]::Exists($backup)){[IO.File]::Move($backup,$path)}}
+}
+Invoke-Case 'Publication without the installer protocol marker is rejected even after updating its manifest' {
+    $path=Assert-PrivatePath (Join-Path $fixture 'installer-protocol.txt');$backup=Assert-PrivatePath (Join-Path $runRoot 'installer-protocol.backup')
+    try {[IO.File]::Move($path,$backup);Set-FixtureManifest @($originalLines|Where-Object {$_ -notmatch '  installer-protocol\.txt$'});Assert-Rejected 'does not support installer protocol 1'}finally{Restore-FixtureManifest;if([IO.File]::Exists($backup)){[IO.File]::Move($backup,$path)}}
+}
+Invoke-Case 'A different installer protocol cannot be accepted by updating its manifest hash' {
+    $path=Assert-PrivatePath (Join-Path $fixture 'installer-protocol.txt');$bytes=[IO.File]::ReadAllBytes($path)
+    try {[IO.File]::WriteAllText($path,'CursorShake installer protocol 999');Update-FixtureHash 'installer-protocol.txt';Assert-Rejected 'does not support installer protocol 1'}finally{[IO.File]::WriteAllBytes($path,$bytes);Restore-FixtureManifest}
 }
 Invoke-Case 'Unmanifested extra file is rejected' {
     $path=Assert-PrivatePath (Join-Path $fixture 'qa-extra.txt')
