@@ -78,9 +78,21 @@ Stack aceptado: C# estable/.NET10LTS, WinForms, JIT self-contained win-x64 en ca
 
 CursorShake.exe es la aplicación, generado durante desarrollo y publicable con dependencias. CursorShake-Setup.exe empaqueta e instala ese conjunto. La GUI mínima pertenece al ejecutable; no depende de tener instalador.
 
-Ruta de trabajo recomendada: primera función de extremo a extremo → publicación autónoma y prueba fuera del entorno de desarrollo → instalador básico para verificar rutas/identidad/inicio → producto y paquete final con pruebas de actualización/desinstalación. El ejecutable distribuible es un hito anterior al instalador final, pero conviene comprobar pronto supuestos de distribución. La implementación del ejecutable ha sido autorizada; el instalador sigue siendo una fase posterior.
+Ruta de trabajo recomendada: primera función de extremo a extremo → publicación autónoma y prueba fuera del entorno de desarrollo → instalador básico para verificar rutas/identidad/inicio → producto y paquete final con pruebas de actualización/desinstalación. El ejecutable distribuible es un hito anterior al instalador final, pero conviene comprobar pronto supuestos de distribución. La implementación del ejecutable y la fase 2 del instalador han sido autorizadas. Esta fase prepara la receta y su compilación; todavía no instala la aplicación.
 
-Versiones de dependencias y runtime fijadas para este hito mediante proyectos y locks. Quedan para el instalador la identidad estable de instalación y la política de versión/migración. El aviso MIT del trabajo original se publica a nombre de R3Neer en LICENSE. Firma de código por resolver antes de distribuir ejecutables según medios disponibles; generar EXE no lo firma. La cobertura de pruebas y QA visual se define en Arquitectura9.
+Versiones de dependencias y runtime fijadas para este hito mediante proyectos y locks. La identidad estable del instalador es `R3Neer.CursorShake`; la versión se toma de `Directory.Build.props`. La política de versión/migración sigue pendiente antes de versiones con cambios incompatibles. El aviso MIT del trabajo original se publica a nombre de R3Neer en LICENSE. Firma de código por resolver antes de distribuir ejecutables según medios disponibles; generar EXE no lo firma. La cobertura de pruebas y QA visual se define en Arquitectura9.
+
+### Estado de las cinco fases de distribución
+
+1. Publicación autónoma: disponible; `build/Build.ps1 -Task Publish` genera la carpeta con runtime y recursos.
+2. Receta básica: `installer/CursorShake.iss` y `build/BuildInstaller.ps1`, con Inno Setup **7.1.0**, Windows11x64, ámbito y destino elegibles, acceso al menú Inicio, icono propio y sin imágenes del asistente. El build verifica hashes, versión, arquitectura y contenido antes de copiar una instantánea a una carpeta separada. Genera EXE, SHA-256, manifiesto de archivos de Inno y metadatos de compilación bajo `artifacts/installer`. No ejecuta el instalador. `build/TestInstaller.ps1` comprueba rechazos con una copia privada de la publicación.
+3. Integración pendiente: casillas de iniciar con Windows y ejecutar al terminar. Reutilizar el registro de arranque de la aplicación y preservar la identidad del usuario original cuando se eleva para instalar para todos. Explicar esta integración antes de implementarla.
+4. Ciclo de vida pendiente: cierre coordinado, actualización y desinstalación, limpieza de registros propios y conservación de datos/recuperación. Explicar antes de implementarlo; no usar un cierre forzado como sustituto del protocolo de salida.
+5. Verificación y entrega pendientes: instalación/actualización/desinstalación reales con ambos ámbitos, revisión visual, firma según medios disponibles y primera release de GitHub cuando el instalador esté terminado.
+
+**Límite de la fase 2:** el nombre del EXE incluye `phase2-preview` y `PrepareToInstall` bloquea incondicionalmente la instalación, también en modo silencioso. Permite revisar el asistente, pero no copiar archivos ni registrar la aplicación. Retirar el bloqueo solo después de integrar las fases 3 y 4. No presentar este artefacto como un instalador terminado. La compilación no prueba apariencia visual, elevación ni el ciclo de instalación; esas comprobaciones siguen pendientes.
+
+El compilador se ha instalado en este equipo mediante su instalador oficial firmado en `D:\Desarrollo\Toolchains\InnoSetup7`; no es una dependencia de ejecución de CursorShake. En otros equipos, indicar su ruta con `-Compiler`. El tema dinámico del asistente se elige al abrirlo según el dispositivo.
 
 ## 7. Temas, licencias e icono
 

@@ -1,9 +1,9 @@
-# Trabajo en CursorShake
+﻿# Trabajo en CursorShake
 
 ## Alcance y autoridad
 
 - Copia canónica: D:\Desarrollo\Proyectos\Herramientas\CursorShake. Preservar cambios locales y retiradas deliberadas; no reset/clean ni recrear documentos históricos.
-- Fase actual: implementación autorizada expresamente por el usuario hasta ejecutable autónomo con GUI, temas, recuperación, pruebas y revisión. Autorizados crear proyectos, compilar y probar; sin instalador, instalación ni inicio automático persistente durante QA. No commit/push sin autorización nueva.
+- Fase actual: implementación autorizada expresamente por el usuario hasta ejecutable autónomo con GUI, temas, recuperación, pruebas y revisión. Autorizados crear proyectos, compilar y probar; Autorizada también la fase 2 del instalador: receta, compilación y pruebas sin instalar la aplicación ni configurar inicio persistente. Commit de esta fase autorizado; no release.
 - Distribución: versión de proyecto 1.0.0. No crear la primera release de GitHub hasta que el instalador esté listo, según instrucción expresa del usuario.
 - El usuario dirige comportamiento del dominio. Detalles técnicos de integración delegados pueden concretarse y documentarse; consultar cambios materiales del comportamiento o limitaciones nuevas.
 
@@ -25,7 +25,7 @@ Arquitecto+simplificador+adversario, una misma versión por ronda, máximo diez.
 
 ## Objetivo y documentación durante implementación
 
-- Objetivo autorizado: carpeta autónoma Windows11x64 con CursorShake.exe, RecoveryGuard, GUI/temas/dependencias; compilación reproducible, pruebas exigidas y revisión adversaria. Sin instalador, instalación persistente ni registro de inicio permanente durante QA. Distinguir evidencia automática, observación Windows y QA visual pendiente.
+- Objetivo autorizado: carpeta autónoma Windows11x64 con CursorShake.exe, RecoveryGuard, GUI/temas/dependencias; compilación reproducible, pruebas exigidas y revisión adversaria. Instalador en fase 2: compilar una vista previa bloqueada antes de instalar. Fases 3 (integración de arranque/ejecución) y 4 (actualización/desinstalación) pendientes; sin instalación persistente durante QA. Distinguir evidencia automática, observación Windows y QA visual pendiente.
 - Equipo previsto: dos implementadores (principal integra), adversario y responsable de pruebas. Concretar contratos comunes primero y repartir archivos por dueño; no rediseñar arquitectura como fase nueva. Pruebas que alteran cursores/entrada/registro/tareas se ejecutan exclusivamente y con limpieza verificada.
 - Documentar solo cambios relevantes de comportamiento, contrato, formato persistente, dependencia importante o compilación/uso. Editar la fuente temática existente; no diarios, informe por agente, inventarios de clases ni crónicas por ronda.
 - Código/tests describen implementación. Comentarios de contratos solo para unidades, tiempos, ownership y errores no evidentes. Decisiones no obvias: motivo y consecuencia breves. Hallazgos accionables con evidencia y prueba cuando proceda.

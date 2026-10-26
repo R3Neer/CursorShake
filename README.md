@@ -75,6 +75,15 @@ Run the regular automated checks with:
 ./build/Build.ps1 -Task Test
 ```
 
+The installer recipe is currently a **phase 2 preview**, not an installable release. After publishing, compile it with [Inno Setup 7.1.0](https://jrsoftware.org/isdl.php):
+
+```powershell
+./build/BuildInstaller.ps1 -Compiler 'C:/path/to/Inno Setup 7/ISCC.exe'
+./build/TestInstaller.ps1
+```
+
+The build verifies the publication hashes, stages a separate snapshot, and writes the preview EXE, SHA-256, compiler payload manifest, and build metadata under `artifacts/installer`. It does not run the installer. The wizard offers per-user or all-user scope and a selectable destination, but deliberately stops before installation. Startup/launch integration and safe update/uninstall handling must be completed before that block is removed. Themes and dependency notices accompany the payload. `-ValidateOnly` checks the existing publication without compiling or changing it.
+
 The version is defined centrally in `Directory.Build.props`. Native smoke modes and projects under `experiments/` are separate test tools; some temporarily replace system cursors and must run in isolation.
 
 The detailed specification is in Spanish:
