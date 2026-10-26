@@ -361,15 +361,15 @@ QA nativa aislada, ejecutada secuencialmente mediante NativeSmoke:
 | Guard | Muerte forzada de hijo propio con dos roles modificados; igualdad de fingerprints de los 17 roles tras recuperar y salida del auxiliar. |
 | Cambio externo | Cede ante fixture propia de Arrow, tanto untouched como owned; cleanup de test condicionado por fingerprint, sin sobrescribir cambios no reconocidos. |
 | Tamaño/consumo | 32/512/2048 px, techo físico y caché. Bibata Wait512: aproximadamente 30,7 fps y 1,63% CPU total en 16 hilos durante cuatro segundos; reposo estabilizado: cero publicaciones en cinco segundos. A 2048 px el ensayo procedural baja a unos 6,6 fps; no prometer 60 Hz a tamaño extremo. |
-| Inicio automático | Tarea QA temporal: registro, identidad normalizada a SID, XML de permisos/retraso/batería y retirada verificada. No se ejecutó logon ni se certifica el objetivo de menos de un minuto tras entrar. |
+| Inicio automático | Tarea QA temporal: registro, identidad normalizada a SID, XML de permisos/retraso/batería y retirada verificada. Aceptación local posterior mediante logon real: 6,745 s hasta estar operativo; nueva autenticación, ruta y ejecución de la tarea contrastadas. No se generaliza a otros equipos. |
 | GUI | Render privado y bounds a escala lógica 100%/200%; evita botones recortados. No equivale a QA de DPI real, lector de pantalla, alto contraste o reinicio real de Explorer. |
-| Reset explícito Windows | Precondiciones, fallos y limpieza por delegates; SPI real no ejecutado: 13 fuentes registradas verificables y cuatro roles heredados sin ruta explícita impedían certificar previamente la restitución exacta del escritorio del usuario. |
+| Reset explícito Windows | Precondiciones, fallos y limpieza por delegates. SPI real ejecutado después con aprobación expresa del usuario para resolver una cesión: resultado correcto y recibos retirados por el protocolo verificado. Esto no certifica restitución exacta universal: la observación previa tenía 13 fuentes registradas verificables y cuatro roles heredados sin ruta explícita. |
 
 La QA nativa de la implementación principal, anterior al ajuste de apariencia, carga las tres DLL exactas de aquella publicación en un host aislado self-contained con .NET10.0.13; comprueba sus hashes y evita usar el workspace/registro reales del usuario. Arranque/preview/pausa/cierre, motor y caída forzada pasan; se verifican los 17 cursores restaurados y ausencia de helpers/recibos residuales. SetScale retorna en menos de 0,01 ms durante el bloqueo nativo de prueba. Resumen local: artifacts/tests/final-qa-c3e71b9fbc314b15ae95a466e69edb09/final-qa-summary.json.
 
 Los informes locales están bajo artifacts/tests y son regenerables; no se incorporan logs personales ni capturas del escritorio a Git. La prueba vectorial Windows verifica fuentes locales por hash: una versión del sistema con fuentes diferentes produce diagnóstico, conservando el último estado aplicable, sin distribuir imágenes propietarias.
 
-Quedan QA humana de sensibilidad/fluidez/nitidez, logon real y otras configuraciones de hardware. No cerrar sesiones activas ni dar esas comprobaciones por hechas a partir de tests sintéticos. La QA temporal del instalador restaura el registro de inicio previo.
+Quedan QA humana de sensibilidad/fluidez/nitidez en otras configuraciones de hardware. El logon real local pasó en 6,745 s; se registró por separado la incidencia de cesión posterior. No cerrar sesiones activas ni dar esas comprobaciones por hechas a partir de tests sintéticos. La QA temporal del instalador restaura el registro de inicio previo.
 
 ## 10. Cobertura de requisitos
 
