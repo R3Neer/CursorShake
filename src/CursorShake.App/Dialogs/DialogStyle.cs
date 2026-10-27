@@ -51,7 +51,6 @@ internal static class DialogStyle
         {
             bool dark=Application.ColorMode==SystemColorMode.Dark||(Application.ColorMode==SystemColorMode.System&&Application.SystemColorMode==SystemColorMode.Dark);
             Color accent=dark?Color.FromArgb(96,205,255):Color.FromArgb(0,103,192);
-            if(DwmGetColorizationColor(out uint argb,out _)>=0)accent=Color.FromArgb(255,(int)(argb>>16)&255,(int)(argb>>8)&255,(int)argb&255);
             return CreatePalette(dark,SystemInformation.HighContrast,accent);
         }
     }
@@ -140,6 +139,8 @@ internal static class DialogStyle
     }
     private sealed class FluentButton:Button
     {
+        // This control paints its own accessible palette; WinForms must not darken it again.
+        internal FluentButton() => SetStyle(ControlStyles.ApplyThemingImplicitly, false);
         protected override void OnPaint(PaintEventArgs e)
         {
             if(SystemInformation.HighContrast){base.OnPaint(e);return;}
@@ -152,5 +153,4 @@ internal static class DialogStyle
             if(Focused&&ShowFocusCues)ControlPaint.DrawFocusRectangle(e.Graphics,Rectangle.Inflate(ClientRectangle,-5,-5),ForeColor,BackColor);
         }
     }
-    [DllImport("dwmapi.dll")]private static extern int DwmGetColorizationColor(out uint color,out bool opaque);
 }

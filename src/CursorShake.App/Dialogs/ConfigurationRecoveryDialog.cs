@@ -64,7 +64,7 @@ public sealed class ConfigurationRecoveryDialog : DialogForm
         _preview = new TextBox { Multiline = true, ReadOnly = true, ScrollBars = ScrollBars.Both, WordWrap = false, Dock = DockStyle.Fill };
         _technicalPanel.Controls.Add(_preview); layout.Controls.Add(_technicalPanel, 0, 5);
         _technical.LinkClicked += (_, _) => { _expanded = !_expanded; _technicalPanel.Visible = _expanded; RefreshLabels(); };
-        var buttons = _footer = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, Margin = new Padding(0, 16, 0, 0), Padding = Padding.Empty };
+        var buttons = _footer = new RecoveryFooter { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, Margin = new Padding(0, 16, 0, 0), Padding = Padding.Empty };
         _close = DialogStyle.CreateButton(""); _close.TabIndex = 1; _close.DialogResult = DialogResult.Cancel; _close.Margin = new Padding(12, 0, 0, 0); _close.Click += (_, _) => Close(); CancelButton = _close; buttons.Controls.Add(_close);
         _keep = DialogStyle.CreateButton("", true); _keep.TabIndex = 0; _keep.Enabled = false; _keep.Margin = Padding.Empty; _keep.Click += async (_, _) => await KeepAsync(); buttons.Controls.Add(_keep);
         outer.Controls.Add(buttons, 0, 1); Controls.Add(outer);
@@ -184,5 +184,16 @@ public sealed class ConfigurationRecoveryDialog : DialogForm
     }
     private string TechnicalText(string? content, string? error)
         => string.Join("\r\n\r\n", new[] { _context.CurrentPath, content, error }.Where(value => !string.IsNullOrEmpty(value)));
+    private sealed class RecoveryFooter : FlowLayoutPanel
+    {
+        public override Size GetPreferredSize(Size proposedSize)
+        {
+            var preferred = base.GetPreferredSize(proposedSize);
+            // Hidden forms and inherited-font changes can make FlowLayout report a 1px row.
+            // Reserve the actual buttons' intrinsic height even before their handles exist.
+            int height = Controls.Cast<Control>().Select(control => control.GetPreferredSize(Size.Empty).Height + control.Margin.Vertical).DefaultIfEmpty(0).Max() + Padding.Vertical;
+            return new Size(preferred.Width, Math.Max(preferred.Height, height));
+        }
+    }
     private string T(string english, string spanish) => DiagnosticText.T(_language, english, spanish);
 }

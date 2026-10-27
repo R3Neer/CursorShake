@@ -20,6 +20,8 @@ internal static class DialogUxPreview
                 dialog.ToggleDetails();Draw(dialog,key+"-details");
                 results.Add(new{key,CollapsedInitially=collapsed,dialog.HeadingText,dialog.PrimaryActionText,Expanded=dialog.DetailsExpanded});
             }
+            using(var paused=new DiagnosticDialog(new UiDiagnostic("Cursor","CursorOwnershipLost","Raw","Technical evidence"),language:language))
+            {Draw(paused,key+"-sole-close");}
             using(var recovery=new ConfigurationRecoveryDialog(new(@"C:\Example\CursorShake\config.toml",[@"C:\Example\CursorShake\before.toml",@"C:\Example\CursorShake\candidate.toml"],()=>Task.FromResult(new RecoveryReview("# Current configuration\r\n[appearance]\r\ntheme = \"bibata-ice\"","revision-example",true)),_=>Task.CompletedTask),_=>{},language))
             {Draw(recovery,key+"-recovery");}
             using(var list=new DiagnosticListDialog(_=>{},language,_=>3,_=>DateTimeOffset.Now))

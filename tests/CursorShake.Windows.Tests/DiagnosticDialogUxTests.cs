@@ -34,8 +34,22 @@ public sealed class DiagnosticDialogUxTests
     {
         int opened=0,retried=0;
         using var dialog=new DiagnosticDialog(new("Cursor","CursorOwnershipLost","Raw","SECRET-STACK",@"C:\Private\config.toml"),_=>opened++,()=>retried++);
-        Assert.Null(dialog.PrimaryActionText);Assert.DoesNotContain("TOML",dialog.HeadingText+dialog.ExplanationText+dialog.GuidanceText,StringComparison.OrdinalIgnoreCase);
+        Assert.Equal("Close",dialog.PrimaryActionText);Assert.DoesNotContain("TOML",dialog.HeadingText+dialog.ExplanationText+dialog.GuidanceText,StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("View errors",dialog.GuidanceText);Assert.Contains("current cursors",dialog.GuidanceText);Assert.Equal(0,opened);Assert.Equal(0,retried);
+    });
+    [Theory] [InlineData(AppLanguage.English)] [InlineData(AppLanguage.Spanish)]
+    public void SoleCloseButtonUsesTheAccentAndRemainsTheDefaultAction(AppLanguage language)=>Sta(()=>
+    {
+        using var dialog=new DiagnosticDialog(new("Cursor","CursorOwnershipLost","Raw","Evidence"),language:language);
+        var close=Assert.Single(Children(dialog).OfType<Button>());
+        Assert.Equal(language==AppLanguage.Spanish?"Cerrar":"Close",close.Text);
+        Assert.Same(close,dialog.AcceptButton);Assert.Same(close,dialog.CancelButton);
+        Assert.Equal(DialogStyle.Colors.Accent,close.BackColor);
+        Assert.True(DialogStyle.Contrast(close.ForeColor,close.BackColor)>=4.5);
+        // Verify the actual owner-painted fill, away from the text and rounded edge.
+        close.CreateControl();using var bitmap=new System.Drawing.Bitmap(close.Width,close.Height);
+        close.DrawToBitmap(bitmap,new System.Drawing.Rectangle(0,0,bitmap.Width,bitmap.Height));
+        Assert.Equal(DialogStyle.Colors.Accent.ToArgb(),bitmap.GetPixel(close.Width/2,5).ToArgb());
     });
     [Fact] public void BusyFilePrioritizesRetryOverOpeningTheConfiguration()=>Sta(()=>
     {

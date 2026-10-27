@@ -129,6 +129,26 @@ public sealed class DialogSecondaryUxTests
     });
 
     [Theory]
+    [InlineData(100)]
+    [InlineData(200)]
+    public void RecoveryFooterReservesItsButtonsAfterContentIsDetachedAndInheritsAFont(int percent) => Sta(() =>
+    {
+        using var dialog = NewRecovery(true, _ => Task.CompletedTask, _ => { });
+        dialog.AutoScaleMode = AutoScaleMode.None;
+        if (percent != 100) dialog.Scale(new System.Drawing.SizeF(percent / 100f, percent / 100f));
+        dialog.PerformLayout();
+        var content=dialog.Controls[0]; content.Font=dialog.Font; dialog.Controls.Remove(content);
+        using(content)
+        {
+            content.Visible=true;content.Dock=DockStyle.None;content.Size=dialog.ClientSize;content.CreateControl();content.PerformLayout();
+            var footer=Field<FlowLayoutPanel>(dialog,"_footer");footer.PerformLayout();
+            foreach(Control action in footer.Controls)
+                Assert.True(action.Top>=0&&action.Bottom<=footer.ClientSize.Height,$"Detached footer clips {action.Text}: {action.Bounds} vs {footer.ClientSize}");
+            Assert.True(footer.Height>=footer.Controls.Cast<Control>().Max(action=>action.GetPreferredSize(System.Drawing.Size.Empty).Height));
+        }
+    });
+
+    [Theory]
     [InlineData(1950, 1080, 1920, 1040, 1920, 1040)]
     [InlineData(1360, 1280, 1920, 1040, 1360, 1040)]
     [InlineData(650, 360, 800, 600, 650, 360)]

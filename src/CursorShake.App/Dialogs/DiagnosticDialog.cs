@@ -98,6 +98,7 @@ public sealed class DiagnosticDialog : DialogForm
             primary.Click+=(_,_)=>RunAction(()=>openPath(configuration?file:FolderFor(file)));
         }
         if(primary is not null){primary.Enabled=!_actionRunning;buttons.Controls.Add(primary);if(additionalAction is null)AcceptButton=primary;}
+        else close.Tag="primary";
     }
     internal static string FolderFor(string path){string full=Path.GetFullPath(path);return Directory.Exists(full)?full:Path.GetDirectoryName(full)??full;}
     internal void ToggleDetails()
