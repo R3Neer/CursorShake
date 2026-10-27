@@ -53,6 +53,8 @@ public sealed class AppHost : ApplicationContext
     private readonly StartupTimingProbe? startupTiming;
     private bool startupEnabled,systemEventsSubscribed;
     private AppConfiguration? effective;
+    private AppLanguage initialLanguage=AppLanguage.English;
+    private AppLanguage UiLanguage=>effective?.Language??initialLanguage;
     private string? pending;
     private string statusText="Iniciando…";
     private Task initialization=Task.CompletedTask;
@@ -69,11 +71,12 @@ public sealed class AppHost : ApplicationContext
         // Validate persistent state before allocating a tray icon or native UI handle.
         workspace=new WorkspaceStore(this.options.WorkspaceRoot,this.options.StateDirectory,this.options.PersistLocator);
         preparer=new ThemePreparer(this.options.BundledThemes);startup=new StartupRegistration(this.options.ExecutablePath);
+        try{initialLanguage=ConfigParser.Parse(workspace.Read().Text,workspace.ConfigPath).Language;}catch{}
         Icon? allocatedIcon=null;TrayView? allocatedTray=null;DiagnosticCenter? allocatedDiagnostics=null;
         try
         {
         _ =dispatch.Handle;
-        diagnostics=allocatedDiagnostics=new DiagnosticCenter(OpenPath,Retry,this.options.DiagnosticPresenter);
+        diagnostics=allocatedDiagnostics=new DiagnosticCenter(OpenPath,Retry,this.options.DiagnosticPresenter,()=>UiLanguage,RetryForDialogAsync);
         diagnostics.RecoveryResolver=ResolveRecovery;
         diagnostics.ActionResolver=ResolveDiagnosticAction;
         using var resource=Assembly.GetExecutingAssembly().GetManifestResourceStream("CursorShake.Icon");
@@ -148,6 +151,7 @@ public sealed class AppHost : ApplicationContext
     private void OnConfiguration(ConfigurationUpdate update)=>Post(()=>
     {
         effective=update.Effective;pending=update.PendingTheme;
+        diagnostics.RefreshLanguage();
         if(update.Effective!=null&&!update.HasError)diagnostics.ClearArea("Configuración");
         UpdateTray();
     });
@@ -156,7 +160,7 @@ public sealed class AppHost : ApplicationContext
         if(closing||dispatch.IsDisposed)return;
         var configuration=effective??new AppConfiguration();
         var themes=preparer.AvailableThemes(configuration).ToDictionary(id=>id,id=>id switch{"windows"=>"Windows","bibata-ice"=>"Bibata Ice","nordzy-white"=>"Nordzy blanco",_=>id},StringComparer.OrdinalIgnoreCase);
-        tray.Update(new(){Language=configuration.Language,ThemeId=configuration.Theme,Paused=userPaused||session.IsUnavailable,StartupEnabled=startupEnabled,HasErrors=diagnostics.HasErrors,PendingTheme=pending,StatusText=userPaused?"Pausado":statusText,Themes=themes});
+        tray.Update(new(){Language=UiLanguage,ThemeId=configuration.Theme,Paused=userPaused||session.IsUnavailable,StartupEnabled=startupEnabled,HasErrors=diagnostics.HasErrors,PendingTheme=pending,StatusText=userPaused?"Pausado":statusText,Themes=themes});
         if(startupInitialized && !initializationFailed && effective!=null && source!=null && !ShouldRemainSuspended())startupTiming?.RecordOperational();
     }
     private async void OnAction(TrayAction action)
@@ -193,6 +197,7 @@ public sealed class AppHost : ApplicationContext
     public Task PreviewAsync()=>runtime!=null&&detector!=null?runtime.InvokeAsync(time=>{if(!detector.TryStartPreview(time.OccurredAt,time.ApplyAt))throw new InvalidOperationException("Preview unavailable.");}):Task.FromException(new InvalidOperationException("Not ready."));
     public Task PauseAsync(bool paused)
     {userPaused=paused;return runtime!=null&&detector!=null?runtime.InvokeAsync(time=>detector.SetSuspended(ShouldRemainSuspended(),time.ApplyAt)):Task.CompletedTask;}
+    private Task RetryForDialogAsync(){Retry();return retryOperation;}
     private async void Retry()
     {
         if(closing||lifecycleBusy||!initialization.IsCompleted)return;
@@ -226,7 +231,7 @@ public sealed class AppHost : ApplicationContext
     private DiagnosticAction? ResolveDiagnosticAction(UiDiagnostic diagnostic)
     {
         if(diagnostic.Code!="RecoveryRequired"||diagnostic.Area is not ("Inicio" or "Recuperación")||engine!=null||!initializationFailed)return null;
-        return new("Volver a cargar esquema de Windows…","Se volverá a cargar el esquema de cursores guardado en la configuración de Windows. Esto reemplaza los cambios temporales actuales de otras utilidades. Solo se retirarán recibos cuya identidad pueda verificarse y sin proceso dueño vivo. ¿Continuar?",async()=>
+        return new(DiagnosticText.T(UiLanguage,"Restore cursors…","Restaurar cursores…"),DiagnosticText.T(UiLanguage,"The cursor scheme saved in Windows will be restored. This can replace temporary cursor changes made by other utilities. Your CursorShake configuration and personal themes will be kept. Continue?","Se restaurarán los cursores guardados en Windows. Esto puede reemplazar cambios temporales de otras utilidades. Se conservarán tu configuración de CursorShake y tus temas personales. ¿Continuar?"),async()=>
         {
             if(closing||lifecycleBusy||engine!=null||!initializationFailed)throw new InvalidOperationException("La recuperación no está disponible en el estado actual.");
             lifecycleBusy=true;
@@ -293,8 +298,9 @@ public sealed class AppHost : ApplicationContext
     {
         if(closing)return;
         var configuration=ex as ConfigurationException;
+        if(configuration?.Code=="ThemeApplyFailed")area="Tema";
         string code=configuration?.Code??(ex is CursorAssetException asset?asset.Code.ToString():ex.GetType().Name);
-        diagnostics.Report(new(area,code,"No se ha podido completar la operación.",ex.ToString(),configuration?.SourcePath??path,configuration?.Line,configuration?.Column));
+        diagnostics.Report(new(area,code,"No se ha podido completar la operación.",ex.ToString(),configuration?.SourcePath??path,configuration?.Line,configuration?.Column){PreviousConfigurationActive=area=="Configuración"?effective is not null:null});
     });
     private void Post(Action action)
     {
@@ -355,7 +361,7 @@ public sealed class AppHost : ApplicationContext
             {
                 var diagnostic=new UiDiagnostic("Cierre","StopFailed","La restauración o el cierre necesitan revisión.",string.Join(Environment.NewLine,failures.Select(x=>x.ToString())),options.StateDirectory);
                 if(options.DiagnosticPresenter!=null)options.DiagnosticPresenter(diagnostic);
-                else {using var dialog=new DiagnosticDialog(diagnostic,OpenPath);dialog.ShowDialog();}
+                else {using var dialog=new DiagnosticDialog(diagnostic,OpenPath,language:UiLanguage);dialog.ShowDialog();}
             }
         }
         finally

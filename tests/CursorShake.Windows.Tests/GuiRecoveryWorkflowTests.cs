@@ -71,14 +71,15 @@ public sealed class GuiRecoveryWorkflowTests
         // Render the form's actual layout detached from its never-visible top-level window.
         // Hidden top-level forms otherwise omit their invisible descendants in DrawToBitmap.
         form.PerformLayout();
-        foreach (var control in Children(form))
+        var content = form.Controls[0];content.Font=form.Font;form.Controls.Remove(content);content.Visible=true;content.Dock=DockStyle.None;content.Size=form.ClientSize;content.CreateControl();content.PerformLayout();
+        foreach (var control in Children(content))
         {
-            if (control.Parent is null) continue;
+            if (control.Parent is null || !control.Visible || control.Parent is ScrollableControl { AutoScroll: true }) continue;
             Assert.True(control.Left >= 0 && control.Top >= 0 && control.Right <= control.Parent.ClientSize.Width && control.Bottom <= control.Parent.ClientSize.Height,
                 $"{control.GetType().Name} '{control.Text}' overflows parent at logical DPI {logicalDpi}: {control.Bounds} vs {control.Parent.ClientSize}");
         }
         File.WriteAllLines(path + ".bounds.txt", Children(form).Select(c => $"{c.GetType().Name}: {c.Text.Replace("\r", " ").Replace("\n", " ")} Bounds={c.Bounds} Visible={c.Visible}"));
-        var content = form.Controls[0]; form.Controls.Remove(content);
+
         using (content)
         {
         content.Dock = DockStyle.None; content.Size = form.ClientSize; content.CreateControl(); content.PerformLayout();

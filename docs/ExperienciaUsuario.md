@@ -34,9 +34,17 @@ Icono/texto distinguen activo, pausado y errores. Configuración preparada pero 
 
 ### Errores
 
-Forma estándar: popup, más estado de bandeja y Ver errores. Distribución inspirada en AutoHotkey, no colores ni tema: resumen; operación fallida; ubicación; explicación y detalles seleccionables/copiables. Incluir ruta, línea/columna TOML y tema/rol cuando existan. Acciones según problema: abrir configuración/carpeta/versiones conservadas, reintentar, copiar detalles, cerrar. Un conflicto de escritura ofrece revisar el TOML actual y conservar explícitamente su revisión validada; si cambia mientras se revisa se rechaza la resolución, sin sobrescribirlo. Explicar qué configuración sigue efectiva y qué datos se han conservado.
+Forma estándar: aviso con título específico, explicación breve del efecto y siguiente paso concreto. Excepciones, códigos, rutas completas y trazas quedan en «Ver detalles», contraído inicialmente y seleccionable/copiable al desplegarlo. Solo se afirma que la configuración anterior sigue activa cuando ese estado está confirmado. No se atribuye una causa desconocida ni se culpa al TOML de un fallo del motor.
 
-Agrupar repeticiones del mismo fallo. Debounce/reintento trata guardados transitorios antes de diagnosticar; no popup por cada evento de FileSystemWatcher. Cursor oculto/privado es un estado previsto de compatibilidad, no un error repetitivo.
+Diálogos WinForms con apariencia común, idioma inglés por defecto o español según `language`, colores claros/oscuros del sistema y alto contraste. Conservar el foco y el acceso mediante teclado. El cambio de idioma actualiza también las ventanas abiertas y sus acciones. El contenido se adapta al DPI y al área de trabajo; las zonas largas se desplazan manteniendo los botones accesibles.
+
+El pie del aviso ofrece una acción pertinente y «Cerrar». La copia pertenece a la zona de detalles, y las acciones se identifican con nombres breves y completos. Los fallos de una acción se explican dentro de la misma ventana; su excepción se añade a los detalles técnicos. Las confirmaciones explican sus consecuencias y tienen «Cancelar» como opción segura por defecto.
+
+«Ver errores» agrupa por incidencia semántica y muestra título comprensible, estado, última aparición y número de repeticiones, con colores contrastados para cabecera, filas y selección. No se abren ventanas nuevas por cambios de stack trace de la misma incidencia. Se conservan las operaciones pendientes al cerrar la aplicación. Si cambia el contexto de una recuperación abierta, se invalida la revisión antigua antes de permitir conservar una configuración.
+
+La recuperación del TOML permite abrir el archivo actual y las copias conservadas, comprobar la revisión actual y conservarla explícitamente solo tras validación y confirmación. «Abrir» está junto a la selección, «Comprobar» junto al estado, y el pie contiene únicamente «Conservar» y «Cerrar». Si el archivo cambia durante la revisión, se rechaza la resolución sin sobrescribirlo.
+
+Debounce/reintento trata guardados transitorios antes de diagnosticar; no popup por cada evento de FileSystemWatcher. Cursor oculto/privado es un estado previsto de compatibilidad, no un error repetitivo.
 
 ## 3. Carpetas y traslado
 

@@ -51,6 +51,9 @@ The local real-logon sample reached operational readiness in 6.745 seconds. That
 Exit CursorShake before replacing its application files. Keep the configuration folder and personal themes. If you remove the application, disable **Iniciar con Windows** first. For installed copies, run the installer to update or use Windows Settings to uninstall.
 
 
+## Dialog UX validation
+
+`CursorShake.NativeSmoke --dialog-ux-preview <output-directory>` privately renders the actual WinForms controls in English/Spanish and light/dark modes. It does not start AppHost, create a tray icon or modify Windows settings or system cursors. The preview is a control-body render, not a live desktop screenshot. GUI tests also cover logical 96/192 scaling, constrained sizing, contrast, collapsed technical details, action guards and obsolete recovery contexts; these do not certify every physical monitor or assistive-technology setup.
 ## Specification
 
 The detailed specification is in Spanish:
