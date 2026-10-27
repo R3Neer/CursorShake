@@ -31,7 +31,18 @@ public sealed class MaintenanceEndpoint : IDisposable
         {
             while (!stopping.IsCancellationRequested)
             {
-                await server.WaitForConnectionAsync(stopping.Token).ConfigureAwait(false);
+                try { await server.WaitForConnectionAsync(stopping.Token).ConfigureAwait(false); }
+                catch (IOException error) when (IsClientDisconnect(error))
+                {
+                    // A client may connect and close before the accept completes. Managed state is
+                    // still Waiting/Disconnected here, so reset only this owned native instance.
+                    if (!DisconnectNamedPipe(server.SafePipeHandle))
+                    {
+                        int code = Marshal.GetLastWin32Error();
+                        if (code != 233) throw new IOException("Cannot reset the maintenance listener after an early client disconnect.", new System.ComponentModel.Win32Exception(code));
+                    }
+                    continue;
+                }
                 try
                 {
                     if (!GetNamedPipeClientProcessId(server.SafePipeHandle, out uint client) || client == 0) throw new IOException("A local maintenance client could not be verified.");
@@ -45,12 +56,22 @@ public sealed class MaintenanceEndpoint : IDisposable
                     if (length == 3 && server.IsMessageComplete && request.AsSpan(0, 3).SequenceEqual("ACK"u8)) shutdown();
                 }
                 catch (Exception e) when (e is IOException or OperationCanceledException) { }
-                finally { if (server.IsConnected) server.Disconnect(); }
+                finally
+                {
+                    // Broken pipes also need Disconnect before the next accept. IsConnected is
+                    // false in that state and must not be used to decide whether to reset it.
+                    try { server.Disconnect(); }
+                    catch (ObjectDisposedException) when (stopping.IsCancellationRequested) { }
+                    catch (IOException) when (stopping.IsCancellationRequested) { }
+                }
             }
         }
         catch (OperationCanceledException) when (stopping.IsCancellationRequested) { }
         catch (ObjectDisposedException) when (stopping.IsCancellationRequested) { }
     }
+    private static bool IsClientDisconnect(IOException error)
+        => (error.HResult & 0xffff) is 109 or 232 or 233; // BROKEN_PIPE, NO_DATA, PIPE_NOT_CONNECTED
+
     public static async Task RequestShutdownAndWaitAsync(Process target, CancellationToken cancellationToken = default)
     {
         // Reading StartTime and opening the handle pins the exact process identity for peer verification and exit.
@@ -83,6 +104,8 @@ public sealed class MaintenanceEndpoint : IDisposable
         _ = Completion.ContinueWith(_ => stopping.Dispose(), CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
         // Completion can be observed by the host; cancellation does not block the UI on its own callback.
     }
+    [DllImport("kernel32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool DisconnectNamedPipe(SafePipeHandle pipe);
     [DllImport("kernel32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool GetNamedPipeServerProcessId(SafePipeHandle pipe, out uint pid);
     [DllImport("kernel32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
