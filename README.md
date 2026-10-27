@@ -1,103 +1,58 @@
 # CursorShake
 
-Make your mouse pointer grow when you shake the mouse. CursorShake is a Windows tray utility with smooth scaling, adjustable sensitivity, and **vector cursor themes that are rendered at the enlarged size**, including animated cursors.
+Find your pointer by shaking the mouse. CursorShake smoothly enlarges it and returns it to normal when you stop or click.
 
-[Download CursorShake 1.1.1 for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/download/v1.1.1/CursorShake-1.1.1-Setup.exe) · [Release notes and SHA-256](https://github.com/R3Neer/CursorShake/releases/tag/v1.1.1)
+**Vector cursor themes stay sharp as they grow, including animated cursors.**
 
-## Features
+[Download for Windows 11 x64](https://github.com/R3Neer/CursorShake/releases/latest)
 
-- Adjustable shake count, movement thresholds, timing, and maximum size multiplier.
-- Smooth growth and return; clicking starts the return immediately.
-- Permanent Windows/Aero-style, Bibata Ice, and Nordzy white themes that follow the current Windows cursor role.
-- **Static and animated vector cursors:** `.vcur` and `.vani` keep their SVG sources and render them at the requested size. Raster `.cur` and `.ani` files also work.
-- Hotspot alignment and animation phase preserved during scaling.
-- A tray menu that follows the device's light/dark theme and respects high contrast.
-- TOML configuration that reloads when saved and can move together with personal themes.
-- Optional startup with Windows, controlled from the tray menu.
-
-## Requirements
-
-Windows 11 x64 in a local interactive session. Published packages include the .NET runtime; the SDK is only needed to build from source. The tray menu supports English (default) and Spanish.
-
-The Windows theme reads local system SVGs and checks their hashes against the verified references. Missing or different resources produce a diagnostic. Bibata Ice and Nordzy white are bundled and do not require those system SVGs.
+- Adjustable shake sensitivity, timing, and maximum cursor size.
+- Themes follow the current cursor role, including text selection, links, and busy animations.
+- Settings reload when you save the configuration.
+- Runs in the system tray, with optional startup with Windows.
 
 ## Install
 
-Download and open `CursorShake-1.1.1-Setup.exe` normally. The installer defaults to your Windows user; you can choose all users and a different installation folder. Windows requests administrator approval when needed. Leave **Iniciar con Windows** selected to start the utility after signing in, and **Ejecutar CursorShake** to launch it when setup finishes.
+Requires **Windows 11 x64** in a local desktop session. The .NET runtime is included.
 
-The installer is unsigned, so Windows may show an unknown-publisher or SmartScreen warning. No separate .NET installation is required. To update, run the new installer over the existing installation. To uninstall, use Windows Settings; configuration and personal themes are kept by default.
+1. Download the setup executable from the [latest release](https://github.com/R3Neer/CursorShake/releases/latest).
+2. Open it normally and choose the installation folder. You can install for your account or for all users; Windows requests administrator approval when needed.
+3. Leave **Start CursorShake with Windows** selected if you want automatic startup, and **Run CursorShake now** to launch it.
 
-## Use CursorShake
+The installer is unsigned, so Windows may show an unknown-publisher or SmartScreen warning. To update, run the new installer over your existing installation. Uninstall through Windows Settings; configuration and personal themes are kept by default.
 
-Shake the mouse to grow the pointer. Continue shaking to keep it growing; pause or click to let it return to normal size.
+## Use and configure
 
-Right-click the tray icon for these actions. If the icon is hidden, open the Windows tray overflow.
+Right-click the tray icon to choose a theme, pause the effect, or open the configuration. If the icon is hidden, open the tray overflow.
 
-| Menu item (English / Spanish) | Action |
-| --- | --- |
-| Open configuration / Abrir configuración | Open the commented TOML in your associated editor. |
-| Configuration location… / Ubicación de configuración… | Move the configuration and personal themes to a folder you choose. |
-| Open configuration folder / Abrir carpeta de configuración | Open the active folder in Explorer. |
-| Theme / Tema | Choose a bundled or personal theme. |
-| Preview growth / Probar crecimiento | Preview the effect while the pointer is idle and its buttons are released. |
-| Pause growth / Pausar crecimiento | Pause enlargement while keeping the selected theme. |
-| Start with Windows / Iniciar con Windows | Enable or disable startup for your account. |
-| View errors… / Ver errores… | Review diagnostics and recovery actions. |
-| Exit / Salir | Close the utility and restore cursors whose ownership can be verified. |
+Choose **Open configuration** to adjust sensitivity, size, and animation timing in the commented `config.toml`. Save the file to apply changes at normal cursor size.
 
-There are no keyboard shortcuts or user CLI. Hidden or application-specific cursors suspend the effect. If another tool changes the system cursors, CursorShake yields control.
+The interface supports English (default) and Spanish. To switch to Spanish, change the existing top-level `language` setting to:
 
-## Vector cursors and your own themes
+```toml
+language = "spanish"
+```
+If the setting is missing, add it before the first `[section]`.
 
-CursorShake keeps the SVG geometry in `.vcur` (static) and `.vani` (animated) files and rasterizes it at the size being displayed. Enlarging therefore does not stretch a small source bitmap. Windows receives the resulting native cursor; the hotspot stays aligned and animation timing is preserved while the size changes.
+## Cursor themes
 
-The bundled themes are ready to use from **Theme**. To add your own:
+Choose **Windows** (Aero-style), **Bibata Ice**, or **Nordzy White** from the tray's **Theme** menu. The selected theme stays active during normal use; shaking enlarges the cursor for its current role.
+
+To add your own theme:
 
 1. Open the configuration folder from the tray menu.
-2. Put your `.vcur`, `.vani`, `.cur`, or `.ani` files under `themes/my-theme` beside `config.toml`.
-3. Edit the existing appearance section and add a theme definition:
+2. Put your cursor files in `themes/my-theme` beside `config.toml`.
+3. Declare the theme in the TOML, following the [custom cursor guide](docs/CustomCursors.md).
 
-```toml
-[appearance]
-theme = "my-theme"
+Static `.vcur` and animated `.vani` files support vector artwork. Standard `.cur` and `.ani` files also work. Starting from an SVG? The guide walks through creating both static and animated vector cursors.
 
-[themes.my-theme]
-default = "pointer.vcur"
-```
+## Documentation and license
 
-This example uses one default cursor for every role. The guide below explains individual roles and animated cursors. Saving applies the theme automatically at normal cursor size.
+See the [development guide](docs/Development.md) to build from source or work on the project.
 
-**Starting with an SVG?** Follow the [worked guide to creating static and animated vector cursors](docs/CustomCursors.md): it covers the SVG, hotspot, ZIP packaging, and frame order. Loose SVG/PNG files cannot be assigned directly. VCUR/VANI are CursorShake formats, rather than native Windows cursor files.
+Original code and documentation are licensed under [MIT](LICENSE). Bundled themes retain their own GPL terms:
 
-Raster CUR/ANI sources do not gain detail when enlarged. Output is limited to 2048 pixels per side, and large animations can reduce the frame rate. Missing personal assets or invalid configuration preserve the last applicable settings and produce a diagnostic.
+- [Bibata](https://github.com/ful1e5/Bibata_Cursor), by Abdulkaiz Khatri (ful1e5).
+- [Nordzy](https://github.com/guillaumeboehm/Nordzy-cursors), by Guillaume Boehm and the project contributors.
 
-## Configuration and menu language
-
-The app generates a commented `config.toml` on first use. **Open configuration** shows it in your associated editor. Changes reload when saved; themes and gesture settings apply together at normal cursor size. Moving the configuration through the tray menu also moves personal themes.
-
-Choose the tray-menu language at the **top of the file, before any `[section]`**:
-
-```toml
-language = "english" # english or spanish
-```
-
-English is the default, including when the setting is omitted. Use `language = "spanish"` for Spanish. Unsupported values are rejected. This setting covers the tray menus, status text and tooltip; it is not a translation of every technical diagnostic.
-
-## Build and development
-
-```powershell
-./build/Build.ps1 -Task Publish
-```
-
-Requires Windows and the .NET SDK selected by `global.json`. This builds, tests and publishes the self-contained app to `artifacts/publish/win-x64`. Run `CursorShake.exe` there and keep its companion files together. Starting a source-built copy does not enable startup automatically.
-
-Run tests separately with `./build/Build.ps1 -Task Test`. See the [build, installer and native-test instructions](docs/Development.md) for packaging and checks that require exclusive access to the system cursors.
-
-## License and credits
-
-Original code and documentation are licensed under [MIT](LICENSE). Third-party material retains its own license.
-
-- [Bibata](https://github.com/ful1e5/Bibata_Cursor), by Abdulkaiz Khatri (ful1e5), retains its original GPL terms.
-- [Nordzy](https://github.com/guillaumeboehm/Nordzy-cursors), by Guillaume Boehm and the project contributors, retains its original GPL terms.
-
-Editable theme sources, credits, and licenses are under `assets/themes`; published vector containers include their SVG sources. Dependency and runtime notices accompany the publication. Windows references are read locally: proprietary Windows cursor images and binaries are not distributed. The Wait/Working Aero-style animations are an original recreation. Icon provenance is recorded in [assets/branding](assets/branding/GENERACION.md).
+[Theme sources](assets/themes) and [license notices](assets/licenses) are included in the repository.
