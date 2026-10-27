@@ -16,11 +16,14 @@ public sealed class NativeCursorSession : IDisposable
     private readonly Process? _guard;
     private readonly EventWaitHandle? _ready, _stop;
     private readonly bool _guardRequired;
+    private readonly CursorSettingsSnapshot _settingsBaseline=null!;
+    private string? firstExternalChangeDiagnostic;
     private bool _disposed;
     public IReadOnlyDictionary<CursorRole, nint> SharedHandles { get; }
     public IReadOnlyDictionary<CursorRole, CursorPixels> BaselinePixels { get; }
     public long BaselineEstimatedBytes { get; }
     public bool IsExternalChangeDetected => _ledger.ExternalChange;
+    public string? ExternalChangeDiagnostic {get{lock(_sync)return firstExternalChangeDiagnostic;}}
 
     public NativeCursorSession(string stateDirectory, string guardExecutablePath, bool startGuard = true, Action<RecoveryCheckpoint>? checkpoint = null)
     {
@@ -29,9 +32,11 @@ public sealed class NativeCursorSession : IDisposable
         RecoveryConstruction? construction = null;
         try
         {
+            _settingsBaseline=CursorSettingsSnapshot.Capture();
             construction = new RecoveryConstruction(_sessionDirectory);
             _checkpoint?.Invoke(RecoveryCheckpoint.SessionDirectoryCreated);
             _manifest = BaselineStore.Capture(_sessionDirectory, construction, checkpoint, out var pixels, out var handles);
+            if(!_settingsBaseline.Equals(CursorSettingsSnapshot.Capture()))throw new IOException("Cursor registry settings changed while capturing the baseline; no cursor was modified.");
             BaselinePixels = pixels; SharedHandles = handles;
             BaselineEstimatedBytes = pixels.Values.Sum(p => p.EstimatedBytes) + _manifest.Cursors.Sum(c => c.SourceBytes);
             _ledger = new OwnershipLedger(_manifest.LedgerName, _manifest.Cursors.Count, true);
@@ -106,21 +111,23 @@ public sealed class NativeCursorSession : IDisposable
             int index = Index(role); var baseline = _manifest.Cursors[index];
             var owned = _ledger.Read(index); byte[] current = CursorFingerprint.Current(role);
             bool expected = owned.Phase is OwnershipPhase.Untouched or OwnershipPhase.Restored ? Convert.ToHexString(current) == baseline.Fingerprint : current.AsSpan().SequenceEqual(owned.PendingHash);
-            if (!expected || CursorNative.LoadCursor(0, (nint)(uint)role) != SharedHandles[role])
-            { _ledger.SetExternalChange(); throw new InvalidOperationException("An external cursor change was detected; the utility stopped modifying the scheme."); }
+            nint actualHandle=CursorNative.LoadCursor(0,(nint)(uint)role);
+            if (!expected || actualHandle != SharedHandles[role])
+            { CedeOwnership("Publication preflight did not match verified ownership",role,current,owned,actualHandle); throw new InvalidOperationException("An external cursor change was detected; the utility stopped modifying the scheme.\n"+ExternalChangeDiagnostic); }
             using var created = CursorNative.Create(pixels);
             byte[] next = CursorFingerprint.Bytes(CursorNative.Capture(created.DangerousGetHandle()));
             _ledger.Write(index, OwnershipPhase.Pending, current, next);
             _checkpoint?.Invoke(RecoveryCheckpoint.BeforeNativeMutation);
             if (!CursorNative.SetSystemCursor(created.Transfer(), (uint)role)) throw new Win32Exception(Marshal.GetLastWin32Error(), "Publish cursor role " + role);
             _checkpoint?.Invoke(RecoveryCheckpoint.AfterNativeMutation);
-            if (!CursorFingerprint.Current(role).AsSpan().SequenceEqual(next))
-            { _ledger.SetExternalChange(); throw new InvalidOperationException("Published cursor verification failed; ownership was ceded."); }
+            byte[] published=CursorFingerprint.Current(role);
+            if (!published.AsSpan().SequenceEqual(next))
+            { CedeOwnership("Publication verification did not match the newly published cursor",role,published,_ledger.Read(index),CursorNative.LoadCursor(0,(nint)(uint)role)); throw new InvalidOperationException("Published cursor verification failed; ownership was ceded.\n"+ExternalChangeDiagnostic); }
             _ledger.Write(index, OwnershipPhase.Confirmed, next, next);
         }
     }
 
-    public bool CheckForExternalChanges()
+    public bool CheckForExternalChanges(string? context=null)
     {
         lock (_sync)
         {
@@ -130,10 +137,45 @@ public sealed class NativeCursorSession : IDisposable
             {
                 var role = _manifest.Cursors[i]; var state = _ledger.Read(i); byte[] current = CursorFingerprint.Current(role.Role);
                 bool expected = state.Phase is OwnershipPhase.Untouched or OwnershipPhase.Restored ? Convert.ToHexString(current) == role.Fingerprint : current.AsSpan().SequenceEqual(state.PendingHash) || current.AsSpan().SequenceEqual(state.PreviousHash);
-                if (!expected || CursorNative.LoadCursor(0, (nint)(uint)role.Role) != SharedHandles[role.Role]) { _ledger.SetExternalChange(); return true; }
+                nint actualHandle=CursorNative.LoadCursor(0,(nint)(uint)role.Role);
+                if (!expected || actualHandle != SharedHandles[role.Role]) { CedeOwnership("Ownership inspection did not match a verified cursor"+(string.IsNullOrWhiteSpace(context)?"":"; Context="+context),role.Role,current,state,actualHandle); return true; }
             }
             return false;
         }
+    }
+    private void CedeOwnership(string reason,CursorRole role,byte[] actual,OwnershipState owned,nint actualHandle)
+    {
+        bool alreadyCeded=_ledger.ExternalChange;
+        _ledger.SetExternalChange();
+        if(!alreadyCeded||firstExternalChangeDiagnostic is null)firstExternalChangeDiagnostic=$"Reason={reason}; Role={role}; Phase={owned.Phase}; LedgerGeneration={owned.Generation}; ActualHandle=0x{actualHandle:X}; ExpectedHandle=0x{SharedHandles[role]:X}; ActualSHA256={Convert.ToHexString(actual)}; BaselineSHA256={_manifest.Cursors[Index(role)].Fingerprint}; PreviousOwnedSHA256={Convert.ToHexString(owned.PreviousHash)}; PendingOwnedSHA256={Convert.ToHexString(owned.PendingHash)}.";
+    }
+    internal bool TryReacquireUnchangedBaseline(Func<bool>? canCommit=null)
+    {
+        lock(_sync)
+        {
+            if(_disposed||!_ledger.ExternalChange||!_guardRequired||_guard is null)return false;
+            try
+            {
+                if(_guard.HasExited||!_settingsBaseline.Equals(CursorSettingsSnapshot.Capture())||!BaselineStillMatches())return false;
+                for(int i=0;i<_manifest.Cursors.Count;i++)
+                {
+                    byte[] hash=Convert.FromHexString(_manifest.Cursors[i].Fingerprint);
+                    _ledger.Write(i,OwnershipPhase.Restored,hash,hash);
+                }
+                if(!BaselineStillMatches()||!_settingsBaseline.Equals(CursorSettingsSnapshot.Capture())||_guard.HasExited)return false;
+                // All role slots must be visible as Restored before the recovery reader can observe
+                // the cleared flag. Before this commit it must still abstain from cursor writes.
+                if(canCommit is not null&&!canCommit())return false;
+                Thread.MemoryBarrier();_ledger.ClearExternalChange();return true;
+            }
+            catch(Exception error)when(error is IOException or UnauthorizedAccessException or System.Security.SecurityException or Win32Exception or InvalidOperationException){return false;}
+        }
+    }
+    private bool BaselineStillMatches()
+    {
+        foreach(var baseline in _manifest.Cursors)
+            if(CursorNative.LoadCursor(0,(nint)(uint)baseline.Role)!=SharedHandles[baseline.Role]||Convert.ToHexString(CursorFingerprint.Current(baseline.Role))!=baseline.Fingerprint)return false;
+        return true;
     }
     public RestoreResult RestoreOwned()
     {

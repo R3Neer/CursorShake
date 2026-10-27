@@ -105,7 +105,10 @@ public sealed class AppHost : ApplicationContext
             if(closing)return;
             input=new PointerInput(new GestureProfile(),()=>source?.CurrentButtons??WindowsPointerSource.ReadButtons());detector=new ShakeDetector(input,engine,clock);
             runtime=new PointerRuntimeLoop(clock,input,detector);
+            var recoveryLoop=runtime;var recoveryGesture=detector;
+            engine.NormalizeBeforeRecovery=()=>QueueEngineAvailability(recoveryLoop,recoveryGesture,true,ShouldRemainSuspended);
             runtime.Error+=ex=>Report(ex,"Entrada");engine.Error+=message=>Report(new InvalidOperationException(message),"Cursor");
+            engine.OwnershipLost+=message=>Report(new ConfigurationException("CursorOwnershipLost",message),"Cursor");
             engine.StatusChanged+=OnEngineStatus;
             coordinator=new ConfigurationCoordinator(workspace,preparer,engine,input,detector,runtime,clock,ShouldRemainSuspended);
             coordinator.Error+=ex=>Report(ex,"Configuración",workspace.ConfigPath);
@@ -137,11 +140,19 @@ public sealed class AppHost : ApplicationContext
     private bool ShouldRemainSuspended()=>closing||userPaused||session.IsUnavailable||engineUnavailable||(coordinator?.IsApplying??false);
     private void OnEngineStatus(CursorEngineStatus status)
     {
-        engineUnavailable=status!=CursorEngineStatus.Available;
+        bool unavailable=status!=CursorEngineStatus.Available;
+        engineUnavailable=unavailable;
         var loop=runtime;var gesture=detector;
-        if(loop!=null&&gesture!=null&&!closing)_=ObserveTask(loop.InvokeAsync(time=>gesture.SetSuspended(ShouldRemainSuspended(),time.ApplyAt)),"Cursor");
+        if(loop!=null&&gesture!=null&&!closing)_=ObserveTask(QueueEngineAvailability(loop,gesture,unavailable,ShouldRemainSuspended),"Cursor");
         Post(()=>{statusText=StatusLabel(status);UpdateTray();});
     }
+    // Preserve even transient loss of the renderer when its recovery beats the domain queue.
+    internal static Task QueueEngineAvailability(PointerRuntimeLoop loop, ShakeDetector gesture, bool unavailable, Func<bool> shouldRemainSuspended)
+        => loop.InvokeAsync(time =>
+        {
+            if (unavailable) gesture.SuspendAndNormalize(time.ApplyAt);
+            else gesture.SetSuspended(shouldRemainSuspended(), time.ApplyAt);
+        });
     private static string StatusLabel(CursorEngineStatus value)=>value switch
     {
         CursorEngineStatus.Available=>"Activo",CursorEngineStatus.Hidden=>"Cursor oculto",CursorEngineStatus.Unknown=>"Cursor privado de la aplicación",
@@ -286,7 +297,7 @@ public sealed class AppHost : ApplicationContext
     {session.OnPowerModeChanged(e.Mode);if(e.Mode!=PowerModes.StatusChange)ResetContext();}
     private void OnDisplayChanged(object? sender,EventArgs e)=>ResetContext();
     private void OnUserPreferenceChanged(object sender,UserPreferenceChangedEventArgs e)
-    {if(!closing){Post(()=>{if(!closing)tray.RefreshAppearance();});engine?.CheckExternalChanges();ResetContext();}}
+    {if(!closing){Post(()=>{if(!closing)tray.RefreshAppearance();});engine?.CheckExternalChanges("Windows preference change: "+e.Category);ResetContext();}}
     private void ResetContext()
     {
         if(closing)return;
@@ -299,8 +310,9 @@ public sealed class AppHost : ApplicationContext
         if(closing)return;
         var configuration=ex as ConfigurationException;
         if(configuration?.Code=="ThemeApplyFailed")area="Tema";
+        if(configuration?.Code=="CursorOwnershipLost"){area="Cursor";path=null;}
         string code=configuration?.Code??(ex is CursorAssetException asset?asset.Code.ToString():ex.GetType().Name);
-        diagnostics.Report(new(area,code,"No se ha podido completar la operación.",ex.ToString(),configuration?.SourcePath??path,configuration?.Line,configuration?.Column){PreviousConfigurationActive=area=="Configuración"?effective is not null:null});
+        diagnostics.Report(new(area,code,"No se ha podido completar la operación.",configuration?.Code=="CursorOwnershipLost"?configuration.Message:ex.ToString(),configuration?.SourcePath??path,configuration?.Line,configuration?.Column){PreviousConfigurationActive=area=="Configuración"?effective is not null:null});
     });
     private void Post(Action action)
     {

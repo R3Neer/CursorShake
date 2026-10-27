@@ -21,6 +21,8 @@ internal sealed class OwnershipLedger : IDisposable
     public bool ExternalChange { get { Thread.MemoryBarrier(); return _view.ReadInt32(8) != 0; } }
     public bool Disarmed { get { Thread.MemoryBarrier(); return _view.ReadInt32(12) != 0; } }
     public void SetExternalChange() { _view.Write(8, 1); Thread.MemoryBarrier(); }
+    internal void ClearExternalChange()
+    {lock(_sync){Thread.MemoryBarrier();_view.Write(8,0);Thread.MemoryBarrier();}}
     public void Disarm() { Thread.MemoryBarrier(); _view.Write(12, 1); Thread.MemoryBarrier(); }
     public OwnershipState Read(int index)
     {

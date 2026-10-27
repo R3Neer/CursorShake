@@ -55,7 +55,7 @@ public sealed class PersonalDataRemovalPlan
     private readonly Action requireUnelevated;
     private readonly Dictionary<string, FileSnapshot> files = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> directories = new(StringComparer.OrdinalIgnoreCase);
-    private readonly string config, themes;
+    private readonly string config, themes, reloadLog;
     private bool deleted;
     public IReadOnlyList<string> Paths { get; }
     public int FileCount => files.Count;
@@ -70,7 +70,8 @@ public sealed class PersonalDataRemovalPlan
         workspace=WorkspacePaths.Canonical(authority?.Root??defaultRoot); config=Path.Combine(workspace,"config.toml"); themes=Path.Combine(workspace,"themes");
         if(WorkspacePaths.Same(state,workspace)||WorkspacePaths.Inside(state,themes)||WorkspacePaths.Inside(themes,state))throw new IOException("Workspace and internal-state paths overlap; removal requires manual review.");
         ValidateState(); CaptureInternalDirectories(); CaptureFileIfPresent(config); CaptureThemes(themes);
-        Paths=new[] { config, themes, state }.Where(path=>files.ContainsKey(path)||directories.ContainsKey(path)).ToArray();
+        reloadLog=Path.Combine(Path.GetDirectoryName(state)!,CursorShake.Windows.Cursors.CursorReloadJournal.FileName);CaptureFileIfPresent(reloadLog);
+        Paths=new[] { config, themes, state, reloadLog }.Where(path=>files.ContainsKey(path)||directories.ContainsKey(path)).ToArray();
     }
     public void Delete()
     {
@@ -141,6 +142,8 @@ public sealed class PersonalDataRemovalPlan
                 if((File.GetAttributes(entry)&FileAttributes.Directory)!=0)Walk(entry);else actualFiles.Add(entry);
         }
         Walk(themes);
+        using(var logRootPin=ExistingDirectory(Path.GetDirectoryName(reloadLog)!))
+            if(logRootPin is not null && Directory.EnumerateFileSystemEntries(Path.GetDirectoryName(reloadLog)!).Any(path=>WorkspacePaths.Same(path,reloadLog)))actualFiles.Add(reloadLog);
         using(var rootPin=ExistingDirectory(workspace))
             if(rootPin is not null && Directory.EnumerateFileSystemEntries(workspace).Any(path=>string.Equals(Path.GetFileName(path),"config.toml",StringComparison.OrdinalIgnoreCase)))actualFiles.Add(config);
         using(var statePin=ExistingDirectory(state))

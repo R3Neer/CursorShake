@@ -114,7 +114,7 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
                 }
                 // Once native publication starts, finish/compensate it before accepting a newer candidate.
                 var applied=await engine.ApplyThemeAsync(candidate,configuration.Gesture.Growth.MaximumScale).ConfigureAwait(false);
-                if(!applied.Applied)throw new ConfigurationException("ThemeApplyFailed",applied.Error??"Unable to apply cursor theme.",workspace.ConfigPath);
+                if(!applied.Applied)throw new ConfigurationException(applied.ErrorCode??"ThemeApplyFailed",applied.Error??"Unable to apply cursor theme.",applied.ErrorCode=="CursorOwnershipLost"?null:workspace.ConfigPath);
                 candidate=null; // Engine owns the prepared resource graph now.
                 await runtime.InvokeAsync(time=>
                 {

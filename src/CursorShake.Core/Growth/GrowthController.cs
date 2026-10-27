@@ -41,6 +41,14 @@ public sealed class GrowthController
         _from = Scale; _target = 1; _progress = 0; _durationSeconds = _profile.ReturnDuration.TotalSeconds; _drive = 1;
         _curve = Scale > 1 ? Curve.Returning : Curve.Holding;
     }
+    /// <summary>Discards an unavailable renderer's curve without publishing any intermediate scale.</summary>
+    public void ResetToNormal(TimeSpan now, long gestureEpoch)
+    {
+        if (now < _lastTime) throw new ArgumentOutOfRangeException(nameof(now));
+        _lastTime = now; _epoch = gestureEpoch; _curve = Curve.Holding;
+        _from = _target = Scale = 1; _progress = 0;
+        Publish(now);
+    }
     public void SetEpoch(long epoch) => _epoch = epoch;
     public void ApplyProfile(GrowthProfile profile, TimeSpan now)
     {

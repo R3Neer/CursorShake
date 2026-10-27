@@ -8,7 +8,7 @@ using Microsoft.Win32;
 namespace CursorShake.Windows.Cursors;
 
 public enum CursorEngineStatus { Starting,Available,Hidden,Unknown,Incompatible,ExternalChange,Degraded,Stopped }
-public sealed record ThemeApplyResult(bool Applied,string? Error=null);
+public sealed record ThemeApplyResult(bool Applied,string? Error=null,string? ErrorCode=null);
 internal readonly record struct CursorObservation(CursorRole? Role,bool Visible,nint Monitor,int NormalSize);
 internal readonly record struct CursorEngineSnapshot(CursorRole? ActiveRole,TimeSpan ActivatedAt,CursorEngineStatus Status,long HardEpoch,long PublishedFrames);
 
@@ -22,6 +22,15 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
     private readonly NativeCursorSession session;
     private readonly IMonotonicClock clock;
     private readonly RasterCache cache=new();
+    private readonly CursorReloadRecoveryPolicy reloadPolicy=new();
+    private TimeSpan? reloadDetectedAt;
+    private TimeSpan lastOwnershipAudit;
+    private bool reloadAbandoned,reapplying;
+    private long automaticRecoveries;
+    private string? ownershipLossMessage;
+    private Task normalizationForReload=Task.CompletedTask;
+    private readonly CursorReloadJournal reloadJournal;
+    internal long AutomaticRecoveries=>Interlocked.Read(ref automaticRecoveries);
     private readonly Dictionary<CursorRole,(CursorFrame Frame,int Width,int Height)> nativeStates=new();
     private readonly HashSet<CursorRole> normalize=new();
     private PreparedTheme? theme;
@@ -39,6 +48,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
     private CursorEngineStatus status=CursorEngineStatus.Starting;
     public WindowsCursorEngine(string stateDirectory,string guardExecutablePath,IMonotonicClock clock)
     {
+        reloadJournal=new CursorReloadJournal(stateDirectory);
         this.clock=clock;normalSize=NormalSizeForDpi(CursorNative.GetDpiForSystem());
         session=new NativeCursorSession(stateDirectory,guardExecutablePath);
         worker=new Thread(Run){Name="CursorShake renderer",IsBackground=true};worker.Start();
@@ -48,6 +58,9 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
     internal CursorEngineSnapshot Snapshot {get{lock(gate)return new(activeRole,activatedAt,status,hardEpoch,PublishedFrames);}}
     public event Action<CursorEngineStatus>? StatusChanged;
     public event Action<string>? Error;
+    public event Action<string>? OwnershipLost;
+    /// <summary>Completes after the domain has discarded all previously admitted growth. Called once per reload.</summary>
+    public Func<Task>? NormalizeBeforeRecovery { private get; set; }
     public CursorEngineStatus Status {get{lock(gate)return status;}}
     public long RasterBytes {get{lock(gate)return cache.Bytes;}}
     public long PublishedFrames {get;private set;}
@@ -56,9 +69,9 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
     public void SetScale(ScaleSample sample)
     {
         if(!double.IsFinite(sample.Scale)||sample.Scale<1)throw new ArgumentOutOfRangeException(nameof(sample));
-        if(Volatile.Read(ref stopping)||Volatile.Read(ref rendererFailed))return;
+        if(Volatile.Read(ref stopping)||Volatile.Read(ref rendererFailed)||Volatile.Read(ref reapplying))return;
         Interlocked.Exchange(ref latestScaleRequest,new ScaleRequest(sample));
-        if(Volatile.Read(ref stopping)||Volatile.Read(ref rendererFailed)){Interlocked.Exchange(ref latestScaleRequest,null);return;}
+        if(Volatile.Read(ref stopping)||Volatile.Read(ref rendererFailed)||Volatile.Read(ref reapplying)){Interlocked.Exchange(ref latestScaleRequest,null);return;}
         try{wake.Set();}catch(ObjectDisposedException)when(Volatile.Read(ref stopping)){}
     }
     private void ConsumeLatestScale()
@@ -83,7 +96,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         Enqueue(()=>
         {
             try{Apply(prepared,maxScale);result.SetResult(new(true));}
-            catch(Exception ex){result.SetResult(new(false,ex.Message));}
+            catch(Exception ex){result.SetResult(new(false,session.IsExternalChangeDetected?ownershipLossMessage??ex.Message:ex.Message,session.IsExternalChangeDetected?"CursorOwnershipLost":null));}
         });return result.Task;
     }
     private void Apply(PreparedTheme prepared,double maxScale)
@@ -93,35 +106,56 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         ValidateMonitors(maxScale);
         if(prepared.EstimatedBytes+(theme?.EstimatedBytes??0)+session.BaselineEstimatedBytes>CursorAssetLoader.MaximumSourceBytes)
             throw new CursorAssetException(AssetErrorCode.LimitExceeded,"Active, candidate and baseline sources exceed64MiB.");
-        var previous=theme;cache.Clear();
+        var previous=theme;
+        if(previous!=null&&session.IsExternalChangeDetected)RecoverWithinGrace(previous);
+        cache.Clear();
         lock(gate){hardEpoch++;targetScale=1;Interlocked.Exchange(ref latestScaleRequest,null);}
-        try
+        for(int publicationAttempt=0;;publicationAttempt++)
         {
-            BeforeThemePublish?.Invoke();
-            foreach(var role in CursorRoles.All)
+            try
             {
-                var asset=prepared.Roles[role];var source=asset.Frames[asset.Steps[0].FrameIndex];
-                Publish(role,source,normalSize,0);
-            }
-        }
-        catch
-        {
-            if(previous!=null&&!session.IsExternalChangeDetected)
-            {
-                try{foreach(var role in CursorRoles.All){var a=previous.Roles[role];Publish(role,a.Frames[a.Steps[0].FrameIndex],normalSize,0);}}
-                catch(Exception rollback)
+                BeforeThemePublish?.Invoke();
+                foreach(var role in CursorRoles.All)
                 {
-                    if(session.IsExternalChangeDetected)SetStatus(CursorEngineStatus.ExternalChange);
-                    else{MarkFailed();Error?.Invoke("Theme rollback failed: "+rollback.Message);}
+                    var asset=prepared.Roles[role];var source=asset.Frames[asset.Steps[0].FrameIndex];
+                    Publish(role,source,normalSize,0);
                 }
+                break;
             }
-            else if(session.IsExternalChangeDetected)SetStatus(CursorEngineStatus.ExternalChange);else MarkFailed();
-            throw;
+            catch
+            {
+                // Keep the prepared candidate alive if this publication was the first observer of
+                // an eligible Windows reload. Retry it once after restoring the retained theme.
+                if(publicationAttempt==0&&previous!=null&&session.IsExternalChangeDetected&&RecoverWithinGrace(previous))continue;
+                if(previous!=null&&!session.IsExternalChangeDetected)
+                {
+                    try{foreach(var role in CursorRoles.All){var a=previous.Roles[role];Publish(role,a.Frames[a.Steps[0].FrameIndex],normalSize,0);}}
+                    catch(Exception rollback)
+                    {
+                        if(session.IsExternalChangeDetected)SetStatus(CursorEngineStatus.ExternalChange);
+                        else{MarkFailed();Error?.Invoke("Theme rollback failed: "+rollback.Message);}
+                    }
+                }
+                else if(session.IsExternalChangeDetected)SetStatus(CursorEngineStatus.ExternalChange);else MarkFailed();
+                throw;
+            }
         }
         theme=prepared;maximumScale=maxScale;compatible=true;activatedAt=clock.Now;
         lock(gate){hardEpoch++;normalize.Clear();}
         previous?.Dispose();
         ObserveSystemCursor();
+    }
+    private bool RecoverWithinGrace(PreparedTheme retained)
+    {
+        BeginReloadRecovery();
+        var waited=System.Diagnostics.Stopwatch.StartNew();
+        while(!stopping&&!reloadAbandoned)
+        {
+            if(TryRecoverReload(retained))return true;
+            if(waited.Elapsed>=TimeSpan.FromSeconds(1)){AbandonReload("The original cursor scheme did not become eligible within the recovery grace interval.");break;}
+            Thread.Sleep(100);
+        }
+        return false;
     }
     public void ObserveSystemCursor()
     {
@@ -163,7 +197,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
                 compatible=true;
                 if(normalSize!=size){normalSize=size;hardEpoch++;}
             }
-            nextStatus=rendererFailed?CursorEngineStatus.Degraded:session.IsExternalChangeDetected?CursorEngineStatus.ExternalChange:theme==null?CursorEngineStatus.Starting:!show?CursorEngineStatus.Hidden:role==null?CursorEngineStatus.Unknown:!compatible?CursorEngineStatus.Incompatible:CursorEngineStatus.Available;
+            nextStatus=rendererFailed?CursorEngineStatus.Degraded:reapplying||session.IsExternalChangeDetected?CursorEngineStatus.ExternalChange:theme==null?CursorEngineStatus.Starting:!show?CursorEngineStatus.Hidden:role==null?CursorEngineStatus.Unknown:!compatible?CursorEngineStatus.Incompatible:CursorEngineStatus.Available;
         }
         SetStatus(nextStatus);wake.Set();
     }
@@ -172,9 +206,9 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         lock(gate){monitor=0;hardEpoch++;}
         ObserveSystemCursor();
     }
-    public void CheckExternalChanges()=>Enqueue(()=>
+    public void CheckExternalChanges(string? context=null)=>Enqueue(()=>
     {
-        if(session.CheckForExternalChanges()){SetStatus(CursorEngineStatus.ExternalChange);lock(gate){targetScale=1;hardEpoch++;}}
+        if(session.CheckForExternalChanges(context))BeginReloadRecovery();
     });
     public void Normalize()=>Enqueue(()=>
     {
@@ -222,17 +256,28 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
             try
             {
                 ConsumeLatestScale();
+                if(theme!=null&&!stopping&&!rendererFailed&&!session.IsExternalChangeDetected&&clock.Now-lastOwnershipAudit>=TimeSpan.FromSeconds(1))
+                {
+                    lastOwnershipAudit=clock.Now;
+                    if(session.CheckForExternalChanges("Periodic system-cursor audit"))BeginReloadRecovery();
+                }
                 Action? command=null;
                 lock(gate){if(commands.Count>0)command=commands.Dequeue();}
                 if(command!=null){command();if(finished)break;continue;}
                 PreparedTheme? current;CursorRole? role;double scale;TimeSpan origin;long epoch;int size;bool available;
                 lock(gate){current=theme;role=activeRole;scale=targetScale;origin=activatedAt;epoch=hardEpoch;size=normalSize;available=visible&&!session.IsExternalChangeDetected&&!stopping;}
-                if(current==null||session.IsExternalChangeDetected||stopping||rendererFailed){wake.WaitOne();continue;}
+                if(session.IsExternalChangeDetected&&!stopping&&!rendererFailed&&current!=null)
+                {
+                    BeginReloadRecovery();
+                    if(TryRecoverReload(current))continue;
+                    wake.WaitOne(reloadAbandoned?Timeout.Infinite:100);continue;
+                }
+                if(current==null||stopping||rendererFailed){wake.WaitOne(1000);continue;}
                 CursorRole? idleRole=null;
                 lock(gate){if(normalize.Count>0){idleRole=normalize.First();normalize.Remove(idleRole.Value);}}
                 if(idleRole is{} idle)
                 {var a=current.Roles[idle];Publish(idle,a.Frames[a.Steps[0].FrameIndex],size,epoch);continue;}
-                if(role is not{} active||!available){wake.WaitOne();continue;}
+                if(role is not{} active||!available){wake.WaitOne(1000);continue;}
                 var asset=current.Roles[active];var now=clock.Now;int index=asset.FrameIndexAt(now-origin);var frame=asset.Frames[index];
                 int target=Math.Clamp((int)Math.Round(size*scale),1,2048);
                 double ratio=target/Math.Max(frame.Width,frame.Height);int width=Math.Max(1,(int)Math.Round(frame.Width*ratio)),height=Math.Max(1,(int)Math.Round(frame.Height*ratio));
@@ -250,16 +295,14 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
                     foreach(var step in asset.Steps){cumulative+=step.Duration.Ticks;if(cumulative>offset){delay=cumulative-offset;break;}}
                     wake.WaitOne(TimeSpan.FromTicks(Math.Max(1,delay)));
                 }
-                else wake.WaitOne();
+                else wake.WaitOne(1000);
             }
             catch(Exception ex)
             {
                 if(session.IsExternalChangeDetected)
                 {
-                    // Native ownership was ceded, so no later publication or automatic baseline adoption
-                    // is allowed. This is a semantic external change, not a failed rasterizer.
-                    lock(gate){targetScale=1;hardEpoch++;normalize.Clear();Interlocked.Exchange(ref latestScaleRequest,null);}
-                    SetStatus(CursorEngineStatus.ExternalChange);
+                    BeginReloadRecovery();
+                    wake.Set();
                 }
                 else
                 {
@@ -269,6 +312,70 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
                 // Keep the command loop alive: Stop must still drain and attempt owned restoration.
             }
         }
+    }
+    private void BeginReloadRecovery()
+    {
+        if(reloadDetectedAt is not null)return;
+        reloadDetectedAt=clock.Now;
+        reloadJournal.Detected(session.ExternalChangeDiagnostic);
+        lock(gate){targetScale=1;hardEpoch++;normalize.Clear();Interlocked.Exchange(ref latestScaleRequest,null);}
+        SetStatus(CursorEngineStatus.ExternalChange);
+        try { normalizationForReload=NormalizeBeforeRecovery?.Invoke()??Task.CompletedTask; }
+        catch(Exception error) { normalizationForReload=Task.FromException(error); }
+    }
+    private bool TryRecoverReload(PreparedTheme retained)
+    {
+        if(reloadAbandoned)return false;
+        var now=clock.Now;
+        if(now-reloadDetectedAt!.Value>=TimeSpan.FromSeconds(1))
+        { AbandonReload("The original cursor scheme did not become eligible within the recovery grace interval.");return false; }
+        if(!normalizationForReload.IsCompleted)return false;
+        if(!normalizationForReload.IsCompletedSuccessfully)
+        { AbandonReload("The domain could not confirm normal cursor size: "+(normalizationForReload.Exception?.GetBaseException().Message??"normalization was cancelled"));return false; }
+        if(!reloadPolicy.CanAttempt(now))
+        { AbandonReload("Automatic recovery limit reached (3 recoveries in 60 seconds).");return false; }
+        bool reclaimed;
+        lock(gate){reapplying=true;}
+        try{reclaimed=session.TryReacquireUnchangedBaseline(()=>clock.Now-reloadDetectedAt!.Value<TimeSpan.FromSeconds(1));}
+        catch(Exception error){lock(gate){reapplying=false;}AbandonReload("Cannot verify the original cursor scheme: "+error);return false;}
+        if(!reclaimed)
+        {
+            lock(gate){reapplying=false;}
+            if(now-reloadDetectedAt!.Value>=TimeSpan.FromSeconds(1))AbandonReload("The current cursors or Windows cursor settings differ from the original scheme.");
+            return false;
+        }
+        reloadPolicy.RecordAttempt(clock.Now);
+        lock(gate)
+        {
+            reapplying=true;hardEpoch++;targetScale=1;normalize.Clear();
+            Interlocked.Exchange(ref latestScaleRequest,null);cache.Clear();nativeStates.Clear();
+        }
+        try
+        {
+            foreach(var role in CursorRoles.All)
+            {
+                var asset=retained.Roles[role];
+                Publish(role,asset.Frames[asset.Steps[0].FrameIndex],normalSize,0);
+            }
+            Interlocked.Increment(ref automaticRecoveries);
+            reloadJournal.Completed("Recovered", "The unchanged original Windows scheme was verified and the retained theme reapplied at normal size.");
+            reloadDetectedAt=null;
+            return true;
+        }
+        finally
+        {
+            lock(gate){reapplying=false;hardEpoch++;}
+            ObserveSystemCursor();
+        }
+    }
+    private void AbandonReload(string reason)
+    {
+        if(reloadAbandoned)return;
+        reloadAbandoned=true;
+        SetStatus(CursorEngineStatus.ExternalChange);
+        ownershipLossMessage="Cursor ownership was ceded. "+reason+Environment.NewLine+session.ExternalChangeDiagnostic;
+        reloadJournal.Completed("Declined",reason);
+        OwnershipLost?.Invoke(ownershipLossMessage);
     }
     private void Enqueue(Action command)
     {

@@ -59,7 +59,16 @@ public sealed class ShakeDetector : IDisposable
         StateChanged?.Invoke();
     }
 
-    public void Reset(TimeSpan now)
+    public void Reset(TimeSpan now) => ResetCore(now, normalizeImmediately: false);
+
+    /// <summary>Renderer unavailability invalidates the gesture and its visual curve immediately.</summary>
+    public void SuspendAndNormalize(TimeSpan now)
+    {
+        EnsureUsable(); IsSuspended = true;
+        ResetCore(now, normalizeImmediately: true);
+    }
+
+    private void ResetCore(TimeSpan now, bool normalizeImmediately)
     {
         EnsureUsable();
         now = ApplyTime(now);
@@ -70,6 +79,14 @@ public sealed class ShakeDetector : IDisposable
         _fullCountRequired = true;
         IsPreview = false;
         GestureEpoch++;
+        if (normalizeImmediately)
+        {
+            _growth.ResetToNormal(now, GestureEpoch);
+            _phaseCompletion = null;
+            Phase = _buttons != PointerButtons.None ? GesturePhase.Blocked : GesturePhase.Idle;
+            StateChanged?.Invoke();
+            return;
+        }
         _growth.SetEpoch(GestureEpoch);
         BeginReturn(now);
         Phase = _buttons != PointerButtons.None ? GesturePhase.Blocked : GesturePhase.Returning;

@@ -51,6 +51,9 @@ The local real-logon sample reached operational readiness in 6.745 seconds. That
 Exit CursorShake before replacing its application files. Keep the configuration folder and personal themes. If you remove the application, disable **Iniciar con Windows** first. For installed copies, run the installer to update or use Windows Settings to uninstall.
 
 
+## Cursor scheme reload validation
+
+`CursorShake.NativeSmoke --cursor-reload-recovery <fresh-fixture-root> <bundled-themes> <guard-executable> <result-json>` is an exclusive native test: exit the personal app and its Guard first. Launch the test executable directly, not through `dotnet <dll>`. It deliberately reloads the Windows scheme and changes one uniquely named test-owned registry value, with conditional cleanup. It checks the rolling recovery limit, changed cursors/settings, deferred/failed/expired domain normalization, configuration races, idle detection and clean shutdown. All 17 original fingerprints must match at completion; preserve receipts and evidence if restoration is uncertain. These controlled reloads do not certify the exact Escape exit path of every Computer Use version.
 ## Dialog UX validation
 
 `CursorShake.NativeSmoke --dialog-ux-preview <output-directory>` privately renders the actual WinForms controls in English/Spanish and light/dark modes. It does not start AppHost, create a tray icon or modify Windows settings or system cursors. The preview is a control-body render, not a live desktop screenshot. GUI tests also cover logical 96/192 scaling, constrained sizing, contrast, collapsed technical details, action guards and obsolete recovery contexts; these do not certify every physical monitor or assistive-technology setup.
