@@ -38,7 +38,7 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
             // A present but invalid/busy file must still be watched; Process reports it without replacing it.
         }
         monitor=new FileMonitor(workspace.RootPath);monitor.Changed+=RequestReload;monitor.Error+=OnMonitorError;
-        workspace.RootChanged+=OnRootChanged;detector.StateChanged+=OnDetectorStateChanged;
+        workspace.RootChanged+=OnRootChanged;detector.StateChanged+=OnDetectorStateChanged;engine.RecoveryWaitChanged+=OnRecoveryWaitChanged;
     }
     public event Action<ConfigurationUpdate>? Changed;
     public event Action<Exception>? Error;
@@ -59,6 +59,7 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
     {
         lock(gate){if(detector.CanApplyProfile)idleWait?.TrySetResult();}
     }
+    private void OnRecoveryWaitChanged(){lock(gate)idleWait?.TrySetResult();}
     private async Task Process()
     {
         while(true)
@@ -95,7 +96,7 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
                     await runtime.InvokeAsync(()=>
                     {
                         lock(gate){idleWait=ready;}
-                        eligible=detector.CanApplyProfile;
+                        eligible=detector.CanApplyProfile&&!engine.IsWaitingForOriginalScheme;
                         if(eligible)ready.TrySetResult();
                     }).ConfigureAwait(false);
                     await ready.Task.WaitAsync(token).ConfigureAwait(false);
@@ -105,16 +106,21 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
                         lock(gate)
                         {
                             if(stopping||revision!=wanted||generation!=workspace.Generation)return;
-                            if(!detector.CanApplyProfile)return;
+                            if(!detector.CanApplyProfile||engine.IsWaitingForOriginalScheme)return;
                             applying=true;detector.SetSuspended(true,time.ApplyAt);admitted=true;
                         }
                     }).ConfigureAwait(false);
-                    if(admitted)break;
-                    token.ThrowIfCancellationRequested();
+                    if(!admitted){token.ThrowIfCancellationRequested();continue;}
+                    // A foreign scheme defers this candidate without blocking the native worker or taking ownership.
+                    var applied=await engine.ApplyThemeAsync(candidate,configuration.Gesture.Growth.MaximumScale).ConfigureAwait(false);
+                    if(applied.ErrorCode=="CursorRecoveryPending")
+                    {
+                        await runtime.InvokeAsync(time=>{applying=false;detector.SetSuspended(stopping||remainSuspended(),time.ApplyAt);}).ConfigureAwait(false);
+                        token.ThrowIfCancellationRequested();continue;
+                    }
+                    if(!applied.Applied)throw new ConfigurationException(applied.ErrorCode??"ThemeApplyFailed",applied.Error??"Unable to apply cursor theme.",applied.ErrorCode=="CursorOwnershipLost"?null:workspace.ConfigPath);
+                    break;
                 }
-                // Once native publication starts, finish/compensate it before accepting a newer candidate.
-                var applied=await engine.ApplyThemeAsync(candidate,configuration.Gesture.Growth.MaximumScale).ConfigureAwait(false);
-                if(!applied.Applied)throw new ConfigurationException(applied.ErrorCode??"ThemeApplyFailed",applied.Error??"Unable to apply cursor theme.",applied.ErrorCode=="CursorOwnershipLost"?null:workspace.ConfigPath);
                 candidate=null; // Engine owns the prepared resource graph now.
                 await runtime.InvokeAsync(time=>
                 {
@@ -164,7 +170,7 @@ public sealed class ConfigurationCoordinator : IAsyncDisposable
     {
         Task? task;
         lock(gate){if(stopping)return;stopping=true;cancellation.Cancel();idleWait?.TrySetCanceled();task=running;}
-        monitor.Dispose();workspace.RootChanged-=OnRootChanged;detector.StateChanged-=OnDetectorStateChanged;
+        monitor.Dispose();workspace.RootChanged-=OnRootChanged;detector.StateChanged-=OnDetectorStateChanged;engine.RecoveryWaitChanged-=OnRecoveryWaitChanged;
         if(task!=null)try{await task.ConfigureAwait(false);}catch(OperationCanceledException){}
         cancellation.Dispose();
     }

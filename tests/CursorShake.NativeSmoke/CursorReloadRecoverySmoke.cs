@@ -1,3 +1,7 @@
+using CursorShake.App;
+using CursorShake.Core.Shake;
+using CursorShake.Core.Input;
+using CursorShake.Windows.Input;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -48,6 +52,11 @@ internal static class CursorReloadRecoverySmoke
             // Recovery verifies all17 roles directly; it does not require foreground input ownership.
             await Scenario("reload-budget");
             await Scenario("foreign-scheme");
+            await Scenario("transparent-arrow");
+            await Scenario("baseline-disappears-during-normalization");
+            await Scenario("coordinator-latest");
+            await Scenario("coordinator-dispose-pending");
+            await Scenario("coordinator-hardstop-pending");
             await Scenario("configuration-reload");
             await Scenario("idle-audit");
             await Scenario("close-after-recovery");
@@ -60,13 +69,15 @@ internal static class CursorReloadRecoverySmoke
 
             async Task Scenario(string scenario)
             {
-                bool foreign = scenario == "foreign-scheme";
+                bool foreign = scenario is "foreign-scheme" or "transparent-arrow" or "baseline-disappears-during-normalization";
                 string state = Path.Combine(root, scenario);
                 var expected = new Dictionary<CursorRole, string>(); WindowsCursorEngine? engine = null;
                 Process? helper = null; RecoveryManifest? sessionManifest = null; string? receipt = null;
-                bool publicationAttempted = false;
+                bool publicationAttempted = false, completedRecoveryScenario = false; string? closeFailure = null;
                 RegistryKey? registryFixture = null; string? registryName = null, registryToken = null; bool registryWritten = false;
                 var diagnostics = new System.Collections.Concurrent.ConcurrentQueue<string>();
+                ConfigurationCoordinator? coordinator = null; PointerRuntimeLoop? configurationRuntime = null; ShakeDetector? configurationDetector = null;
+                Action<CursorEngineStatus>? availabilityHandler = null;
                 try
                 {
                     var scenarioClock = new Clock();
@@ -85,17 +96,134 @@ internal static class CursorReloadRecoverySmoke
                     foreach (var role in CursorRoles.All) expected[role] = Hash(role);
                     if (foreign)
                     {
-                        using var replacement = CursorNative.Create(CrashGuardSmoke.Colored(41, 211));
+                        bool transientBaseline = scenario == "baseline-disappears-during-normalization";
+                        var normalization = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously); int normalizationCalls = 0;
+                        if (transientBaseline) engine.NormalizeBeforeRecovery = () => { Interlocked.Increment(ref normalizationCalls); return normalization.Task; };
+                        bool transparent = scenario == "transparent-arrow";
+                        var pixels = transparent ? new CursorPixels(32, 32, 0, 0, new byte[32 * 32 * 4], Enumerable.Repeat((byte)0xFF, 4 * 32).ToArray()) : CrashGuardSmoke.Colored(41, 211);
+                        using var replacement = CursorNative.Create(pixels);
                         Need(CursorNative.SetSystemCursor(replacement.Transfer(), (uint)CursorRole.Arrow), "Cannot install the test-owned foreign Arrow.");
                         expected[CursorRole.Arrow] = Hash(CursorRole.Arrow);
+                        if (transparent)
+                        {
+                            var actual = CursorNative.Capture(CursorNative.LoadCursor(0, (nint)(uint)CursorRole.Arrow));
+                            Need(actual.Width == 32 && actual.Height == 32 && actual.HotspotX == 0 && actual.HotspotY == 0 && actual.Bgra.All(value => value == 0) && actual.AndMask.All(value => value == 0xFF), "The transparent fixture does not match the CU pattern.");
+                        }
                         long before = engine.PublishedFrames;
                         engine.CheckExternalChanges();
-                        await Until(() => engine.Status == CursorEngineStatus.ExternalChange && !diagnostics.IsEmpty, "Foreign scheme did not settle into refused recovery.");
+                        await Until(() => engine.Status == CursorEngineStatus.ExternalChange, "A foreign cursor did not pause the engine.");
+                        long inspectionsBefore = engine.BaselineInspectionCount;
+                        var held = Stopwatch.StartNew();
+                        while (held.Elapsed < TimeSpan.FromMilliseconds(2200))
+                        {
+                            engine.CheckExternalChanges(); engine.SetScale(new(5, scenarioClock.Now, 201));
+                            await Task.Delay(10);
+                        }
+                        long inspectionDelta = engine.BaselineInspectionCount - inspectionsBefore;
+                        Need(inspectionDelta is >= 1 and <= 4, "Foreign-cursor inspection was absent or exceeded the bounded1Hz watch.");
                         engine.CheckExternalChanges(); engine.Normalize();
-                        using var barrier = Prepare(); await engine.ApplyThemeAsync(barrier, double.NaN).WaitAsync(TimeSpan.FromSeconds(10));
-                        Need(engine.AutomaticRecoveries == 0 && engine.PublishedFrames == before, "A foreign scheme was recovered or overwritten.");
-                        Need(Equal(expected), "Foreign Arrow or another ceded role was overwritten.");
-                        cases.Add(new { Case = "ForeignArrowRejected", Recoveries = engine.AutomaticRecoveries, Publications = engine.PublishedFrames, Status = engine.Status.ToString() });
+                        using (var candidate = Prepare())
+                        {
+                            var pendingApply = await engine.ApplyThemeAsync(candidate, 16).WaitAsync(TimeSpan.FromSeconds(10));
+                            Need(!pendingApply.Applied && pendingApply.ErrorCode == "CursorRecoveryPending", "A valid configuration candidate was rejected as an error instead of remaining pending.");
+                            Need(candidate.Roles[CursorRole.Arrow].Frames[0].Rasterize(32, 32).Width == 32, "The engine disposed a candidate that still belongs to its waiting caller.");
+                            cases.Add(new { Case = "ConfigurationCandidateRemainsPendingDuringSoftWait", pendingApply.Applied, pendingApply.ErrorCode });
+                        }
+                        Need(engine.AutomaticRecoveries == 0 && engine.PublishedFrames == before && diagnostics.IsEmpty, "Soft waiting overwrote a foreign cursor or raised a hard-stop diagnostic.");
+                        Need(Equal(expected), "Foreign Arrow or another paused role was overwritten.");
+                        cases.Add(new { Case = transparent ? "TransparentCursorSoftWait" : "ForeignCursorSoftWait", Recoveries = engine.AutomaticRecoveries, Publications = engine.PublishedFrames, Status = engine.Status.ToString(), HeldMilliseconds = 2200, Diagnostics = diagnostics.ToArray(), InspectionDelta = inspectionDelta });
+                        Reload(); expected = baseline.ToDictionary(x => x.Key, x => x.Value);
+                        if (transientBaseline)
+                        {
+                            await Until(() => Volatile.Read(ref normalizationCalls) == 1, "A ready baseline did not begin normalization.");
+                            using var interrupted = CursorNative.Create(CrashGuardSmoke.Colored(41, 219));
+                            Need(CursorNative.SetSystemCursor(interrupted.Transfer(), (uint)CursorRole.Arrow), "Cannot interrupt the ready baseline with the owned foreign fixture.");
+                            expected[CursorRole.Arrow] = Hash(CursorRole.Arrow); engine.CheckExternalChanges();
+                            await Task.Delay(2200);
+                            Need(engine.AutomaticRecoveries == 0 && engine.PublishedFrames == before && diagnostics.IsEmpty && Equal(expected), "A disappearing baseline incorrectly timed out, recovered, or overwrote the foreign cursor.");
+                            normalization.SetResult(); Reload(); expected = baseline.ToDictionary(x => x.Key, x => x.Value);
+                        }
+                        await Until(() => engine.AutomaticRecoveries == 1, "The original baseline did not resume recovery after a soft wait.");
+                        await Quiesce(engine);
+                        Need(!helper.HasExited && helper.Id == helperId && BaselineStore.ReadManifest(receipt).Nonce == sessionManifest.Nonce, "Soft-wait recovery replaced the guard or session.");
+                        Need(diagnostics.IsEmpty, "Baseline restoration after a soft wait raised a diagnostic.");
+                        if (transientBaseline) Need(normalizationCalls == 1, "One incident normalized more than once after a disappearing baseline.");
+                        foreach (var role in CursorRoles.All) expected[role] = Hash(role);
+                        cases.Add(new { Case = transientBaseline ? "DisappearingBaselineReturnedToWatchAndRecovered" : transparent ? "TransparentCursorOriginalBaselineRecovered" : "ForeignCursorOriginalBaselineRecovered", Recoveries = engine.AutomaticRecoveries, Publications = engine.PublishedFrames, GuardPid = helperId, Session = sessionManifest.Nonce });
+                    }
+                    else if (scenario.StartsWith("coordinator-", StringComparison.Ordinal))
+                    {
+                        var workspace = new WorkspaceStore(Path.Combine(root, scenario + "-workspace"), Path.Combine(root, scenario + "-locator"), persistLocator: false);
+                        workspace.EnsureConfiguration();
+                        var initial = workspace.Read(); workspace.ProtectedUpdate(text => ConfigurationEdits.SetTheme(text, "bibata-ice"), initial.Revision);
+                        var profile = new GestureProfile();
+                        var input = new PointerInput(profile, () => PointerButtons.None, (_, _) => (1, 96));
+                        configurationDetector = new ShakeDetector(input, engine, scenarioClock, profile);
+                        configurationRuntime = new PointerRuntimeLoop(scenarioClock, input, configurationDetector);
+                        var loop = configurationRuntime; var gesture = configurationDetector;
+                        int unavailable = engine.Status == CursorEngineStatus.Available ? 0 : 1;
+                        availabilityHandler = status =>
+                        {
+                            bool captured = status != CursorEngineStatus.Available;
+                            Volatile.Write(ref unavailable, captured ? 1 : 0);
+                            _ = AppHost.QueueEngineAvailability(loop, gesture, captured, () => Volatile.Read(ref unavailable) != 0);
+                        };
+                        engine.StatusChanged += availabilityHandler;
+                        engine.NormalizeBeforeRecovery = () => AppHost.QueueEngineAvailability(loop, gesture, true, () => Volatile.Read(ref unavailable) != 0);
+                        coordinator = new ConfigurationCoordinator(workspace, new ThemePreparer(bundled), engine, input, gesture, loop, scenarioClock, () => Volatile.Read(ref unavailable) != 0);
+                        var configurationErrors = new System.Collections.Concurrent.ConcurrentQueue<Exception>();
+                        coordinator.Error += configurationErrors.Enqueue;
+                        await coordinator.InitializeAsync().WaitAsync(TimeSpan.FromSeconds(20));
+                        Need(coordinator.Effective?.Theme == "bibata-ice" && configurationErrors.IsEmpty, "Coordinator did not establish its initial effective Bibata configuration.");
+                        await Quiesce(engine); foreach (var role in CursorRoles.All) expected[role] = Hash(role);
+                        string bibataArrow = expected[CursorRole.Arrow];
+                        using (var replacement = CursorNative.Create(CrashGuardSmoke.Colored(41, 207)))
+                            Need(CursorNative.SetSystemCursor(replacement.Transfer(), (uint)CursorRole.Arrow), "Cannot install the coordinator's owned foreign fixture.");
+                        expected[CursorRole.Arrow] = Hash(CursorRole.Arrow);
+                        long before = engine.PublishedFrames; engine.CheckExternalChanges();
+                        await Until(() => engine.IsWaitingForOriginalScheme, "Coordinator fixture did not enter soft waiting.");
+                        await Task.Delay(1200);
+                        if (scenario == "coordinator-latest")
+                        {
+                            Save("windows"); await Until(() => coordinator.PendingTheme == "windows", "Saved Windows theme did not become pending.");
+                        }
+                        Save("nordzy-white");
+                        await Until(() => coordinator.PendingTheme == "nordzy-white", "Saved Nordzy theme did not become pending through the file watcher.");
+                        Need(coordinator.Effective?.Theme == "bibata-ice" && configurationErrors.IsEmpty && diagnostics.IsEmpty && engine.PublishedFrames == before && Equal(expected), "Pending configuration changed the effective theme, wrote cursors or raised an error.");
+                        if (scenario == "coordinator-dispose-pending")
+                        {
+                            var elapsed = Stopwatch.StartNew();
+                            await coordinator.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(5));
+                            Need(configurationErrors.IsEmpty && engine.PublishedFrames == before && Equal(expected), "Cancelling a pending coordinator published or failed.");
+                            cases.Add(new { Case = scenario, DisposeMilliseconds = elapsed.Elapsed.TotalMilliseconds, NoInputRequired = true, Publications = engine.PublishedFrames });
+                        }
+                        else if (scenario == "coordinator-hardstop-pending")
+                        {
+                            registryFixture = Registry.CurrentUser.OpenSubKey(@"Control Panel\Cursors", writable: true) ?? throw new IOException("The cursor settings key is absent.");
+                            registryName = "CursorShake.QA." + Guid.NewGuid().ToString("N"); registryToken = Guid.NewGuid().ToString("N");
+                            Need(!registryFixture.GetValueNames().Contains(registryName, StringComparer.OrdinalIgnoreCase), "The owned registry identity exists already.");
+                            registryFixture.SetValue(registryName, registryToken, RegistryValueKind.String); registryFixture.Flush(); registryWritten = true;
+                            // Status was ExternalChange already: only the recovery-wait change can wake the pending descriptor.
+                            await Until(() => !engine.IsWaitingForOriginalScheme && !configurationErrors.IsEmpty && coordinator.PendingTheme is null, "A hard stop did not wake/report the pending coordinator.");
+                            Need(coordinator.Effective?.Theme == "bibata-ice" && engine.PublishedFrames == before && Equal(expected), "The hard-stopped pending descriptor was applied.");
+                            await coordinator.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(5));
+                            cases.Add(new { Case = scenario, KeptEffectiveTheme = coordinator.Effective?.Theme, Errors = configurationErrors.Select(error => error.Message).ToArray(), NoInputRequired = true });
+                        }
+                        else
+                        {
+                            Reload(); expected = baseline.ToDictionary(x => x.Key, x => x.Value);
+                            await Until(() => coordinator.Effective?.Theme == "nordzy-white" && coordinator.PendingTheme is null && !coordinator.IsApplying, "The latest saved Nordzy configuration did not become effective after baseline recovery.");
+                            await Quiesce(engine);
+                            Need(configurationErrors.IsEmpty && diagnostics.IsEmpty && Hash(CursorRole.Arrow) != bibataArrow, "Latest configuration recovery did not produce the new cursor theme cleanly.");
+                            foreach (var role in CursorRoles.All) expected[role] = Hash(role);
+                            Need(!helper.HasExited && BaselineStore.ReadManifest(receipt).Nonce == sessionManifest.Nonce, "Coordinator recovery replaced its session or guard.");
+                            cases.Add(new { Case = scenario, EffectiveTheme = coordinator.Effective?.Theme, Recoveries = engine.AutomaticRecoveries, Publications = engine.PublishedFrames, NoInputRequired = true });
+                        }
+                        void Save(string theme)
+                        {
+                            var current = workspace.Read(); workspace.ProtectedUpdate(text => ConfigurationEdits.SetTheme(text, theme), current.Revision);
+                            // No RequestReload/button call: the real FileMonitor must deliver the saved revision.
+                        }
                     }
                     else if (scenario is "normalization-barrier" or "normalization-timeout" or "normalization-failure")
                     {
@@ -143,6 +271,11 @@ internal static class CursorReloadRecoverySmoke
                         Need(engine.AutomaticRecoveries == 0 && engine.PublishedFrames == before, "A changed registry snapshot was automatically adopted.");
                         Need(Equal(baseline), "Registry-conflict recovery changed the registered baseline.");
                         cases.Add(new { Case = "ChangedRegistryRejected", Recoveries = engine.AutomaticRecoveries, Publications = engine.PublishedFrames, OwnRegistryValue = registryName });
+                        Need(registryFixture.GetValueKind(registryName) == RegistryValueKind.String && registryFixture.GetValue(registryName, null, RegistryValueOptions.DoNotExpandEnvironmentNames) as string == registryToken, "The owned registry fixture changed before removal.");
+                        registryFixture.DeleteValue(registryName, throwOnMissingValue: true); registryFixture.Flush(); registryWritten = false;
+                        Reload(); engine.CheckExternalChanges(); await Task.Delay(1200);
+                        Need(engine.AutomaticRecoveries == 0 && engine.PublishedFrames == before && engine.Status == CursorEngineStatus.ExternalChange && Equal(baseline), "Restoring the registry revived a hard-stopped recovery.");
+                        cases.Add(new { Case = "RegistryRejectionRemainsHardStoppedAfterOwnValueRemoval", OwnRegistryValueRemoved = registryName, Recoveries = engine.AutomaticRecoveries });
                     }
                     else if (scenario is "configuration-reload" or "idle-audit" or "close-after-recovery")
                     {
@@ -196,18 +329,24 @@ internal static class CursorReloadRecoverySmoke
                                 PublishedBefore = before, PublishedAfter = engine.PublishedFrames, GuardPid = helperId, Session = sessionManifest.Nonce, Status = engine.Status.ToString() });
                         }
                     }
+                    completedRecoveryScenario = engine.AutomaticRecoveries > 0;
                 }
                 finally
                 {
+                    if (coordinator is not null) await coordinator.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(5));
                     if (engine is not null)
                     {
                         var stopped = await engine.StopAsync().WaitAsync(TimeSpan.FromSeconds(15));
-                        if (scenario is "configuration-reload" or "idle-audit" or "close-after-recovery" or "normalization-barrier")
+                        if (completedRecoveryScenario && scenario is ("configuration-reload" or "idle-audit" or "close-after-recovery" or "normalization-barrier" or "foreign-scheme" or "transparent-arrow" or "baseline-disappears-during-normalization" or "coordinator-latest"))
                         {
-                            Need(stopped.AllOwnedRestored && Equal(baseline), "Normal close after recovery required test compensation or failed to restore17 originals.");
-                            cases.Add(new { Case = "ProductCloseAfterRecovery", Scenario = scenario, stopped.AllOwnedRestored, All17BaselineBeforeTestCompensation = true });
+                            bool restoredByProduct = stopped.AllOwnedRestored && Equal(baseline);
+                            if (!restoredByProduct) closeFailure = "Normal close after recovery required test compensation or failed to restore17 originals.";
+                            cases.Add(new { Case = "ProductCloseAfterRecovery", Scenario = scenario, stopped.AllOwnedRestored, All17BaselineBeforeTestCompensation = restoredByProduct });
                         }
                     }
+                    if (engine is not null && availabilityHandler is not null) engine.StatusChanged -= availabilityHandler;
+                    if (engine is not null) engine.NormalizeBeforeRecovery = null;
+                    configurationRuntime?.Dispose(); configurationDetector?.Dispose();
                     try
                     {
                         if (registryWritten)
@@ -243,15 +382,17 @@ internal static class CursorReloadRecoverySmoke
                     }
                     Need(RecoveryBootstrap.Inspect(state).Count == 0, "A QA recovery receipt remains; preserve it for investigation.");
                     cases.Add(new { Case = "FixtureCleanup", Foreign = foreign, All17Restored = true, GuardExited = true, NoReceipts = true });
+                    Need(closeFailure is null, closeFailure ?? "");
                 }
                 PreparedTheme Prepare() => new ThemePreparer(bundled).Prepare(new AppConfiguration { Theme = "bibata-ice" }, root);
             }
             bool Equal(IReadOnlyDictionary<CursorRole, string> expected) => CursorRoles.All.All(role => Hash(role) == expected[role]);
             void Compensate(IReadOnlyDictionary<CursorRole, string> expected)
             {
-                Need(Equal(expected), "Desktop changed outside the QA fixture; no forced compensation was attempted.");
+                Need(CursorRoles.All.All(role => Hash(role) == expected[role] || Hash(role) == baseline[role]), "Desktop changed outside the QA fixture; no forced compensation was attempted.");
                 foreach (var entry in original.Cursors)
                 {
+                    if (Hash(entry.Role) == baseline[entry.Role]) continue;
                     Need(Hash(entry.Role) == expected[entry.Role], "Role changed before conditional QA cleanup: " + entry.Role);
                     var pixels = BaselineStore.ReadPixels(Path.Combine(backup, entry.PixelFile));
                     using var source = LoadOriginal(entry, pixels);

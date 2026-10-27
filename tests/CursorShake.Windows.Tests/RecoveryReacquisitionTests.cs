@@ -50,6 +50,7 @@ public sealed class RecoveryReacquisitionTests
     {
         using var fixture=new CursorFixture();using var session=new NativeCursorSession(fixture.DirectoryPath,"unused",startGuard:false);
         Ledger(session).SetExternalChange();
+        Assert.Equal(OriginalBaselineStatus.GuardUnavailable, session.InspectOriginalBaseline());
         Assert.False(session.TryReacquireUnchangedBaseline());Assert.True(session.IsExternalChangeDetected);
     }
     [Fact] [Trait("Category","NativeReadOnly")]
@@ -90,6 +91,7 @@ public sealed class RecoveryReacquisitionTests
         using (var stop = EventWaitHandle.OpenExisting(manifest.StopName)) stop.Set();
         Assert.True(guard.WaitForExit(10000), "The fixture's own disarmed helper did not exit.");
         ledger.SetExternalChange();
+        Assert.Equal(OriginalBaselineStatus.GuardUnavailable, session.InspectOriginalBaseline());
         Assert.False(session.TryReacquireUnchangedBaseline());
         Assert.True(session.IsExternalChangeDetected);
         foreach (var role in CursorRoles.All)

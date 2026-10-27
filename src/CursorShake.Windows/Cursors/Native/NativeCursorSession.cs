@@ -5,6 +5,8 @@ using CursorShake.Windows.Configuration;
 using CursorShake.Windows.Recovery;
 namespace CursorShake.Windows.Cursors.Native;
 
+internal enum OriginalBaselineStatus { Waiting, Ready, SettingsChanged, GuardUnavailable, Unverifiable }
+
 /// <summary>Owns baseline, shared role identities and verified native mutation for one interactive lifetime.</summary>
 public sealed class NativeCursorSession : IDisposable
 {
@@ -148,6 +150,21 @@ public sealed class NativeCursorSession : IDisposable
         bool alreadyCeded=_ledger.ExternalChange;
         _ledger.SetExternalChange();
         if(!alreadyCeded||firstExternalChangeDiagnostic is null)firstExternalChangeDiagnostic=$"Reason={reason}; Role={role}; Phase={owned.Phase}; LedgerGeneration={owned.Generation}; ActualHandle=0x{actualHandle:X}; ExpectedHandle=0x{SharedHandles[role]:X}; ActualSHA256={Convert.ToHexString(actual)}; BaselineSHA256={_manifest.Cursors[Index(role)].Fingerprint}; PreviousOwnedSHA256={Convert.ToHexString(owned.PreviousHash)}; PendingOwnedSHA256={Convert.ToHexString(owned.PendingHash)}.";
+    }
+    internal OriginalBaselineStatus InspectOriginalBaseline()
+    {
+        lock(_sync)
+        {
+            if(_disposed||!_guardRequired||_guard is null)return OriginalBaselineStatus.GuardUnavailable;
+            try
+            {
+                if(_guard.HasExited)return OriginalBaselineStatus.GuardUnavailable;
+                if(!_settingsBaseline.Equals(CursorSettingsSnapshot.Capture()))return OriginalBaselineStatus.SettingsChanged;
+                return BaselineStillMatches()?OriginalBaselineStatus.Ready:OriginalBaselineStatus.Waiting;
+            }
+            catch(Exception error)when(error is IOException or UnauthorizedAccessException or System.Security.SecurityException or Win32Exception or InvalidOperationException)
+            { return OriginalBaselineStatus.Unverifiable; }
+        }
     }
     internal bool TryReacquireUnchangedBaseline(Func<bool>? canCommit=null)
     {

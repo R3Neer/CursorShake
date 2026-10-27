@@ -23,12 +23,15 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
     private readonly IMonotonicClock clock;
     private readonly RasterCache cache=new();
     private readonly CursorReloadRecoveryPolicy reloadPolicy=new();
-    private TimeSpan? reloadDetectedAt;
+    private TimeSpan? reloadDetectedAt,recoveryStartedAt;
+    private TimeSpan nextBaselineProbeAt;
+    private long baselineInspectionCount;
+    internal long BaselineInspectionCount=>Interlocked.Read(ref baselineInspectionCount);
     private TimeSpan lastOwnershipAudit;
     private bool reloadAbandoned,reapplying;
     private long automaticRecoveries;
     private string? ownershipLossMessage;
-    private Task normalizationForReload=Task.CompletedTask;
+    private Task? normalizationForReload;
     private readonly CursorReloadJournal reloadJournal;
     internal long AutomaticRecoveries=>Interlocked.Read(ref automaticRecoveries);
     private readonly Dictionary<CursorRole,(CursorFrame Frame,int Width,int Height)> nativeStates=new();
@@ -59,6 +62,9 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
     public event Action<CursorEngineStatus>? StatusChanged;
     public event Action<string>? Error;
     public event Action<string>? OwnershipLost;
+    internal event Action? RecoveryWaitChanged;
+    public bool IsWaitingForOriginalScheme=>!Volatile.Read(ref stopping)&&!Volatile.Read(ref rendererFailed)&&session.IsExternalChangeDetected&&!Volatile.Read(ref reloadAbandoned);
+    private sealed class CursorRecoveryPendingException : InvalidOperationException { }
     /// <summary>Completes after the domain has discarded all previously admitted growth. Called once per reload.</summary>
     public Func<Task>? NormalizeBeforeRecovery { private get; set; }
     public CursorEngineStatus Status {get{lock(gate)return status;}}
@@ -96,6 +102,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         Enqueue(()=>
         {
             try{Apply(prepared,maxScale);result.SetResult(new(true));}
+            catch(CursorRecoveryPendingException){result.SetResult(new(false,"The theme is waiting for the original Windows cursor scheme.","CursorRecoveryPending"));}
             catch(Exception ex){result.SetResult(new(false,session.IsExternalChangeDetected?ownershipLossMessage??ex.Message:ex.Message,session.IsExternalChangeDetected?"CursorOwnershipLost":null));}
         });return result.Task;
     }
@@ -107,7 +114,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         if(prepared.EstimatedBytes+(theme?.EstimatedBytes??0)+session.BaselineEstimatedBytes>CursorAssetLoader.MaximumSourceBytes)
             throw new CursorAssetException(AssetErrorCode.LimitExceeded,"Active, candidate and baseline sources exceed64MiB.");
         var previous=theme;
-        if(previous!=null&&session.IsExternalChangeDetected)RecoverWithinGrace(previous);
+        if(previous!=null&&session.IsExternalChangeDetected)RecoverOrDefer(previous);
         cache.Clear();
         lock(gate){hardEpoch++;targetScale=1;Interlocked.Exchange(ref latestScaleRequest,null);}
         for(int publicationAttempt=0;;publicationAttempt++)
@@ -126,7 +133,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
             {
                 // Keep the prepared candidate alive if this publication was the first observer of
                 // an eligible Windows reload. Retry it once after restoring the retained theme.
-                if(publicationAttempt==0&&previous!=null&&session.IsExternalChangeDetected&&RecoverWithinGrace(previous))continue;
+                if(publicationAttempt==0&&previous!=null&&session.IsExternalChangeDetected&&RecoverOrDefer(previous))continue;
                 if(previous!=null&&!session.IsExternalChangeDetected)
                 {
                     try{foreach(var role in CursorRoles.All){var a=previous.Roles[role];Publish(role,a.Frames[a.Steps[0].FrameIndex],normalSize,0);}}
@@ -145,16 +152,11 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         previous?.Dispose();
         ObserveSystemCursor();
     }
-    private bool RecoverWithinGrace(PreparedTheme retained)
+    private bool RecoverOrDefer(PreparedTheme retained)
     {
         BeginReloadRecovery();
-        var waited=System.Diagnostics.Stopwatch.StartNew();
-        while(!stopping&&!reloadAbandoned)
-        {
-            if(TryRecoverReload(retained))return true;
-            if(waited.Elapsed>=TimeSpan.FromSeconds(1)){AbandonReload("The original cursor scheme did not become eligible within the recovery grace interval.");break;}
-            Thread.Sleep(100);
-        }
+        if(TryRecoverReload(retained))return true;
+        if(!reloadAbandoned)throw new CursorRecoveryPendingException();
         return false;
     }
     public void ObserveSystemCursor()
@@ -270,7 +272,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
                 {
                     BeginReloadRecovery();
                     if(TryRecoverReload(current))continue;
-                    wake.WaitOne(reloadAbandoned?Timeout.Infinite:100);continue;
+                    wake.WaitOne(reloadAbandoned?Timeout.Infinite:recoveryStartedAt is null?1000:100);continue;
                 }
                 if(current==null||stopping||rendererFailed){wake.WaitOne(1000);continue;}
                 CursorRole? idleRole=null;
@@ -316,32 +318,72 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
     private void BeginReloadRecovery()
     {
         if(reloadDetectedAt is not null)return;
-        reloadDetectedAt=clock.Now;
+        reloadDetectedAt=clock.Now;recoveryStartedAt=null;normalizationForReload=null;nextBaselineProbeAt=TimeSpan.Zero;
         reloadJournal.Detected(session.ExternalChangeDiagnostic);
+        reloadJournal.Completed("Waiting","Cursor changes are paused until the complete original scheme returns with unchanged Windows settings.");
         lock(gate){targetScale=1;hardEpoch++;normalize.Clear();Interlocked.Exchange(ref latestScaleRequest,null);}
         SetStatus(CursorEngineStatus.ExternalChange);
-        try { normalizationForReload=NormalizeBeforeRecovery?.Invoke()??Task.CompletedTask; }
-        catch(Exception error) { normalizationForReload=Task.FromException(error); }
+    }
+    private OriginalBaselineStatus InspectOriginalBaseline()
+    {
+        Interlocked.Increment(ref baselineInspectionCount);
+        return session.InspectOriginalBaseline();
+    }
+    private bool AcceptOriginalBaselineStatus(OriginalBaselineStatus readiness)
+    {
+        if(readiness==OriginalBaselineStatus.Ready)return true;
+        if(readiness==OriginalBaselineStatus.Waiting)return false;
+        AbandonReload(readiness switch
+        {
+            OriginalBaselineStatus.SettingsChanged=>"Windows cursor settings changed; automatic recovery will not overwrite them.",
+            OriginalBaselineStatus.GuardUnavailable=>"The original recovery guard is unavailable.",
+            _=>"The original cursor scheme could not be verified."
+        });
+        return false;
+    }
+    private void ResumeWatchingOriginalScheme()
+    {
+        recoveryStartedAt=null;nextBaselineProbeAt=clock.Now+TimeSpan.FromSeconds(1);
     }
     private bool TryRecoverReload(PreparedTheme retained)
     {
         if(reloadAbandoned)return false;
         var now=clock.Now;
-        if(now-reloadDetectedAt!.Value>=TimeSpan.FromSeconds(1))
-        { AbandonReload("The original cursor scheme did not become eligible within the recovery grace interval.");return false; }
-        if(!normalizationForReload.IsCompleted)return false;
+        if(recoveryStartedAt is null)
+        {
+            if(now<nextBaselineProbeAt)return false;
+            nextBaselineProbeAt=now+TimeSpan.FromSeconds(1);
+            if(!AcceptOriginalBaselineStatus(InspectOriginalBaseline()))return false;
+            recoveryStartedAt=clock.Now;
+            if(normalizationForReload is null)
+            {
+                try { normalizationForReload=NormalizeBeforeRecovery?.Invoke()??Task.CompletedTask; }
+                catch(Exception error) { normalizationForReload=Task.FromException(error); }
+            }
+        }
+        now=clock.Now;
+        if(now-recoveryStartedAt.Value>=TimeSpan.FromSeconds(1))
+        {
+            var readiness=InspectOriginalBaseline();
+            if(readiness==OriginalBaselineStatus.Waiting){ResumeWatchingOriginalScheme();return false;}
+            if(AcceptOriginalBaselineStatus(readiness))AbandonReload("The domain did not confirm normalization and verification within one second after the original scheme returned.");
+            return false;
+        }
+        if(!normalizationForReload!.IsCompleted)return false;
         if(!normalizationForReload.IsCompletedSuccessfully)
         { AbandonReload("The domain could not confirm normal cursor size: "+(normalizationForReload.Exception?.GetBaseException().Message??"normalization was cancelled"));return false; }
         if(!reloadPolicy.CanAttempt(now))
         { AbandonReload("Automatic recovery limit reached (3 recoveries in 60 seconds).");return false; }
         bool reclaimed;
         lock(gate){reapplying=true;}
-        try{reclaimed=session.TryReacquireUnchangedBaseline(()=>clock.Now-reloadDetectedAt!.Value<TimeSpan.FromSeconds(1));}
+        try{reclaimed=session.TryReacquireUnchangedBaseline(()=>clock.Now-recoveryStartedAt!.Value<TimeSpan.FromSeconds(1));}
         catch(Exception error){lock(gate){reapplying=false;}AbandonReload("Cannot verify the original cursor scheme: "+error);return false;}
         if(!reclaimed)
         {
             lock(gate){reapplying=false;}
-            if(now-reloadDetectedAt!.Value>=TimeSpan.FromSeconds(1))AbandonReload("The current cursors or Windows cursor settings differ from the original scheme.");
+            var readiness=InspectOriginalBaseline();
+            if(readiness==OriginalBaselineStatus.Waiting){ResumeWatchingOriginalScheme();return false;}
+            if(AcceptOriginalBaselineStatus(readiness)&&clock.Now-recoveryStartedAt.Value>=TimeSpan.FromSeconds(1))AbandonReload("The original scheme verification exceeded its recovery grace interval.");
             return false;
         }
         reloadPolicy.RecordAttempt(clock.Now);
@@ -359,7 +401,8 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
             }
             Interlocked.Increment(ref automaticRecoveries);
             reloadJournal.Completed("Recovered", "The unchanged original Windows scheme was verified and the retained theme reapplied at normal size.");
-            reloadDetectedAt=null;
+            reloadDetectedAt=null;recoveryStartedAt=null;normalizationForReload=null;
+            RecoveryWaitChanged?.Invoke();
             return true;
         }
         finally
@@ -375,6 +418,7 @@ public sealed class WindowsCursorEngine : ICursorEngine,IDisposable
         SetStatus(CursorEngineStatus.ExternalChange);
         ownershipLossMessage="Cursor ownership was ceded. "+reason+Environment.NewLine+session.ExternalChangeDiagnostic;
         reloadJournal.Completed("Declined",reason);
+        RecoveryWaitChanged?.Invoke();
         OwnershipLost?.Invoke(ownershipLossMessage);
     }
     private void Enqueue(Action command)
