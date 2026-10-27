@@ -5,6 +5,8 @@ internal static class Program
     [STAThread]
     private static int Main(string[] args)
     {
+        if (args.Length == 3 && args[0] == "--retire-restored-session") { var result=CursorShake.Windows.Recovery.RecoveryBootstrap.TryRetireAlreadyRestored(Path.GetFullPath(args[1])); File.WriteAllText(Path.GetFullPath(args[2]),System.Text.Json.JsonSerializer.Serialize(result,new System.Text.Json.JsonSerializerOptions{WriteIndented=true})); return result.AllOwnedRestored?0:1; }
+        if (args.Length == 3 && args[0] == "--inspect-live-cursors") return LiveCursorInspection.Run(Path.GetFullPath(args[1]),Path.GetFullPath(args[2]));
         if (args.Length == 2 && args[0] == "--dialog-ux-preview") return DialogUxPreview.Run(Path.GetFullPath(args[1]));
         if (args.Length == 3 && args[0] == "--reset-registered-scheme") { var result=CursorShake.Windows.Recovery.RecoveryBootstrap.ResetToRegisteredScheme(Path.GetFullPath(args[1])); File.WriteAllText(Path.GetFullPath(args[2]),System.Text.Json.JsonSerializer.Serialize(result,new System.Text.Json.JsonSerializerOptions{WriteIndented=true})); return result.AllOwnedRestored?0:1; }
         if (args.Length == 5 && args[0] == "--cursor-reload-recovery") return CursorReloadRecoverySmoke.Run(Path.GetFullPath(args[1]),Path.GetFullPath(args[2]),Path.GetFullPath(args[3]),Path.GetFullPath(args[4]));

@@ -43,7 +43,10 @@ public static partial class RecoveryBootstrap
         return pending;
     }
 
-    public static RestoreResult TryRecover(string sessionDirectory)
+    public static RestoreResult TryRecover(string sessionDirectory)=>Recover(sessionDirectory,allowRestoration:true);
+    /// <summary>Retires a dead owner's receipt only if the original desktop is already present; never publishes cursors.</summary>
+    public static RestoreResult TryRetireAlreadyRestored(string sessionDirectory)=>Recover(sessionDirectory,allowRestoration:false);
+    private static RestoreResult Recover(string sessionDirectory,bool allowRestoration)
     {
         try
         {
@@ -51,11 +54,20 @@ public static partial class RecoveryBootstrap
             var manifest = BaselineStore.ReadManifest(sessionDirectory);
             using var current = Process.GetCurrentProcess();
             if (manifest.OwnerSid != WindowsIdentity.GetCurrent().User?.Value || manifest.SessionId != current.SessionId) return new(false, ["Recovery belongs to another user or desktop session; it was left untouched."]);
+            var expected=manifest;
             using var lease = new RecoveryLease(manifest);
             // A competing guard can complete cleanup while this operation waits for the lock.
             if (!SessionExists(sessionDirectory)) return new(true, []);
             manifest = BaselineStore.ReadManifest(sessionDirectory);
+            if(manifest.Nonce!=expected.Nonce||manifest.LedgerName!=expected.LedgerName||manifest.OwnerSid!=expected.OwnerSid||manifest.SessionId!=expected.SessionId||manifest.ParentPid!=expected.ParentPid||manifest.ParentStartTicks!=expected.ParentStartTicks)
+                return new(false,["The recovery receipt identity changed while acquiring its lease; it was preserved."]);
             if (ParentIsAlive(manifest)) return new(false, ["The original process is still alive; recovery was not attempted."]);
+            if(RecoveryRestorer.BaselineAlreadyPresent(manifest))
+            {
+                BaselineStore.Cleanup(sessionDirectory,manifest);
+                return new(true,[]);
+            }
+            if(!allowRestoration)return new(false,["The complete original cursor scheme is not present; the receipt was preserved without restoring anything."]);
             OwnershipLedger ledger;
             try { ledger = new OwnershipLedger(manifest.LedgerName, manifest.Cursors.Count, false); }
             catch (FileNotFoundException) { return new(false, ["Ownership evidence no longer exists. Recovery did not guess or overwrite the current cursor scheme."]); }

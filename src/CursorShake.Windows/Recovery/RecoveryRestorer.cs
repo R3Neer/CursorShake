@@ -11,7 +11,16 @@ internal static class RecoveryRestorer
     public static RestoreResult Restore(string directory, RecoveryManifest manifest, OwnershipLedger ledger)
     {
         var errors = new List<string>();
-        if (ledger.ExternalChange) return new(false, ["An external cursor change was observed. Recovery did not overwrite it."]);
+        if (ledger.ExternalChange)
+        {
+            try
+            {
+                // Already restored is a read-only success, not permission to take ownership back.
+                return BaselineAlreadyPresent(manifest) ? new(true, [])
+                    : new(false, ["An external cursor change was observed. Recovery did not overwrite it."]);
+            }
+            catch(Exception error) { return new(false, ["The original cursors could not be verified without restoration: "+error.Message]); }
+        }
         try
         {
             // Check all roles before attempting any compensation; a scheme switch can affect untouched roles too.
@@ -46,6 +55,12 @@ internal static class RecoveryRestorer
             catch (Exception e) { errors.Add(role.Role + ": " + e.Message); }
         }
         return new(errors.Count == 0 && !ledger.ExternalChange, errors);
+    }
+    internal static bool BaselineAlreadyPresent(RecoveryManifest manifest)
+    {
+        foreach(var role in manifest.Cursors)
+            if(CursorNative.LoadCursor(0,(nint)(uint)role.Role)!=(nint)role.SharedHandle||Convert.ToHexString(CursorFingerprint.Current(role.Role))!=role.Fingerprint)return false;
+        return true;
     }
     private static SafeCursorHandle LoadBaseline(string directory, BaselineCursor role, CursorPixels pixels)
     {
