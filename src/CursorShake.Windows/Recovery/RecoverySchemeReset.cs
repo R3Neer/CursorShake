@@ -10,6 +10,7 @@ public static partial class RecoveryBootstrap
 {
     /// <summary>Explicit user-confirmed reset to the scheme registered in Windows. The caller must stop
     /// the engine and serialize this operation against new native sessions in its single application instance.
+    /// Only recovery receipts belonging to the current Windows user and session are retired.
     /// Availability checks do not certify equality with registry files or exclude another cursor writer.</summary>
     public static RestoreResult ResetToRegisteredScheme(string stateDirectory) => ResetToRegisteredScheme(stateDirectory,
         () => { if (!SystemParametersInfo(0x0057, 0, 0, 0)) throw new Win32Exception(Marshal.GetLastWin32Error(), "Reload registered Windows cursor scheme"); },
@@ -31,7 +32,8 @@ public static partial class RecoveryBootstrap
             {
                 if (!Guid.TryParseExact(Path.GetFileName(directory), "N", out _)) throw new InvalidDataException("Unknown recovery directory was preserved: " + directory);
                 var manifest = BaselineStore.ReadManifest(directory);
-                if (manifest.OwnerSid != sid || manifest.SessionId != current.SessionId) throw new InvalidOperationException("A recovery receipt belongs to another user or interactive session: " + directory);
+                if (manifest.OwnerSid != sid) throw new InvalidOperationException("A recovery receipt belongs to another user: " + directory);
+                if (manifest.SessionId != current.SessionId) continue;
                 if (ParentIsAlive(manifest)) throw new InvalidOperationException("The original cursor process is still alive: " + directory);
                 using var file = ProtectedFile.Open(Path.Combine(directory, "session.json"));
                 receipts.Add((directory, manifest, WorkspaceNative.DirectoryIdentity(directory), file.Hash()));
@@ -49,8 +51,16 @@ public static partial class RecoveryBootstrap
                 using var file = ProtectedFile.Open(Path.Combine(receipt.Path, "session.json"));
                 if (file.Hash() != receipt.Hash || ParentIsAlive(receipt.Manifest)) throw new InvalidDataException("Recovery receipt changed or its owner is still alive.");
             }
-            // The application instance owns session creation; nevertheless fail closed if a receipt appeared.
-            if (Directory.EnumerateDirectories(root).Any(path => !receipts.Any(r => string.Equals(r.Path, path, StringComparison.OrdinalIgnoreCase)))) throw new InvalidOperationException("A new recovery session appeared; no reset was attempted.");
+            // Another interactive session can publish receipts while the current session's leases are held.
+            foreach (string directory in Directory.EnumerateDirectories(root))
+            {
+                if (receipts.Any(receipt => string.Equals(receipt.Path, directory, StringComparison.OrdinalIgnoreCase))) continue;
+                using var protection = BaselineStore.ProtectExistingSession(directory);
+                if (protection is null) continue;
+                var manifest = BaselineStore.ReadManifest(directory);
+                if (manifest.OwnerSid != sid || manifest.SessionId == current.SessionId)
+                    throw new InvalidOperationException("An unverified recovery receipt appeared; no reset was attempted: " + directory);
+            }
             if (pinned.Count == 0) return new(true, []);
             reset();
             validate(); // Failure preserves every receipt; no old ownership hash authorizes this new reset.

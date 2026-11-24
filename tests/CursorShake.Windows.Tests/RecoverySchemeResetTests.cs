@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using CursorShake.Windows.Cursors;
 using CursorShake.Windows.Configuration;
@@ -14,13 +15,51 @@ public sealed class RecoverySchemeResetTests
         Assert.True(RecoveryBootstrap.ResetToRegisteredScheme(f.DirectoryPath, () => reset++, () => throw new Exception()).AllOwnedRestored);
         Assert.Equal(0, reset);
     }
-    [Theory] [InlineData("alive")] [InlineData("user")] [InlineData("session")] [InlineData("unknown")]
+    [Theory] [InlineData("alive")] [InlineData("user")] [InlineData("unknown")]
     public void UnverifiedReceiptsPreventEveryNativeCall(string reason)
     {
         using var f = new CursorFixture(); string path = Receipt(f, reason); int reset = 0;
         var result = RecoveryBootstrap.ResetToRegisteredScheme(f.DirectoryPath, () => reset++, () => { });
         Assert.False(result.AllOwnedRestored); Assert.Equal(0, reset); Assert.True(Directory.Exists(path));
     }
+    [Fact]
+    public void ResetRetiresCurrentSessionAndPreservesOtherSessionFiles()
+    {
+        using var fixture = new CursorFixture();
+        string current = Receipt(fixture);
+        string other = Receipt(fixture, "session");
+        File.WriteAllText(Path.Combine(other, "32512.pixels"), "other session cursor");
+        File.WriteAllText(Path.Combine(other, "result.json"), "other session diagnostic");
+        var originalFiles = Directory.GetFiles(other).ToDictionary(
+            path => path, path => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path))));
+        int resets = 0, validations = 0;
+
+        var result = RecoveryBootstrap.ResetToRegisteredScheme(fixture.DirectoryPath, () => resets++, () => validations++);
+
+        Assert.True(result.AllOwnedRestored, string.Join(Environment.NewLine, result.Diagnostics));
+        Assert.Equal(1, resets);
+        Assert.Equal(1, validations);
+        Assert.False(Directory.Exists(current));
+        Assert.Equal(originalFiles.Keys.Order(), Directory.GetFiles(other).Order());
+        foreach (var (path, hash) in originalFiles)
+            Assert.Equal(hash, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path))));
+    }
+
+    [Fact]
+    public void OtherSessionOnlyDoesNotInvokeReset()
+    {
+        using var fixture = new CursorFixture();
+        string other = Receipt(fixture, "session");
+        int resets = 0, validations = 0;
+
+        var result = RecoveryBootstrap.ResetToRegisteredScheme(fixture.DirectoryPath, () => resets++, () => validations++);
+
+        Assert.True(result.AllOwnedRestored, string.Join(Environment.NewLine, result.Diagnostics));
+        Assert.Equal(0, resets);
+        Assert.Equal(0, validations);
+        Assert.True(File.Exists(Path.Combine(other, "session.json")));
+    }
+
     [Theory] [InlineData(false)] [InlineData(true)]
     public void ResetOrValidationFailurePreservesReceipts(bool validationFailure)
     {
